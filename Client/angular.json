@@ -1,0 +1,139 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "excel2json": {
+    "projectType": "application",
+    "schematics": {
+      "@schematics/angular:component": {
+      "style": "scss"
+      },
+      "@schematics/angular:application": {
+        "strict": true
+      }
+    },
+    "root": "",
+    "sourceRoot": "src",
+    "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/excel2json",
+            "index": "src/index.html",
+            "main": "src/main.ts",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "tsconfig.app.json",
+            "assets": [
+              "src/favicon.ico",
+              "src/assets"
+            ],
+            "styles": [
+              "src/styles.scss"
+            ],
+            "scripts": ["./node_modules/hammerjs/hammer.min.js"]
+          },
+          "configurations": {
+            "es5": {
+                "tsConfig": "tsconfig-es5.app.json"
+            },
+            "production": {
+                "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "5mb",
+                  "maximumError": "10mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "2mb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+                 "buildOptimizer": false,
+                 "optimization": false,
+                 "vendorChunk": true,
+                 "extractLicenses": false,
+                 "sourceMap": true,
+                 "namedChunks": true
+            },
+            "defaultConfiguration": "production"
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "excel2json:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "excel2json:build:production"
+            },
+            "es5": {
+                "browserTarget": "excel2json:build:es5"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "excel2json:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "src/test.ts",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "tsconfig.spec.json",
+            "karmaConfig": "karma.conf.js",
+            "styles": [
+              "src/styles.scss"
+            ],
+            "scripts": ["./node_modules/hammerjs/hammer.min.js"],
+            "assets": [
+              "src/favicon.ico",
+              "src/assets"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "tsconfig.app.json",
+              "tsconfig.spec.json",
+              "e2e/tsconfig.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "e2e/protractor.conf.js",
+            "devServerTarget": "excel2json:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "excel2json:serve:production"
+            }
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "excel2json"
+}

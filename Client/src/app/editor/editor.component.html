@@ -1,0 +1,46 @@
+<div class="nav-bar row">
+  <div class="row-layout_3 row">
+    <img src="https://dl.dropboxusercontent.com/s/18on7lfgmfd9fmw/Logo.svg?dl=0" routerLink="/upload" class="image" />
+    <h5 class="title">|</h5>
+    <h6 class="title_2">{{fileName}}</h6>
+  </div>
+  <div class="row-layout_3 row">
+    <button igxButton="flat" igxButtonColor="var(--igx-grays-900)" igxButtonBackground="transparent" [disabled]="false" routerLink="/upload" class="button_1">
+      <span>UPLOAD ANOTHER FILE</span>
+    </button>
+    <button igxButton="outlined" [disabled]="false" class="button">
+      <span>DOWNLOAD JSON</span>
+    </button>
+    <button igxButton="raised" igxButtonColor="var(--igx-primary-700)" igxButtonBackground="var(--igx-grays-900)" [disabled]="false" [igxToggleAction]="dialogWindow" class="button_1">
+      <span>GET LINK</span>
+    </button>
+  </div>
+</div>
+<div class="row-layout_2 row">
+  <div class="column-layout column">
+    Spreadsheet goes here
+  </div>
+  <div class="column-layout column">
+    editor goes here
+  </div>
+</div>
+<igx-dialog [closeOnOutsideSelect]="true" [closeOnEscape]="true" #dialogWindow class="dialog-window">
+  <div>
+    <div class="column-layout_2 column">
+      <div class="row-layout_1 row">
+        <igx-avatar [roundShape]="true" color="var(--igx-grays-800)" bgColor="var(--igx-primary-500)" size="small" icon="check" class="avatar"></igx-avatar>
+        <h5 class="title_1">Link to file created</h5>
+      </div>
+      <p class="text">'Improvements_from_Feedback.xlsx'</p>
+      <div class="row-layout row">
+        <igx-input-group type="box" placeholder class="input-group">
+          <label igxLabel for="inputField"></label>
+          <input type="text" name="inputField" [required]="false" [disabled]="false" igxInput value="https://brianlagunas.github.io/excel-to-json/dist/whatev.." />
+        </igx-input-group>
+        <button igxButton="raised" [disabled]="false" [igxToggleAction]="dialogWindow" class="button_1">
+          <span>COPY</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</igx-dialog>

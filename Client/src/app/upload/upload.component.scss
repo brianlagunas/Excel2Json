@@ -1,0 +1,125 @@
+:host {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+.nav-bar {
+  justify-content: space-between;
+  padding: 0 24px;
+  min-height: 60px;
+  background-color: var(--igx-secondary-500);
+  position: relative;
+  min-width: 50px;
+  align-items: center;
+}
+.row-layout {
+  justify-content: space-evenly;
+  align-items: stretch;
+  max-width: 840px;
+  flex: 1 1 0;
+  position: relative;
+  min-width: 50px;
+  min-height: 50px;
+}
+.column-layout {
+  padding: 48px 0 28px;
+  justify-content: center;
+  position: relative;
+  min-width: 50px;
+  min-height: 50px;
+  align-items: center;
+}
+.column-layout_1 {
+  margin: 0 9px 0 0;
+  width: 10px;
+  border-color: var(--igx-grays-200);
+  border-width: 0px 1px 0px 0px;
+  border-style: solid;
+  min-height: 50px;
+  align-items: center;
+}
+.row-layout_1 {
+  justify-content: center;
+  flex: 1 1 0;
+  position: relative;
+  min-width: 50px;
+  min-height: 50px;
+  align-items: center;
+}
+.row-layout_2 {
+  position: relative;
+  min-width: 50px;
+  align-items: center;
+}
+.column-layout_2 {
+  min-width: 50px;
+  min-height: 50px;
+  align-items: center;
+}
+.column-layout_3 {
+  min-height: 50px;
+  align-items: center;
+}
+.image {
+  width: 138px;
+  height: 24px;
+  object-fit: none;
+  min-width: 0;
+  min-height: 0;
+  flex: 0 0 auto;
+}
+.text {
+  margin: 0 0 24px;
+  color: var(--igx-grays-800);
+  height: max-content;
+  min-width: min-content;
+  text-align: center;
+  flex: 0 0 auto;
+}
+.image_1 {
+  width: 220px;
+  height: 160px;
+  object-fit: cover;
+  min-width: 0;
+  min-height: 0;
+  flex: 0 0 auto;
+}
+.title {
+  margin: 30px 0 0;
+  height: max-content;
+  min-width: min-content;
+  text-align: center;
+  flex: 0 0 auto;
+}
+.title_1 {
+  margin: 8px 0 20px;
+  color: var(--igx-grays-800);
+  height: max-content;
+  min-width: min-content;
+  text-align: center;
+  flex: 0 0 auto;
+}
+.icon {
+  height: 36px;
+  width: 36px;
+  font-size: 36px;
+  flex: 0 0 auto;
+}
+.button {
+  height: max-content;
+  min-width: 260px;
+  flex: 0 0 auto;
+}
+.processing-file-dialog {
+  min-width: 0;
+  min-height: 0;
+  flex: 0 0 auto;
+}
+.row {
+  display: flex;
+}
+.column {
+  display: flex;
+  flex-direction: column;
+}
