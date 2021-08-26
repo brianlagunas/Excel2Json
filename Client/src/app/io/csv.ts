@@ -22,7 +22,7 @@ export class CSV {
         const headers = lines[0].split(",");
         let results = [];
 
-        for (let x = 1; x < lines.length; x++) {
+        for (let x = 1; x < lines.length - 1; x++) {
             let obj: any = {};
             const currentLine = lines[x].split(",").map(s => s.trim());
 
@@ -33,6 +33,6 @@ export class CSV {
             results.push(obj);
         }
 
-        return JSON.stringify(results);
+        return JSON.stringify(results, null, "\t");
     }
 }

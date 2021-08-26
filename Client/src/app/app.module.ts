@@ -8,6 +8,7 @@ import { UploadComponent } from './upload/upload.component';
 import { IgxButtonModule, IgxDialogModule, IgxIconModule, IgxToggleModule, IgxAvatarModule, IgxInputGroupModule } from 'igniteui-angular';
 import { FormsModule } from '@angular/forms';
 import { EditorComponent } from './editor/editor.component';
+import { MonacoEditorModule } from 'ngx-monaco-editor';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { EditorComponent } from './editor/editor.component';
     FormsModule,
     IgxToggleModule,
     IgxAvatarModule,
-    IgxInputGroupModule
+    IgxInputGroupModule,
+    MonacoEditorModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

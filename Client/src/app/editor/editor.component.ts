@@ -9,7 +9,9 @@ import { FileStorageService } from '../services/file-storage.service';
 })
 export class EditorComponent implements OnInit {
 
+  editorOptions = {theme: 'vs-dark', language: 'javascript', readOnly: true};
   fileName: string = "New File";
+  code: string = "[]";
 
   constructor(private fileStorage: FileStorageService) {
 
@@ -27,7 +29,7 @@ export class EditorComponent implements OnInit {
 
     if (fileExtension === "csv") {
       CSV.loadCsvFile(file).then(json => {
-        console.log(json);
+        this.code = json;
       });
     }
     else {

@@ -21,7 +21,7 @@
     Spreadsheet goes here
   </div>
   <div class="column-layout column">
-    editor goes here
+    <ngx-monaco-editor [options]="editorOptions" [(ngModel)]="code" style="height: 100%; width: 100%;"></ngx-monaco-editor>
   </div>
 </div>
 <igx-dialog [closeOnOutsideSelect]="true" [closeOnEscape]="true" #dialogWindow class="dialog-window">
