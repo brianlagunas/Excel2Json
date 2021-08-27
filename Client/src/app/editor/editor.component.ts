@@ -37,4 +37,14 @@ export class EditorComponent implements OnInit {
     }
   }
 
+  onDownloadJsonClicked() {
+    var a = document.createElement("a");
+    a.download = "excel2json-" + Date.now() + ".json";
+    const blob = new Blob([this.code], {
+      type: "text/json;charset=utf-8"
+    });
+    a.href = window.URL.createObjectURL(blob);
+    a.click();
+  }
+
 }
