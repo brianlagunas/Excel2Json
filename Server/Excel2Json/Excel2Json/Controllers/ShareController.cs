@@ -1,4 +1,4 @@
-﻿using Excel2Json.Common;
+using Excel2Json.Common;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -7,12 +7,10 @@ using System.IO;
 namespace Excel2Json.Controllers
 {
     [Route("api/share")]
-    [EnableCors("AllowAll")]
     [ApiController]
     public class ShareController : ControllerBase
     {
         [HttpPost]
-        [EnableCors("AllowAll")]
         public IActionResult Post([FromBody] string json)
         {
             var shareId = Guid.NewGuid().ToString().Replace("-", "");
@@ -21,7 +19,7 @@ namespace Excel2Json.Controllers
             System.IO.File.WriteAllText(filePath, json);
             var shareLink = $"https://localhost:44307/api/share/{shareId}";
             return Ok(shareLink);
-            
+
             //TODO: research this code
             //return CreatedAtAction(nameof(Get), shareId);            
         }
