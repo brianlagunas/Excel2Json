@@ -27,27 +27,22 @@ namespace Excel2Json
         public void ConfigureServices(IServiceCollection services)
         {
 
+            services.AddCors();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Excel2Json", Version = "v1" });
-            });
-
-            services.AddCors(options =>
-            {
-                options.AddPolicy(name: "AllowAll",
-                                  builder =>
-                                  {
-                                      builder.AllowAnyOrigin()
-                                      .AllowAnyHeader()
-                                      .AllowAnyMethod();
-                                  });
             });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCors(options =>
+            options.WithOrigins("http://localhost:4200")
+            .AllowAnyMethod()
+            .AllowAnyHeader());
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -58,8 +53,6 @@ namespace Excel2Json
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
-            app.UseCors("AllowAll");
 
             app.UseAuthorization();
 
