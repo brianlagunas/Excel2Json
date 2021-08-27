@@ -47,4 +47,21 @@ export class EditorComponent implements OnInit {
     a.click();
   }
 
+  onGetLinkClicked() {
+    const url = "https://localhost:44307/api/share";
+
+    const params = {
+      headers: {
+        "content-type": "application/json; charset=utf-8"
+      },
+      body: this.code,
+      method: "POST"
+    }
+
+    fetch(url, params).then( result => {
+      console.log(result);
+    });
+
+  }
+
 }
