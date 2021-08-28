@@ -34,8 +34,7 @@ namespace Excel2Json.Controllers
             if (!System.IO.File.Exists(file))
                 return NotFound();
 
-            var json = System.IO.File.ReadAllText(file);
-            return Ok(json);
+            return PhysicalFile(file, "application/json");
         }
 
     }
