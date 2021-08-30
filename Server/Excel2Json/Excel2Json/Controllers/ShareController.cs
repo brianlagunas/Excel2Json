@@ -1,5 +1,5 @@
 ﻿using Excel2Json.Common;
-using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.IO;
@@ -7,25 +7,9 @@ using System.IO;
 namespace Excel2Json.Controllers
 {
     [Route("api/share")]
-    [EnableCors("AllowAll")]
     [ApiController]
     public class ShareController : ControllerBase
     {
-        [HttpPost]
-        [EnableCors("AllowAll")]
-        public IActionResult Post([FromBody] string json)
-        {
-            var shareId = Guid.NewGuid().ToString().Replace("-", "");
-            var fileName = $"{shareId}.{Constants.JSON}";
-            var filePath = Path.Combine(Constants.UPLOAD_URL, fileName);
-            System.IO.File.WriteAllText(filePath, json);
-            var shareLink = $"https://localhost:44307/api/share/{shareId}";
-            return Ok(shareLink);
-            
-            //TODO: research this code
-            //return CreatedAtAction(nameof(Get), shareId);            
-        }
-
         [HttpGet]
         [Route("{shareId}")]
         public IActionResult Get(string shareId)
@@ -38,5 +22,41 @@ namespace Excel2Json.Controllers
             return Ok(json);
         }
 
+        [HttpPost]
+        public IActionResult Post([FromBody] string json)
+        {
+            var shareId = Guid.NewGuid().ToString().Replace("-", "");
+            try
+            {
+                WriteJsonToFile(shareId, json);
+                return CreatedAtAction(nameof(Get), new { shareId = shareId }, shareId);
+            }
+            catch
+            {
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+            }
+        }
+
+        [HttpPut]
+        [Route("{shareId}")]
+        public IActionResult Put(string shareId, [FromBody] string json)
+        {
+            try
+            {
+                WriteJsonToFile(shareId, json);
+                return CreatedAtAction(nameof(Get), new { shareId = shareId }, shareId);
+            }
+            catch
+            {
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+            }
+        }
+
+        void WriteJsonToFile(string shareId, string json)
+        {
+            var fileName = $"{shareId}.{Constants.JSON}";
+            var filePath = Path.Combine(Constants.UPLOAD_URL, fileName);
+            System.IO.File.WriteAllText(filePath, json);
+        }
     }
 }

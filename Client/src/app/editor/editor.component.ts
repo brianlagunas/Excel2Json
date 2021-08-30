@@ -12,6 +12,8 @@ export class EditorComponent implements OnInit {
   editorOptions = {theme: 'vs-dark', language: 'javascript', readOnly: true};
   fileName: string = "New File";
   code: string = "[]";
+  shareLink: string | null = "ERROR - link not generated";
+  shareId: string = "";
 
   constructor(private fileStorage: FileStorageService) {
 
@@ -47,21 +49,30 @@ export class EditorComponent implements OnInit {
     a.click();
   }
 
-  onGetLinkClicked() {
-    const url = "https://localhost:44307/api/share";
-
-    const params = {
+  async onGetLinkClicked() {
+    let url = "https://localhost:44307/api/share";
+    let params = {
       headers: {
         "content-type": "application/json; charset=utf-8"
       },
-      body: this.code,
+      body: JSON.stringify(this.code),
       method: "POST"
     }
 
-    fetch(url, params).then( result => {
-      console.log(result);
-    });
+    if (this.shareId) {      
+      url = this.shareLink!;
+      params.method = "PUT";
+    }
 
+    var resp = await fetch(url, params);
+    this.shareLink = resp.headers.get("location");
+    this.shareId = await resp.text();
+  }
+
+  onCopyShareLinkClicked(){
+    var shareLinkInput: any = document.getElementById("shareLinkInputField");
+    shareLinkInput.select();
+    document.execCommand('copy');
   }
 
 }

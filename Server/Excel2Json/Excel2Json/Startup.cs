@@ -40,7 +40,8 @@ namespace Excel2Json
                                   {
                                       builder.AllowAnyOrigin()
                                       .AllowAnyHeader()
-                                      .AllowAnyMethod();
+                                      .AllowAnyMethod()
+                                      .WithExposedHeaders("location");
                                   });
             });
         }

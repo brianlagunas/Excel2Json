@@ -31,13 +31,11 @@
         <igx-avatar [roundShape]="true" color="var(--igx-grays-800)" bgColor="var(--igx-primary-500)" size="small" icon="check" class="avatar"></igx-avatar>
         <h5 class="title_1">Link to file created</h5>
       </div>
-      <p class="text">'Improvements_from_Feedback.xlsx'</p>
       <div class="row-layout row">
         <igx-input-group type="box" placeholder class="input-group">
-          <label igxLabel for="inputField"></label>
-          <input type="text" name="inputField" [required]="false" [disabled]="false" igxInput value="https://brianlagunas.github.io/excel-to-json/dist/whatev.." />
+          <input type="text" id="shareLinkInputField" [required]="false" [disabled]="false" igxInput [value]="shareLink" />
         </igx-input-group>
-        <button igxButton="raised" [disabled]="false" [igxToggleAction]="dialogWindow" class="button_1">
+        <button (buttonClick)="onCopyShareLinkClicked()" igxButton="raised" [disabled]="false" [igxToggleAction]="dialogWindow" class="button_1">
           <span>COPY</span>
         </button>
       </div>
