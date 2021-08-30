@@ -18,7 +18,8 @@
 </div>
 <div class="row-layout_2 row">
   <div class="column-layout column">
-    Spreadsheet goes here
+    <igx-spreadsheet #spreadsheet height="100%" width="100%" style="background-color: white;"
+                     (workbookDirtied)="onWorkbookDirtied()"></igx-spreadsheet>
   </div>
   <div class="column-layout column">
     <ngx-monaco-editor [options]="editorOptions" [(ngModel)]="code" style="height: 100%; width: 100%;"></ngx-monaco-editor>

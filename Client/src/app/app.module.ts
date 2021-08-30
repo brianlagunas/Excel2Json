@@ -10,6 +10,9 @@ import { FormsModule } from '@angular/forms';
 import { EditorComponent } from './editor/editor.component';
 import { MonacoEditorModule } from 'ngx-monaco-editor';
 
+import { IgxExcelModule } from 'igniteui-angular-excel';
+import { IgxSpreadsheetModule } from 'igniteui-angular-spreadsheet';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -28,7 +31,9 @@ import { MonacoEditorModule } from 'ngx-monaco-editor';
     IgxToggleModule,
     IgxAvatarModule,
     IgxInputGroupModule,
-    MonacoEditorModule.forRoot()
+    MonacoEditorModule.forRoot(),
+    IgxExcelModule,
+    IgxSpreadsheetModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

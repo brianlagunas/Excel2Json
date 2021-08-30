@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { IgxSpreadsheetComponent } from 'igniteui-angular-spreadsheet';
 import { CSV } from '../io/csv';
+import { Excel } from '../io/excel';
 import { FileStorageService } from '../services/file-storage.service';
 
 @Component({
@@ -9,6 +11,8 @@ import { FileStorageService } from '../services/file-storage.service';
 })
 export class EditorComponent implements OnInit {
 
+  @ViewChild("spreadsheet", { read: IgxSpreadsheetComponent })
+  spreadsheet!: IgxSpreadsheetComponent;
   editorOptions = {theme: 'vs-dark', language: 'javascript', readOnly: true};
   fileName: string = "New File";
   code: string = "[]";
@@ -32,11 +36,18 @@ export class EditorComponent implements OnInit {
     if (fileExtension === "csv") {
       CSV.loadCsvFile(file).then(json => {
         this.code = json;
+        this.spreadsheet.workbook = Excel.convertJsonToWorkbook(json);
       });
     }
     else {
       //todo: load excel
     }
+  }
+
+  onWorkbookDirtied() {
+    const ws = this.spreadsheet.workbook.worksheets(0);
+
+    this.code = Excel.convertFlatDataToJson(ws);
   }
 
   onDownloadJsonClicked() {
