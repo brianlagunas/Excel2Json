@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { IgxSpreadsheetComponent } from 'igniteui-angular-spreadsheet';
+import { IgxSpreadsheetActionExecutedEventArgs, IgxSpreadsheetActiveTableChangedEventArgs, IgxSpreadsheetActiveWorksheetChangedEventArgs, IgxSpreadsheetComponent, SpreadsheetAction } from 'igniteui-angular-spreadsheet';
 import { CSV } from '../io/csv';
 import { Excel } from '../io/excel';
 import { FileStorageService } from '../services/file-storage.service';
@@ -40,14 +40,41 @@ export class EditorComponent implements OnInit {
       });
     }
     else {
-      //todo: load excel
+      Excel.loadExcelFile(file).then(workbook => {
+        this.spreadsheet.workbook = workbook;
+        if (this.spreadsheet.activeTable === null) {
+          this.code = Excel.convertWorkbookToJson(workbook);
+        }
+      });
     }
   }
 
-  onWorkbookDirtied() {
-    const ws = this.spreadsheet.workbook.worksheets(0);
+  onEditModeExited() {
+    this.updateJsonOnEdit();
+  }
 
-    this.code = Excel.convertFlatDataToJson(ws);
+  onActionExecuted(args: IgxSpreadsheetActionExecutedEventArgs) {
+    if (args.command === SpreadsheetAction.ClearContents ||
+        args.command === SpreadsheetAction.Undo ||
+        args.command === SpreadsheetAction.Redo ||
+        args.command === SpreadsheetAction.Paste) {
+
+      this.updateJsonOnEdit();
+    }
+  }
+
+  onActiveWorksheetChanged(args: IgxSpreadsheetActiveWorksheetChangedEventArgs) {
+    const worksheet = args.newValue;
+    if (worksheet) {
+      this.code = Excel.convertWorksheetToJson(worksheet);
+    }
+  }
+
+  onActiveTableChanged(args: IgxSpreadsheetActiveTableChangedEventArgs) {
+    const table = args.newValue;
+    if (table) {
+      this.code = Excel.convertTableToJson(table);
+    }
   }
 
   onDownloadJsonClicked() {
@@ -86,4 +113,12 @@ export class EditorComponent implements OnInit {
     document.execCommand('copy');
   }
 
+  updateJsonOnEdit() {
+    if (this.spreadsheet.activeTable) {
+      this.code = Excel.convertTableToJson(this.spreadsheet.activeTable);
+    }
+    else {
+      this.code = Excel.convertFlatDataToJson(this.spreadsheet.activeWorksheet);
+    }
+  }
 }

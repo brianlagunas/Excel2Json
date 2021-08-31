@@ -14,6 +14,10 @@ export class UploadComponent {
 
   }
 
+  onNewFileClicked() {
+    this.navigateToEditor(null);
+  }
+
   onFileInputChanged(e: any) {
     const file = e.target.files[0] as File;
     this.navigateToEditor(file);
@@ -30,7 +34,7 @@ export class UploadComponent {
     this.navigateToEditor(file);
   }
 
-  navigateToEditor(file: File) {
+  navigateToEditor(file: File | null) {
     this.fileStorage.file = file;
     this.router.navigateByUrl("editor");
   }

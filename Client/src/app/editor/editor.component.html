@@ -19,7 +19,10 @@
 <div class="row-layout_2 row">
   <div class="column-layout column">
     <igx-spreadsheet #spreadsheet height="100%" width="100%" style="background-color: white;"
-                     (workbookDirtied)="onWorkbookDirtied()"></igx-spreadsheet>
+                     (activeTableChanged)="onActiveTableChanged($event.args)"
+                     (activeWorksheetChanged)="onActiveWorksheetChanged($event.args)"
+                     (ActionExecuted)="onActionExecuted($event.args)"
+                     (editModeExited)="onEditModeExited()"></igx-spreadsheet>
   </div>
   <div class="column-layout column">
     <ngx-monaco-editor [options]="editorOptions" [(ngModel)]="code" style="height: 100%; width: 100%;"></ngx-monaco-editor>

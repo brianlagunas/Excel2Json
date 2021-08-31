@@ -19,7 +19,7 @@
       <img src="../../assets/images/newfile.svg" class="image_1" />
       <h6 class="title">Fresh start?</h6>
       <p class="igx-typography__subtitle-1 title_1">Begin with a blank spreadsheet</p>
-      <button igxButton="outlined" [disabled]="false" class="button">
+      <button (buttonClick)="onNewFileClicked()" igxButton="outlined" [disabled]="false" class="button">
         <span>CREATE NEW EXCEL FILE</span>
       </button>
     </div>
