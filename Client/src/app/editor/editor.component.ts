@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { IgxSpreadsheetActionExecutedEventArgs, IgxSpreadsheetActiveTableChangedEventArgs, IgxSpreadsheetActiveWorksheetChangedEventArgs, IgxSpreadsheetComponent, SpreadsheetAction } from 'igniteui-angular-spreadsheet';
+import { environment } from 'src/environments/environment';
 import { CSV } from '../io/csv';
 import { Excel } from '../io/excel';
 import { FileStorageService } from '../services/file-storage.service';
@@ -88,7 +89,7 @@ export class EditorComponent implements OnInit {
   }
 
   async onGetLinkClicked() {
-    let url = "https://localhost:44307/api/share";
+    let url = environment.baseUri;
     let params = {
       headers: {
         "content-type": "application/json; charset=utf-8"
