@@ -19,6 +19,10 @@ namespace Excel2Json
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSpaStaticFiles(options =>
+            {
+                options.RootPath = "wwwroot";
+            });
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -41,6 +45,9 @@ namespace Excel2Json
 
             app.UseHttpsRedirection();
 
+            app.UseDefaultFiles();
+            app.UseSpaStaticFiles();
+
             app.UseRouting();
 
             if (env.IsDevelopment())
@@ -60,8 +67,10 @@ namespace Excel2Json
                 endpoints.MapControllers();
             });
 
-            app.UseDefaultFiles();
-            app.UseStaticFiles();
+            app.UseSpa(spa =>
+            {
+                spa.Options.DefaultPage = "/index.html";
+            });
         }
     }
 }
