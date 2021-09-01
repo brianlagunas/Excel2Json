@@ -54,6 +54,9 @@ namespace Excel2Json.Controllers
 
         void WriteJsonToFile(string shareId, string json)
         {
+            if (!Directory.Exists(Constants.UPLOAD_URL))
+                Directory.CreateDirectory(Constants.UPLOAD_URL);
+
             var fileName = $"{shareId}.{Constants.JSON}";
             var filePath = Path.Combine(Constants.UPLOAD_URL, fileName);
             System.IO.File.WriteAllText(filePath, json);
