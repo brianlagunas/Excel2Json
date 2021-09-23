@@ -17,8 +17,8 @@ export class EditorComponent implements OnInit {
   editorOptions = {theme: 'vs-dark', language: 'javascript', readOnly: true};
   fileName: string = "New File";
   code: string = "[]";
-  shareLink: string | null = "ERROR - link not generated";
-  shareId: string = "";
+  workbookShareLinks: Map<string, string> = new Map<string, string>();
+  shareLink: string = "Creating share link...";
 
   constructor(private fileStorage: FileStorageService) {
 
@@ -88,6 +88,8 @@ export class EditorComponent implements OnInit {
     a.click();
   }
 
+  //<worksheetName, shareLink>
+
   async onGetLinkClicked() {
     let url = environment.baseUri;
     let params = {
@@ -98,14 +100,20 @@ export class EditorComponent implements OnInit {
       method: "POST"
     }
 
-    if (this.shareId) {      
-      url = this.shareLink!;
+    let shareLinkExists = false;
+    const activeWorksheetName = this.spreadsheet.activeWorksheet.name;
+    if (this.workbookShareLinks.has(activeWorksheetName)){
+      url = this.workbookShareLinks.get(activeWorksheetName)!;
       params.method = "PUT";
+      shareLinkExists = true
     }
 
     var resp = await fetch(url, params);
-    this.shareLink = resp.headers.get("location");
-    this.shareId = await resp.text();
+    this.shareLink = resp.headers.get("location")!;
+
+    if (!shareLinkExists){
+      this.workbookShareLinks.set(activeWorksheetName, this.shareLink);
+    }
   }
 
   onCopyShareLinkClicked(){
