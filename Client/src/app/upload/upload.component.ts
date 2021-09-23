@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { ConnectedPositioningStrategy, HorizontalAlignment, NoOpScrollStrategy, VerticalAlignment } from 'igniteui-angular';
 import { FileStorageService } from '../services/file-storage.service';
 
 @Component({

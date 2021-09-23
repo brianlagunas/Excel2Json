@@ -5,19 +5,22 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UploadComponent } from './upload/upload.component';
-import { IgxButtonModule, IgxDialogModule, IgxIconModule, IgxToggleModule, IgxAvatarModule, IgxInputGroupModule } from 'igniteui-angular';
+import { IgxButtonModule, IgxDialogModule, IgxIconModule, IgxToggleModule, IgxAvatarModule, IgxInputGroupModule,
+         IgxDropDownModule } from 'igniteui-angular';
 import { FormsModule } from '@angular/forms';
 import { EditorComponent } from './editor/editor.component';
 import { MonacoEditorModule } from 'ngx-monaco-editor';
 
 import { IgxExcelModule } from 'igniteui-angular-excel';
 import { IgxSpreadsheetModule } from 'igniteui-angular-spreadsheet';
+import { HelpMenuComponent } from './help-menu/help-menu.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     UploadComponent,
-    EditorComponent
+    EditorComponent,
+    HelpMenuComponent
   ],
   imports: [
     BrowserModule,
@@ -31,6 +34,7 @@ import { IgxSpreadsheetModule } from 'igniteui-angular-spreadsheet';
     IgxToggleModule,
     IgxAvatarModule,
     IgxInputGroupModule,
+    IgxDropDownModule,
     MonacoEditorModule.forRoot(),
     IgxExcelModule,
     IgxSpreadsheetModule,
