@@ -1,4 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { IgxDialogComponent } from 'igniteui-angular';
 import { IgxSpreadsheetActionExecutedEventArgs, IgxSpreadsheetActiveTableChangedEventArgs, IgxSpreadsheetActiveWorksheetChangedEventArgs, IgxSpreadsheetComponent, SpreadsheetAction } from 'igniteui-angular-spreadsheet';
 import { environment } from 'src/environments/environment';
 import { CSV } from '../io/csv';
@@ -10,10 +11,13 @@ import { FileStorageService } from '../services/file-storage.service';
   templateUrl: './editor.component.html',
   styleUrls: ['./editor.component.scss']
 })
-export class EditorComponent implements OnInit {
+export class EditorComponent implements OnInit, AfterViewInit {
 
   @ViewChild("spreadsheet", { read: IgxSpreadsheetComponent })
   spreadsheet!: IgxSpreadsheetComponent;
+  @ViewChild("loadingDialog")
+  loadingDialog!: IgxDialogComponent;
+
   editorOptions = {theme: 'vs-dark', language: 'javascript', readOnly: true};
   fileName: string = "New File";
   code: string = "[]";
@@ -31,6 +35,12 @@ export class EditorComponent implements OnInit {
     }
   }
 
+  ngAfterViewInit(): void {
+    if(this.fileStorage.file) {
+      this.loadingDialog.open();
+    }
+  }
+
   loadFile(file: File) {
     const fileExtension = file.name.split(".").pop();
 
@@ -38,6 +48,7 @@ export class EditorComponent implements OnInit {
       CSV.loadCsvFile(file).then(json => {
         this.code = json;
         this.spreadsheet.workbook = Excel.convertJsonToWorkbook(json);
+        this.loadingDialog.close();
       });
     }
     else {
@@ -46,6 +57,7 @@ export class EditorComponent implements OnInit {
         if (this.spreadsheet.activeTable === null) {
           this.code = Excel.convertWorkbookToJson(workbook);
         }
+        this.loadingDialog.close();
       });
     }
   }
