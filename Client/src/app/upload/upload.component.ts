@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { ConnectedPositioningStrategy, HorizontalAlignment, IgxDialogComponent, NoOpScrollStrategy, VerticalAlignment } from 'igniteui-angular';
+import { IgxDialogComponent } from 'igniteui-angular';
 import { Delimiter } from '../business/delimiter';
 import { FileStorageService } from '../services/file-storage.service';
 
@@ -59,7 +59,7 @@ export class UploadComponent {
     }
   }
 
-  onDelimiterDialogClose() {
+  onDelimiterDialogClosing() {
     this.fileStorage.delimiterSymbol = this.selectedDelimiter.symbol;
     this.navigateToEditor();
   }

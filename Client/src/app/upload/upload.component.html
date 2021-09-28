@@ -30,8 +30,8 @@
 </div>
 <igx-dialog #delimiterDialog [closeOnOutsideSelect]="false" [closeOnEscape]="false" class="processing-file-dialog"
             rightButtonLabel="OK"
-            (onClose)="onDelimiterDialogClose()"
-            (onRightButtonSelect)="delimiterDialog.close()">
+            (closing)="onDelimiterDialogClosing()"
+            (rightButtonSelect)="delimiterDialog.close()">
   <div class="column-layout_2 column" style="align-items: flex-start;">
     <h5 class="title_1">Choose Delimiter:</h5>
     <igx-select [(ngModel)]="selectedDelimiter">
