@@ -49,8 +49,8 @@ export class UploadComponent {
 
   handleFile(file: File | null) {
     this.fileStorage.file = file;
-    
-    const fileExtension = file!.name.split(".").pop();
+
+    const fileExtension = file ? file.name.split(".").pop() : "xlsx";    
     if (fileExtension === "csv") {
       this.delimiterDialog.open();
     }
