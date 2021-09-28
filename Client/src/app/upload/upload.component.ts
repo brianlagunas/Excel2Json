@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { ConnectedPositioningStrategy, HorizontalAlignment, NoOpScrollStrategy, VerticalAlignment } from 'igniteui-angular';
+import { ConnectedPositioningStrategy, HorizontalAlignment, IgxDialogComponent, NoOpScrollStrategy, VerticalAlignment } from 'igniteui-angular';
+import { Delimiter } from '../business/delimiter';
 import { FileStorageService } from '../services/file-storage.service';
 
 @Component({
@@ -10,18 +11,29 @@ import { FileStorageService } from '../services/file-storage.service';
 })
 export class UploadComponent {
 
+  @ViewChild("delimiterDialog")
+  delimiterDialog!: IgxDialogComponent;
+
+  delimiterMenuItems: Delimiter[] = [
+    { name: "Colon", symbol: ":" },
+    { name: "Comma", symbol: "," },
+    { name: "Semicolon", symbol: ";" },
+  ]
+
+  selectedDelimiter: Delimiter = this.delimiterMenuItems[1];
+
   constructor(private router: Router,
               private fileStorage: FileStorageService){
 
   }
 
   onNewFileClicked() {
-    this.navigateToEditor(null);
+    this.handleFile(null);
   }
 
   onFileInputChanged(e: any) {
     const file = e.target.files[0] as File;
-    this.navigateToEditor(file);
+    this.handleFile(file);
   }
 
   onDragOver(e: any) {
@@ -32,11 +44,27 @@ export class UploadComponent {
     e.preventDefault();
     const files = Array.from(e.dataTransfer.files);
     const file = files[0] as File;
-    this.navigateToEditor(file);
+    this.handleFile(file);
   }
 
-  navigateToEditor(file: File | null) {
+  handleFile(file: File | null) {
     this.fileStorage.file = file;
+    
+    const fileExtension = file!.name.split(".").pop();
+    if (fileExtension === "csv") {
+      this.delimiterDialog.open();
+    }
+    else{
+      this.navigateToEditor();
+    }
+  }
+
+  onDelimiterDialogClose() {
+    this.fileStorage.delimiterSymbol = this.selectedDelimiter.symbol;
+    this.navigateToEditor();
+  }
+
+  navigateToEditor() {    
     this.router.navigateByUrl("editor");
   }
 }

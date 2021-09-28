@@ -1,6 +1,6 @@
 export class CSV {
 
-    public static loadCsvFile(file: File) : Promise<string> {
+    public static loadCsvFile(file: File, delimiter: string) : Promise<string> {
         return new Promise((resolve, reject) => {
             const fileReader = new FileReader();
 
@@ -9,7 +9,7 @@ export class CSV {
             }
 
             fileReader.onload = (e: any) => {
-                var json = this.convertCsvToJson(e.target.result);
+                var json = this.convertCsvToJson(e.target.result, delimiter);
                 resolve(json);
             }
 
@@ -17,14 +17,14 @@ export class CSV {
         })
     }
 
-    static convertCsvToJson(csv: string): string {
+    static convertCsvToJson(csv: string, delimiter: string): string {
         const lines = csv.split("\r");
-        const headers = lines[0].split(",");
+        const headers = lines[0].split(delimiter);
         let results = [];
 
         for (let x = 1; x < lines.length - 1; x++) {
             let obj: any = {};
-            const currentLine = lines[x].split(",").map(s => s.trim());
+            const currentLine = lines[x].split(delimiter).map(s => s.trim());
 
             for (let y = 0; y < headers.length; y++) {
                 obj[headers[y]] = currentLine[y];

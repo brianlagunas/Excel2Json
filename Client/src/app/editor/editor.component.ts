@@ -45,7 +45,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
     const fileExtension = file.name.split(".").pop();
 
     if (fileExtension === "csv") {
-      CSV.loadCsvFile(file).then(json => {
+      CSV.loadCsvFile(file, this.fileStorage.delimiterSymbol).then(json => {
         this.code = json;
         this.spreadsheet.workbook = Excel.convertJsonToWorkbook(json);
         this.loadingDialog.close();
