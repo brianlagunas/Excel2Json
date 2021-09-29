@@ -101,8 +101,6 @@ export class EditorComponent implements OnInit, AfterViewInit {
     a.click();
   }
 
-  //<worksheetName, shareLink>
-
   async onGetLinkClicked() {
     let url = environment.baseUri;
     let params = {
