@@ -12,7 +12,7 @@
       <img src="../../assets/images/dragdropfiles.svg" class="image_1" />
       <h6 class="title">Drag &amp; Drop Files</h6>
       <p class="igx-typography__subtitle-1 title_1">Drop any CSV or Excel file or</p>
-      <button (buttonClick)="fileInput.click()" igxButton="raised" [disabled]="false" class="button">
+      <button (buttonClick)="fileInput.click()" igxButton="raised" igxRipple [disabled]="false" class="button">
         <span>BROWSE YOUR COMPUTER FILES</span>
       </button>
       <input #fileInput (change)="onFileInputChanged($event)" style="display: none;" type="file" accept=".csv, .xlsx">
@@ -22,7 +22,7 @@
       <img src="../../assets/images/newfile.svg" class="image_1" />
       <h6 class="title">Fresh start?</h6>
       <p class="igx-typography__subtitle-1 title_1">Begin with a blank spreadsheet</p>
-      <button (buttonClick)="onNewFileClicked()" igxButton="outlined" [disabled]="false" class="button">
+      <button (buttonClick)="onNewFileClicked()" igxButton="outlined" igxRipple [disabled]="false" class="button">
         <span>CREATE NEW EXCEL FILE</span>
       </button>
     </div>
