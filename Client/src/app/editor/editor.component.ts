@@ -71,10 +71,15 @@ export class EditorComponent implements OnInit, AfterViewInit {
     if (args.command === SpreadsheetAction.ClearContents ||
         args.command === SpreadsheetAction.Undo ||
         args.command === SpreadsheetAction.Redo ||
-        args.command === SpreadsheetAction.Paste) {
+        args.command === SpreadsheetAction.Paste ||
+        args.command === SpreadsheetAction.DeleteRows ||
+        args.command === SpreadsheetAction.SortAscending ||
+        args.command === SpreadsheetAction.SortDescending) {
 
       this.updateJsonOnEdit();
     }
+
+    console.log(args.command);
   }
 
   onActiveWorksheetChanged(args: IgxSpreadsheetActiveWorksheetChangedEventArgs) {
