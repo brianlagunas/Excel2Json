@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { IgxDialogComponent } from 'igniteui-angular';
+import { Workbook } from 'igniteui-angular-excel';
 import { IgxSpreadsheetActionExecutedEventArgs, IgxSpreadsheetActiveTableChangedEventArgs, IgxSpreadsheetActiveWorksheetChangedEventArgs, IgxSpreadsheetComponent, SpreadsheetAction } from 'igniteui-angular-spreadsheet';
 import { environment } from 'src/environments/environment';
 import { CSV } from '../io/csv';
@@ -52,13 +53,13 @@ export class EditorComponent implements OnInit, AfterViewInit {
       });
     }
     else {
-      Excel.loadExcelFile(file).then(workbook => {
+      Workbook.load(file, (workbook) => {
         this.spreadsheet.workbook = workbook;
         if (this.spreadsheet.activeTable === null) {
           this.code = Excel.convertWorkbookToJson(workbook);
         }
         this.loadingDialog.close();
-      });
+      }, (error) => console.log(error));
     }
   }
 

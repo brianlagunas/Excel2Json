@@ -1,47 +1,6 @@
-import { Workbook, WorkbookFormat, WorkbookLoadOptions, Worksheet, WorksheetTable } from "igniteui-angular-excel";
+import { Workbook, WorkbookFormat, Worksheet, WorksheetTable } from "igniteui-angular-excel";
 
 export class Excel {
-
-    public static loadExcelFile(file: File): Promise<Workbook> {
-        return new Promise<Workbook>((resolve, reject) => {
-            Excel.readFileAsUint8Array(file).then((array) => {
-                Workbook.load(array, new WorkbookLoadOptions(), (workbook) => {
-                    resolve(workbook);
-                }, (error) => {
-                    reject(error);
-                });
-            }, (error) => {
-                reject(error);
-            });
-        });
-    }
-
-    private static readFileAsUint8Array(file: File): Promise<Uint8Array> {
-        return new Promise<Uint8Array>((resolve, reject) => {
-            const fileReader = new FileReader();
-            fileReader.onerror = (e) => {
-                reject(fileReader.error);
-            };
-
-            if (fileReader.readAsBinaryString) {
-                fileReader.onload = (e) => {
-                    const rs = (fileReader as any).resultString;
-                    const str: string = rs != null ? rs : fileReader.result;
-                    const result = new Uint8Array(str.length);
-                    for (let i = 0; i < str.length; i++) {
-                        result[i] = str.charCodeAt(i);
-                    }
-                    resolve(result);
-                };
-                fileReader.readAsBinaryString(file);
-            } else {
-                fileReader.onload = (error) => {
-                    resolve(new Uint8Array(fileReader.result as ArrayBuffer));
-                };
-                fileReader.readAsArrayBuffer(file);
-            }
-        });
-    }
 
     public static convertWorkbookToJson(workbook: Workbook): string {
         return this.convertWorksheetToJson(workbook.worksheets(0));
