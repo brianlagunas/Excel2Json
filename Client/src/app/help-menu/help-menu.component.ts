@@ -1,12 +1,20 @@
-import { Component, OnInit } from '@angular/core';
-import { ConnectedPositioningStrategy, HorizontalAlignment, NoOpScrollStrategy, VerticalAlignment } from 'igniteui-angular';
+import { Component, NgModule } from '@angular/core';
+import {
+  ConnectedPositioningStrategy,
+  HorizontalAlignment,
+  IgxDropDownModule,
+  IgxIconModule,
+  IgxToggleModule,
+  NoOpScrollStrategy,
+  VerticalAlignment
+} from 'igniteui-angular';
 
 @Component({
   selector: 'app-help-menu',
   templateUrl: './help-menu.component.html',
   styleUrls: ['./help-menu.component.scss']
 })
-export class HelpMenuComponent implements OnInit {
+export class HelpMenuComponent {
 
   public overlaySettings = {
     positionStrategy: new ConnectedPositioningStrategy({
@@ -17,9 +25,18 @@ export class HelpMenuComponent implements OnInit {
     scrollStrategy: new NoOpScrollStrategy()
   };
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
 }
+@NgModule({
+  declarations: [
+    HelpMenuComponent
+  ],
+  exports: [
+    HelpMenuComponent
+  ],
+  imports: [
+    IgxIconModule,
+    IgxToggleModule,
+    IgxDropDownModule
+  ]
+})
+export class HelpModule {}
