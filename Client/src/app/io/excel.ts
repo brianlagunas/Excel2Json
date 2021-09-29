@@ -1,4 +1,4 @@
-import { Workbook, WorkbookFormat, Worksheet, WorksheetTable } from "igniteui-angular-excel";
+import { Workbook, WorkbookFormat, Worksheet, WorksheetCell, WorksheetTable } from "igniteui-angular-excel";
 
 export class Excel {
 
@@ -21,7 +21,7 @@ export class Excel {
         let propertyNames = [];
         const headers = table.headerRowRegion;
         for (const header of headers) {
-            propertyNames.push(header.value);
+            propertyNames.push(this.getHeaderText(header));
         }
 
         let dataObjects = [];
@@ -68,7 +68,7 @@ export class Excel {
         const headerRow = worksheet.rows(0);
         for (let x = 0; x < headerRow.cells().count; x++) {
             const cell = headerRow.cells(x);
-            propertyNames.push(cell.value);
+            propertyNames.push(this.getHeaderText(cell));
         }
 
         let dataObjects = [];
@@ -96,5 +96,9 @@ export class Excel {
                 dataObjects.splice(index, 1);
             }
         }
+    }
+
+    static getHeaderText(cell: WorksheetCell): string {
+        return cell.getText().replace(/ /g, "");
     }
 }

@@ -47,7 +47,6 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
     if (fileExtension === "csv") {
       CSV.loadCsvFile(file, this.fileStorage.delimiterSymbol).then(json => {
-        this.code = json;
         this.spreadsheet.workbook = Excel.convertJsonToWorkbook(json);
         this.loadingDialog.close();
       });
@@ -55,9 +54,6 @@ export class EditorComponent implements OnInit, AfterViewInit {
     else {
       Workbook.load(file, (workbook) => {
         this.spreadsheet.workbook = workbook;
-        if (this.spreadsheet.activeTable === null) {
-          this.code = Excel.convertWorkbookToJson(workbook);
-        }
         this.loadingDialog.close();
       }, (error) => console.log(error));
     }
@@ -78,8 +74,6 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
       this.updateJsonOnEdit();
     }
-
-    console.log(args.command);
   }
 
   onActiveWorksheetChanged(args: IgxSpreadsheetActiveWorksheetChangedEventArgs) {
