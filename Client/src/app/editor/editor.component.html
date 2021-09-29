@@ -38,7 +38,7 @@
       </div>
       <div class="row-layout row">
         <igx-input-group type="box" placeholder class="input-group">
-          <input type="text" id="shareLinkInputField" [required]="false" [disabled]="false" igxInput [value]="shareLink" />
+          <input type="text" id="shareLinkInputField" [required]="false" [disabled]="false" readonly="true" igxInput [value]="shareLink" />
         </igx-input-group>
         <button (buttonClick)="onCopyShareLinkClicked()" igxButton="raised" igxRipple [disabled]="false" [igxToggleAction]="dialogWindow" class="button_1">
           <span>COPY</span>

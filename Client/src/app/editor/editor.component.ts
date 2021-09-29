@@ -129,7 +129,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
   onCopyShareLinkClicked(){
     var shareLinkInput: any = document.getElementById("shareLinkInputField");
     shareLinkInput.select();
-    document.execCommand('copy');
+    navigator.clipboard.writeText(this.shareLink);
   }
 
   updateJsonOnEdit() {
