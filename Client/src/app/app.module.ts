@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UploadComponent } from './upload/upload.component';
 import { IgxButtonModule, IgxDialogModule, IgxIconModule, IgxToggleModule, IgxAvatarModule, IgxInputGroupModule,
-         IgxDropDownModule, IgxSelectModule } from 'igniteui-angular';
+         IgxDropDownModule, IgxSelectModule, IgxRippleModule } from 'igniteui-angular';
 import { FormsModule } from '@angular/forms';
 import { EditorComponent } from './editor/editor.component';
 import { MonacoEditorModule } from 'ngx-monaco-editor';
@@ -28,6 +28,7 @@ import { HelpMenuComponent } from './help-menu/help-menu.component';
     AppRoutingModule,
     BrowserAnimationsModule,
     IgxButtonModule,
+    IgxRippleModule,
     IgxDialogModule,
     IgxIconModule,
     FormsModule,

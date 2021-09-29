@@ -2,8 +2,6 @@
 // Standard CSS normalize, comment out if not required or using a different module
 @import "~minireset.css/minireset";
 
-
-
 html, body {
   height: 100%;
 }
@@ -21,7 +19,20 @@ $custom-palette: igx-palette(
   $success: #107c10,
   $warn: #797673,
   $grays: #ffffff);
-@include igx-theme($palette: $custom-palette, $schema: $dark-fluent-schema);
+
+$include: (igx-avatar,
+          igx-navbar,
+          igx-ripple,
+          igx-icon,
+          igx-overlay,
+          igx-button,
+          igx-dialog,
+          igx-input-group,
+          igx-drop-down);
+
+@include igx-theme($palette: $custom-palette,
+                   $schema: $dark-fluent-schema,
+                   $exclude: map-keys(map-remove($components, $include...),));
 
 body {
   background: var(--igx-surface-500);
