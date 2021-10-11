@@ -1,6 +1,6 @@
 <div class="nav-bar row">
   <div class="row-layout_2 row">
-    <img src="../../assets/images/logo.svg" class="image" />
+    <img src="../../assets/images/logo.svg" alt="Excel2Json logo" class="image" />
   </div>
   <div class="row-layout_2 layout row">
 		<app-help-menu></app-help-menu>
@@ -9,7 +9,7 @@
 <div class="row-layout_1 row">
   <div class="row-layout row">
     <div class="column-layout_3 column" (dragover)="onDragOver($event)" (drop)="onDrop($event)">
-      <img src="../../assets/images/dragdropfiles.svg" class="image_1" />
+      <img src="../../assets/images/dragdropfiles.svg" alt="Drag and drop files here" class="image_1" />
       <h6 class="title">Drag &amp; Drop Files</h6>
       <p class="igx-typography__subtitle-1 title_1">Drop any CSV or Excel file or</p>
       <button (buttonClick)="fileInput.click()" igxButton="raised" igxRipple [disabled]="false" class="button">
@@ -19,7 +19,7 @@
     </div>
     <div class="column-layout_1 column"></div>
     <div class="column-layout_2 column">
-      <img src="../../assets/images/newfile.svg" class="image_1" />
+      <img src="../../assets/images/newfile.svg" alt="Create new blank spreadsheet" class="image_1" />
       <h6 class="title">Fresh start?</h6>
       <p class="igx-typography__subtitle-1 title_1">Begin with a blank spreadsheet</p>
       <button (buttonClick)="onNewFileClicked()" igxButton="outlined" igxRipple [disabled]="false" class="button">
