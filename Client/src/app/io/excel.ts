@@ -1,4 +1,4 @@
-import { Workbook, WorkbookFormat, Worksheet, WorksheetTable } from "igniteui-angular-excel";
+import { ErrorValue, FormattedString, Workbook, WorkbookFormat, Worksheet, WorksheetCell, WorksheetRow, WorksheetTable } from "igniteui-angular-excel";
 
 export class Excel {
 
@@ -21,7 +21,7 @@ export class Excel {
         let propertyNames = [];
         const headers = table.headerRowRegion;
         for (const header of headers) {
-            propertyNames.push(header.value);
+            propertyNames.push(this.getHeaderText(header));
         }
 
         let dataObjects = [];
@@ -31,7 +31,7 @@ export class Excel {
             let dataObject: any = {};
             for (let c = dataRegion.firstColumn; c <= dataRegion.lastColumn; c++) {
                 const propertyName = propertyNames[propertyNameIndex];
-                const value = worksheet.rows(r).cells(c).value;
+                const value = this.getCellValue(worksheet.rows(r).cells(c));
                 dataObject[propertyName] = value;
                 propertyNameIndex++;
             }
@@ -64,12 +64,8 @@ export class Excel {
     }
 
     public static convertFlatDataToJson(worksheet: Worksheet): string {
-        let propertyNames = [];
         const headerRow = worksheet.rows(0);
-        for (let x = 0; x < headerRow.cells().count; x++) {
-            const cell = headerRow.cells(x);
-            propertyNames.push(cell.value);
-        }
+        let propertyNames = this.getPropertyNamesFromRow(headerRow);
 
         let dataObjects = [];
         for (let r = 1; r < worksheet.rows().count; r++) {
@@ -77,7 +73,7 @@ export class Excel {
             for (let x = 0; x < propertyNames.length; x++) {
                 const propertyName = propertyNames[x];
                 const cell = worksheet.rows(r).cells(x);
-                dataObject[propertyName] = cell.value;
+                dataObject[propertyName] = this.getCellValue(cell);
             }
             dataObjects.push(dataObject);
         }
@@ -85,6 +81,28 @@ export class Excel {
         Excel.removeEmptyDataObjects(dataObjects);
 
         return JSON.stringify(dataObjects, null, "\t");
+    }
+
+    static getPropertyNamesFromRow(row: WorksheetRow): string[] {
+        let propertyNames: string[] = [];
+        for (let currentIndex = 0; currentIndex < row.cells().count; currentIndex++) {
+            const cell = row.cells(currentIndex);
+            let propertyName = this.getHeaderText(cell)
+            //look for duplicates
+            if (propertyNames.includes(propertyName)) {
+                let count = 0;
+                //look through all cells up until our current index
+                for (let previousIndex = 0; previousIndex < currentIndex; previousIndex++){
+                    const previousPropertyName = this.getHeaderText(row.cells(previousIndex));
+                    if (previousPropertyName === propertyName) {
+                        count++;
+                    }
+                }
+                propertyName = propertyName + count;
+            }
+            propertyNames.push(propertyName);
+        }
+        return propertyNames;
     }
 
     static removeEmptyDataObjects(dataObjects: any[]) {
@@ -96,5 +114,23 @@ export class Excel {
                 dataObjects.splice(index, 1);
             }
         }
+    }
+
+    static getHeaderText(cell: WorksheetCell): string {
+        return cell.getText().replace(/ /g, "");
+    }
+
+    static getCellValue(cell: WorksheetCell): any {
+        let value = null;
+        if (cell.value) {
+            value = cell.value;
+            if (value instanceof FormattedString) {
+                value = value.unformattedString;
+            }
+            else if (value instanceof ErrorValue) {
+                value = null;
+            }
+        }
+        return value;
     }
 }

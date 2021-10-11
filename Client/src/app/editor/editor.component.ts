@@ -47,7 +47,6 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
     if (fileExtension === "csv") {
       CSV.loadCsvFile(file, this.fileStorage.delimiterSymbol).then(json => {
-        this.code = json;
         this.spreadsheet.workbook = Excel.convertJsonToWorkbook(json);
         this.loadingDialog.close();
       });
@@ -55,9 +54,6 @@ export class EditorComponent implements OnInit, AfterViewInit {
     else {
       Workbook.load(file, (workbook) => {
         this.spreadsheet.workbook = workbook;
-        if (this.spreadsheet.activeTable === null) {
-          this.code = Excel.convertWorkbookToJson(workbook);
-        }
         this.loadingDialog.close();
       }, (error) => console.log(error));
     }
@@ -71,7 +67,10 @@ export class EditorComponent implements OnInit, AfterViewInit {
     if (args.command === SpreadsheetAction.ClearContents ||
         args.command === SpreadsheetAction.Undo ||
         args.command === SpreadsheetAction.Redo ||
-        args.command === SpreadsheetAction.Paste) {
+        args.command === SpreadsheetAction.Paste ||
+        args.command === SpreadsheetAction.DeleteRows ||
+        args.command === SpreadsheetAction.SortAscending ||
+        args.command === SpreadsheetAction.SortDescending) {
 
       this.updateJsonOnEdit();
     }
@@ -130,7 +129,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
   onCopyShareLinkClicked(){
     var shareLinkInput: any = document.getElementById("shareLinkInputField");
     shareLinkInput.select();
-    document.execCommand('copy');
+    navigator.clipboard.writeText(this.shareLink);
   }
 
   updateJsonOnEdit() {

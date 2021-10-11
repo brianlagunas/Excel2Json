@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -23,6 +24,29 @@ namespace Excel2Json
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddResponseCompression(options =>
+            {
+                options.Providers.Add<BrotliCompressionProvider>();
+                options.Providers.Add<GzipCompressionProvider>();
+                options.EnableForHttps = true;
+                options.MimeTypes = new[]
+                {
+                    // Default
+                    "text/plain",
+                    "text/css",
+                    "application/javascript",
+                    "text/html",
+                    "application/xml",
+                    "text/xml",
+                    "application/json",
+                    "text/json",
+
+                    // Custom
+                    "image/svg+xml",
+                    "application/font-woff2"
+                };
+            });
+
             services.AddSpaStaticFiles(options =>
             {
                 options.RootPath = "wwwroot";
@@ -71,9 +95,11 @@ namespace Excel2Json
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            app.UseHttpsRedirection();            
 
             app.UseDefaultFiles();
+
+            app.UseResponseCompression();
             app.UseSpaStaticFiles();
 
             app.UseRouting();
