@@ -121,16 +121,33 @@ export class Excel {
     }
 
     static getCellValue(cell: WorksheetCell): any {
-        let value = null;
-        if (cell.value) {
-            value = cell.value;
-            if (value instanceof FormattedString) {
-                value = value.unformattedString;
-            }
-            else if (value instanceof ErrorValue) {
-                value = null;
-            }
+        let value = cell.value;
+
+        const formatString = cell.getResolvedCellFormat().formatString;
+
+        if (this.cellValueIsDate(value, formatString)) {
+            value = cell.getText();
         }
+        else if (value instanceof FormattedString) {
+            value = value.unformattedString;
+        }
+        else if (value instanceof ErrorValue) {
+            value = null;
+        }
+
         return value;
+    }
+
+    static cellValueIsDate(value: any, formatString: string): boolean {
+        let isDate = false;
+
+        //Excel treats all dates as a number counting the number of days since 1/1/1900
+        //the only way I can think of checking if the number is a date is by checking the formatString
+        //if it contains any m (month) or y (year), then it's a date
+        if (typeof value === 'number'){
+            isDate = formatString.includes("m") || formatString.includes("y");
+        }
+
+        return isDate;
     }
 }
