@@ -5,7 +5,6 @@ import { PageNotFoundComponent } from './error-routing/not-found/not-found.compo
 import { UncaughtErrorComponent } from './error-routing/error/uncaught-error.component';
 import { ErrorRoutingModule } from './error-routing/error-routing.module';
 import { UploadComponent } from './upload/upload.component';
-import { EditorComponent } from './editor/editor.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'upload', pathMatch: 'full' },

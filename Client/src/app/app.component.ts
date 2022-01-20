@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'Home - IgniteUI for Angular';
+  title = 'Excel to JSON - Convert Excel and CSV to JSON';
 }
