@@ -41,7 +41,7 @@ export class GoogleSigninService {
   }
 
   async serverLogInTest(user: gapi.auth2.GoogleUser) {
-    var token = user.getAuthResponse().id_token;
+    var id_token = user.getAuthResponse().id_token;
 
     let url = `${environment.authUri}/google/`;
     let params = {
@@ -49,7 +49,7 @@ export class GoogleSigninService {
         "content-type": "application/json; charset=utf-8"
       },
       method: "POST",
-      body: JSON.stringify(token)
+      body: JSON.stringify({token: id_token})
     }
     var resp = await fetch(url, params);
     var result = await resp.json();

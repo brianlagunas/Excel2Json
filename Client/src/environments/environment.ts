@@ -6,7 +6,7 @@ export const environment = {
   production: false,
   shareUri: "https://localhost:44316/api/v1/share",
   filesUri: "https://localhost:44316/api/v1/files",
-  authUri: "https://localhost:44316/api/v1/auth"
+  authUri: "https://localhost:44316/api/v1/identity"
 };
 
 /*

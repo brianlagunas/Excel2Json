@@ -71,6 +71,8 @@ namespace Excel2Json
                 };
             });
 
+            services.AddScoped<IGoogleSignInService, GoogleSignInService>();
+
             services.AddScoped<ITokenService, TokenService>();
 
             services.AddResponseCompression(options =>
