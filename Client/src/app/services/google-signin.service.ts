@@ -21,6 +21,7 @@ export class GoogleSigninService {
     this.auth2.signIn({
       //scope
     }).then(user => {
+      this.serverLogInTest(user);
       this.subject.next(user);
     }).catch(() => {
       this.subject.next(null);
@@ -35,5 +36,21 @@ export class GoogleSigninService {
 
   public observable(): Observable<gapi.auth2.GoogleUser | null> {
     return this.subject.asObservable();
+  }
+
+  async serverLogInTest(user: gapi.auth2.GoogleUser) {
+    var token = user.getAuthResponse().id_token;
+
+    let url = "https://localhost:44316/auth/google/";
+    let params = {
+      headers: {
+        "content-type": "application/json; charset=utf-8"
+      },
+      method: "POST",
+      body: JSON.stringify(token)
+    }
+    var resp = await fetch(url, params);
+    var result = await resp.json();
+    console.log(result);
   }
 }

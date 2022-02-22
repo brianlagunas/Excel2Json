@@ -1,11 +1,18 @@
+using Excel2Json.Auth;
+using Excel2Json.Data;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Text;
 
 namespace Excel2Json
 {
@@ -17,6 +24,14 @@ namespace Excel2Json
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>().Options;
+            using (var db = new ApplicationDbContext(options))
+            {
+                db.Database.EnsureDeleted(); //clean up for testing
+                db.Database.EnsureCreated();
+                db.Database.Migrate();
+            }
         }
 
         public IConfiguration Configuration { get; }
@@ -24,6 +39,39 @@ namespace Excel2Json
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<ApplicationDbContext>();
+
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            var jwtSettings = new JwtSettings();
+            Configuration.Bind(nameof(JwtSettings), jwtSettings);
+            services.AddSingleton(jwtSettings);
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.SaveToken = true;
+                options.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings.Secret)),
+                    ValidateIssuer = true,
+                    ValidIssuer = jwtSettings.Issuer,
+                    ValidateAudience = true,
+                    ValidAudience = jwtSettings.Audience,
+                    RequireExpirationTime = false,
+                    ValidateLifetime = true,
+                };
+            });
+
+            services.AddScoped<ITokenService, TokenService>();
+
             services.AddResponseCompression(options =>
             {
                 options.Providers.Add<BrotliCompressionProvider>();
@@ -95,7 +143,7 @@ namespace Excel2Json
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();            
+            app.UseHttpsRedirection();
 
             app.UseDefaultFiles();
 
@@ -109,6 +157,7 @@ namespace Excel2Json
             else
                 app.UseCors(ProductionCorsPolicy);
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
