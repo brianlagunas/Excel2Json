@@ -11,6 +11,8 @@ namespace Excel2Json.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
 
+        public bool CanShare { get; set; } = true;
+
         public string Name { get; set; }
 
         public string Text { get; set; }

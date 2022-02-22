@@ -28,7 +28,7 @@ namespace Excel2Json
             var options = new DbContextOptionsBuilder<ApplicationDbContext>().Options;
             using (var db = new ApplicationDbContext(options))
             {
-                db.Database.EnsureDeleted(); //clean up for testing
+                //db.Database.EnsureDeleted(); //clean up for testing
                 db.Database.EnsureCreated();
                 db.Database.Migrate();
             }
@@ -61,9 +61,9 @@ namespace Excel2Json
                 {
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings.Secret)),
-                    ValidateIssuer = true,
+                    ValidateIssuer = false,
                     ValidIssuer = jwtSettings.Issuer,
-                    ValidateAudience = true,
+                    ValidateAudience = false,
                     ValidAudience = jwtSettings.Audience,
                     RequireExpirationTime = false,
                     ValidateLifetime = true,

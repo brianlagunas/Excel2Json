@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, ReplaySubject } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -31,6 +32,7 @@ export class GoogleSigninService {
   public signout() {
     this.auth2.signOut().then( () => {
       this.subject.next(null);
+      localStorage.removeItem("token");
     });
   }
 
@@ -41,7 +43,7 @@ export class GoogleSigninService {
   async serverLogInTest(user: gapi.auth2.GoogleUser) {
     var token = user.getAuthResponse().id_token;
 
-    let url = "https://localhost:44316/auth/google/";
+    let url = `${environment.authUri}/google/`;
     let params = {
       headers: {
         "content-type": "application/json; charset=utf-8"
@@ -51,6 +53,6 @@ export class GoogleSigninService {
     }
     var resp = await fetch(url, params);
     var result = await resp.json();
-    console.log(result);
+    localStorage.setItem("token", result.token);
   }
 }

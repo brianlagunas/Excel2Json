@@ -5,10 +5,14 @@ using System;
 using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
+using Excel2Json.Extensions;
+using Microsoft.AspNetCore.Http;
+using System.IO;
 
-namespace Excel2Json.Controllers
+namespace Excel2Json.Controllers.V1
 {
-    [Route("api/files")]
+    [Route("api/v1/files")]
+    [Authorize]
     [ApiController]
     public class FileController : Controller
     {
@@ -19,30 +23,38 @@ namespace Excel2Json.Controllers
             _context = context;
         }
 
-        //[Authorize]
-        public IActionResult GetFiles(string userId)
+        [HttpGet]
+        public IActionResult GetFiles()
         {
-            var claims = User.Claims;
-            
-
+            var userId = HttpContext.GetUserId();
             var files = _context.JsonFiles.Where(f => f.UserId == userId);
             return Ok(files);
         }
 
-        //[Authorize]
-        public async Task<IActionResult> AddFile(string text, string userId)
+        [HttpPost]
+        public async Task<IActionResult> AddFile([FromBody] string json)
         {
+            var userId = HttpContext.GetUserId();
+
             var newFile = new JsonFile()
             {
-                //Id = Guid.NewGuid(),
-                Text = text,
+                Text = json,
                 UserId = userId,
             };
 
             await _context.JsonFiles.AddAsync(newFile);
             await _context.SaveChangesAsync();
 
-            return Ok(newFile.Id);
+            var link = $"{Request.Scheme}://{Request.Host}/api/share/{newFile.Id}";
+
+            return Ok(link);
+        }
+
+        [HttpPut]
+        [Route("{fileId}")]
+        public IActionResult UpdateFile(string fileId, [FromBody] string json)
+        {
+            return Ok();
         }
     }
 }

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Excel2Json.Controllers
 {
-    [Route("auth")]
+    [Route("api/v1/auth")]
     [ApiController]
     public class AuthController : ControllerBase
     {

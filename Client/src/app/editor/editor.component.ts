@@ -101,10 +101,11 @@ export class EditorComponent implements OnInit, AfterViewInit {
   }
 
   async onGetLinkClicked() {
-    let url = environment.baseUri;
+    let url = environment.filesUri;
     let params = {
       headers: {
-        "content-type": "application/json; charset=utf-8"
+        "content-type": "application/json; charset=utf-8",
+        "Authorization": `Bearer ${localStorage.getItem("token")}`
       },
       body: JSON.stringify(this.code),
       method: "POST"
@@ -118,10 +119,10 @@ export class EditorComponent implements OnInit, AfterViewInit {
       shareLinkExists = true
     }
 
-    var resp = await fetch(url, params);
-    this.shareLink = resp.headers.get("location")!;
+    var resp = await fetch(url, params);        
+    this.shareLink = await resp.text();
 
-    if (!shareLinkExists){
+    if (!shareLinkExists && this.shareLink != null){
       this.workbookShareLinks.set(activeWorksheetName, this.shareLink);
     }
   }
