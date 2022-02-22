@@ -1,5 +1,4 @@
 ﻿using Excel2Json.Data;
-using Excel2Json.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -7,8 +6,9 @@ using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Excel2Json.Extensions;
 using Microsoft.AspNetCore.Http;
+using Excel2Json.Domain;
 
-namespace Excel2Json.Controllers.V1
+namespace Excel2Json.Controllers.v1
 {
     [Route("api/v1/files")]
     [Authorize]

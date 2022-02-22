@@ -3,7 +3,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Excel2Json.Models
+namespace Excel2Json.Domain
 {
     public class JsonFile
     {

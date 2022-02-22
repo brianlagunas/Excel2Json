@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 
-namespace Excel2Json.Controllers
+namespace Excel2Json.Controllers.v1
 {
     [Route("api/v1/share")]
     [ApiController]
@@ -27,7 +27,7 @@ namespace Excel2Json.Controllers
             if (file.CanShare)
                 return Ok(file.Text);
             else
-                return BadRequest("File is not currently being shared");
+                return BadRequest("File is not shared");
         }
     }
 }

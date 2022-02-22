@@ -1,4 +1,4 @@
-﻿namespace Excel2Json.Auth
+﻿namespace Excel2Json.Domain
 {
     public class JwtSettings
     {

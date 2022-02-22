@@ -1,9 +1,9 @@
-﻿using Excel2Json.Auth;
+﻿using Excel2Json.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
-namespace Excel2Json.Controllers
+namespace Excel2Json.Controllers.v1
 {
     [Route("api/v1/auth")]
     [ApiController]
