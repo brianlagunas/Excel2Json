@@ -101,18 +101,23 @@ export class EditorComponent implements OnInit, AfterViewInit {
   }
 
   async onGetLinkClicked() {
+
+    const activeWorksheetName = this.spreadsheet.activeWorksheet.name;
+
     let url = environment.filesUri;
     let params = {
       headers: {
         "content-type": "application/json; charset=utf-8",
         "Authorization": `Bearer ${localStorage.getItem("token")}`
       },
-      body: JSON.stringify(this.code),
+      body: JSON.stringify({ 
+        Name: activeWorksheetName, 
+        Text: this.code 
+      }),
       method: "POST"
     }
 
-    let fileExists = false;
-    const activeWorksheetName = this.spreadsheet.activeWorksheet.name;
+    let fileExists = false;    
     if (this.workbookIds.has(activeWorksheetName)){
       url = `${environment.filesUri}/${this.workbookIds.get(activeWorksheetName)}`;
       params.method = "PUT";
@@ -120,8 +125,9 @@ export class EditorComponent implements OnInit, AfterViewInit {
     }
 
     var resp = await fetch(url, params); 
-    var id = await resp.text();
+    var json = await resp.json();
 
+    var id = json.id;
     this.shareLink = `${environment.shareUri}/${id}`;
 
     if (!fileExists && id != null){

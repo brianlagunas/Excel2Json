@@ -6,7 +6,7 @@ namespace Excel2Json.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
-        public DbSet<JsonFile> JsonFiles { get; set; }
+        public DbSet<File> Files { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Excel2Json.Domain
 {
-    public class JsonFile
+    public class File
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
