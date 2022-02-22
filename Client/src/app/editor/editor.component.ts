@@ -22,7 +22,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
   editorOptions = {theme: 'vs-dark', language: 'javascript', readOnly: true};
   fileName: string = "New File";
   code: string = "[]";
-  workbookShareLinks: Map<string, string> = new Map<string, string>();
+  workbookIds: Map<string, string> = new Map<string, string>();
   shareLink: string = "Creating share link...";
 
   constructor(private fileStorage: FileStorageService) {
@@ -111,19 +111,21 @@ export class EditorComponent implements OnInit, AfterViewInit {
       method: "POST"
     }
 
-    let shareLinkExists = false;
+    let fileExists = false;
     const activeWorksheetName = this.spreadsheet.activeWorksheet.name;
-    if (this.workbookShareLinks.has(activeWorksheetName)){
-      url = this.workbookShareLinks.get(activeWorksheetName)!;
+    if (this.workbookIds.has(activeWorksheetName)){
+      url = `${environment.filesUri}/${this.workbookIds.get(activeWorksheetName)}`;
       params.method = "PUT";
-      shareLinkExists = true
+      fileExists = true
     }
 
-    var resp = await fetch(url, params);        
-    this.shareLink = await resp.text();
+    var resp = await fetch(url, params); 
+    var id = await resp.text();
 
-    if (!shareLinkExists && this.shareLink != null){
-      this.workbookShareLinks.set(activeWorksheetName, this.shareLink);
+    this.shareLink = `${environment.shareUri}/${id}`;
+
+    if (!fileExists && id != null){
+      this.workbookIds.set(activeWorksheetName, id);
     }
   }
 

@@ -7,7 +7,6 @@ using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Excel2Json.Extensions;
 using Microsoft.AspNetCore.Http;
-using System.IO;
 
 namespace Excel2Json.Controllers.V1
 {
@@ -36,6 +35,7 @@ namespace Excel2Json.Controllers.V1
         {
             var userId = HttpContext.GetUserId();
 
+            //todo: set name
             var newFile = new JsonFile()
             {
                 Text = json,
@@ -45,16 +45,27 @@ namespace Excel2Json.Controllers.V1
             await _context.JsonFiles.AddAsync(newFile);
             await _context.SaveChangesAsync();
 
-            var link = $"{Request.Scheme}://{Request.Host}/api/share/{newFile.Id}";
-
-            return Ok(link);
+            return Ok(newFile.Id.ToString());
         }
 
         [HttpPut]
-        [Route("{fileId}")]
-        public IActionResult UpdateFile(string fileId, [FromBody] string json)
+        [Route("{id}")]
+        public async Task<IActionResult> UpdateFile(Guid id, [FromBody] string json)
         {
-            return Ok();
+            var file = _context.JsonFiles.FirstOrDefault(x => x.Id == id);
+            if (file == null)
+                return NotFound();
+
+            var userId = HttpContext.GetUserId();
+            if (file.UserId != userId)
+                return Unauthorized("User does not have access to this file.");
+
+            //todo: update name
+            file.Text = json;
+
+            await _context.SaveChangesAsync();
+
+            return Ok(file.Id.ToString());
         }
     }
 }
