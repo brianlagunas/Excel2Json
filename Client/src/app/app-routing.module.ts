@@ -11,6 +11,7 @@ export const routes: Routes = [
   { path: 'error', component: UncaughtErrorComponent },
   { path: 'upload', component: UploadComponent, data: { text: 'Upload' } },
   { path: 'editor', loadChildren: () => import('./editor/editor.module').then(m => m.EditorModule) },
+  { path: 'my-files', loadChildren: () => import('./my-files/my-files.module').then(m => m.MyFilesModule) },
   { path: '**', component: PageNotFoundComponent } // must always be last
 ];
 

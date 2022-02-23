@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, NgModule, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, NgModule, NgZone, OnInit } from '@angular/core';
+import { Router, RouterModule } from '@angular/router';
 import {
   ConnectedPositioningStrategy,
   HorizontalAlignment,
@@ -34,7 +35,9 @@ export class HelpMenuComponent implements OnInit {
   test: boolean = false;
 
   constructor(private googleSignInService: GoogleSigninService,
-              private ref: ChangeDetectorRef){
+              private ref: ChangeDetectorRef, 
+              private ngZone: NgZone, 
+              private router: Router){
   }
 
   ngOnInit(): void {
@@ -52,6 +55,12 @@ export class HelpMenuComponent implements OnInit {
     this.googleSignInService.signout();
   }
 
+  navigateToMyFiles() {
+    this.ngZone.run(() => {
+      this.router.navigateByUrl('/my-files')
+    })
+  }
+
 }
 @NgModule({
   declarations: [
@@ -62,6 +71,7 @@ export class HelpMenuComponent implements OnInit {
   ],
   imports: [
     CommonModule,
+    RouterModule,
     IgxAvatarModule,
     IgxDividerModule,
     IgxIconModule,

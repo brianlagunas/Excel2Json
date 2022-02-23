@@ -14,7 +14,7 @@ import { HelpModule } from './help-menu/help-menu.component';
 @NgModule({
   declarations: [
     AppComponent,
-    UploadComponent
+    UploadComponent,
   ],
   imports: [
     BrowserModule,

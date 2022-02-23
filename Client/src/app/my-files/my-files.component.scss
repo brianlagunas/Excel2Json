@@ -1,0 +1,159 @@
+:host {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.nav-bar {
+  justify-content: space-between;
+  padding: 0 24px;
+  min-height: 60px;
+  background-color: var(--igx-secondary-500);
+  align-items: center;
+  position: relative;
+  min-width: 50px;
+}
+
+.row {
+  display: flex;
+}
+.row-layout_2 {
+  flex: 1 1 0;
+  align-items: stretch;
+  min-height: 50px;
+  position: relative;
+  min-width: 50px;
+}
+.row-layout_3 {
+  align-items: center;
+  position: relative;
+  min-width: 50px;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+}
+.column-layout {
+  overflow: auto;
+  flex: 1 1 0;
+  align-items: stretch;
+  min-height: 50px;
+  min-width: 50px;
+}
+
+.image {
+  width: 138px;
+  height: 24px;
+  min-width: 0;
+  min-height: 0;
+  object-fit: none;
+  flex: 0 0 auto;
+}
+.separator {
+  margin: 0 16px;
+  color: var(--igx-grays-400);
+  height: max-content;
+  min-width: min-content;
+  flex: 0 0 auto;
+}
+.text {
+  margin: 0 0 16px;
+  height: max-content;
+  min-width: min-content;
+  flex: 0 0 auto;
+}
+.title {
+  color: var(--igx-grays-900);
+  height: max-content;
+  min-width: min-content;
+  flex: 0 0 auto;
+}
+.button {
+  margin: 0 24px 0 16px;
+  min-width: min-content;
+  height: max-content;
+  flex: 0 0 auto;
+}
+
+.help-menu {
+  margin-top: 7px;
+  margin-left: 15px;
+}
+
+.list {
+  height: max-content;
+  min-width: min-content;
+}
+.list-item {
+  min-width: 0;
+  min-height: 0;
+}
+
+.icon {
+  color: var(--igx-grays-800);
+  margin: 0 0 0 16px;
+  width: 24px;
+  height: 24px;
+  font-size: 24px;
+}
+.avatar {
+  margin: 0 10px 0 0;
+  background-color: var(--igx-primary-500);
+  color: var(--igx-grays-800);
+}  
+.icon_share {
+  margin: 0 0 0 16px;
+  width: 24px;
+  height: 24px;
+  font-size: 24px;
+}
+.icon_delete {
+  width: 24px;
+  height: 24px;
+  font-size: 24px;
+}
+
+
+.dialog-window {
+  min-width: 0;
+  min-height: 0;
+  flex: 0 0 auto;
+}
+
+
+.h6 {
+	margin: 30px 0 0;
+	min-width: min-content;
+	height: max-content;
+	text-align: center;
+}
+
+.image_json_group {
+	align-items: center;
+	min-width: 50px;
+	min-height: 50px;
+}
+
+.image_json {
+	min-width: 0;
+	min-height: 0;
+	width: 220px;
+	height: 160px;
+	flex-shrink: 0;
+	object-fit: cover;
+}
+
+.text_json_preview {
+	margin: 8px 0 20px;
+	color: var(--igx-grays-800);
+	min-width: min-content;
+	height: max-content;
+	text-align: center;
+}
+
+.column_json_preview {
+	display: flex;
+	flex-direction: column;
+}

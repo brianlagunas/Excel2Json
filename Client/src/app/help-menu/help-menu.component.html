@@ -8,10 +8,14 @@
                             [disabled]="false" [isHeader]="false" class="dropdown-item">
             Sign In
         </igx-drop-down-item>
-        <igx-drop-down-item *ngIf="user != null"
+        <igx-drop-down-item *ngIf="user != null" (click)="navigateToMyFiles()"
                             [disabled]="false" [isHeader]="false" class="dropdown-item">
             My Files
         </igx-drop-down-item>
+            <igx-drop-down-item routerLink="/my-files"
+                                [disabled]="false" [isHeader]="false" class="dropdown-item">
+            My Files
+            </igx-drop-down-item>
         <a class="menu-item-help" href="https://github.com/brianlagunas/Excel2Json/issues" target="_blank">
             <igx-drop-down-item [disabled]="false" [isHeader]="false" class="dropdown-item">
                 Submit an Issue
