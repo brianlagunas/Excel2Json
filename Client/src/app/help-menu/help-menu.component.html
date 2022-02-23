@@ -1,21 +1,17 @@
 <ng-container>
     <igx-avatar icon="person" [roundShape]="true" size="small" *ngIf="user == null"
                 [igxToggleAction]="helpDropDown" [overlaySettings]="overlaySettings" [igxDropDownItemNavigation]="helpDropDown"></igx-avatar>
-    <igx-avatar src="{{user.getBasicProfile().getImageUrl()}}" [roundShape]="true" size="small" *ngIf="user != null"
+    <igx-avatar src="{{user.image}}" [roundShape]="true" size="small" *ngIf="user != null"
                 [igxToggleAction]="helpDropDown" [overlaySettings]="overlaySettings" [igxDropDownItemNavigation]="helpDropDown"></igx-avatar>
     <igx-drop-down height="max-content" #helpDropDown class="drop-down">
         <igx-drop-down-item (click)="signIn()" *ngIf="user == null"
                             [disabled]="false" [isHeader]="false" class="dropdown-item">
             Sign In
         </igx-drop-down-item>
-        <igx-drop-down-item *ngIf="user != null" (click)="navigateToMyFiles()"
+        <igx-drop-down-item *ngIf="user != null" routerLink="/my-files"
                             [disabled]="false" [isHeader]="false" class="dropdown-item">
             My Files
         </igx-drop-down-item>
-            <igx-drop-down-item routerLink="/my-files"
-                                [disabled]="false" [isHeader]="false" class="dropdown-item">
-            My Files
-            </igx-drop-down-item>
         <a class="menu-item-help" href="https://github.com/brianlagunas/Excel2Json/issues" target="_blank">
             <igx-drop-down-item [disabled]="false" [isHeader]="false" class="dropdown-item">
                 Submit an Issue

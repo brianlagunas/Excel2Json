@@ -10,8 +10,11 @@ import {
   IgxIconModule,
   IgxToggleModule,
   NoOpScrollStrategy,
+  OverlaySettings,
   VerticalAlignment
 } from 'igniteui-angular';
+import { ConcatOperator } from 'igniteui-angular-excel';
+import { User } from '../business/user';
 import { GoogleSigninService } from '../services/google-signin.service';
 
 @Component({
@@ -21,27 +24,23 @@ import { GoogleSigninService } from '../services/google-signin.service';
 })
 export class HelpMenuComponent implements OnInit {
 
-  public overlaySettings = {
+  user: User | null = null;
+  overlaySettings: OverlaySettings = {
     positionStrategy: new ConnectedPositioningStrategy({
-        horizontalDirection: HorizontalAlignment.Left,
-        horizontalStartPoint: HorizontalAlignment.Right,
-        verticalStartPoint: VerticalAlignment.Bottom
+      horizontalDirection: HorizontalAlignment.Left,
+      horizontalStartPoint: HorizontalAlignment.Right,
+      verticalStartPoint: VerticalAlignment.Bottom
     }),
     scrollStrategy: new NoOpScrollStrategy()
   };
 
-  user: gapi.auth2.GoogleUser | null = null;
-
-  test: boolean = false;
-
   constructor(private googleSignInService: GoogleSigninService,
-              private ref: ChangeDetectorRef, 
-              private ngZone: NgZone, 
-              private router: Router){
+              private ref: ChangeDetectorRef,
+              private router: Router) {
   }
 
   ngOnInit(): void {
-    this.googleSignInService.observable().subscribe( user => {
+    this.googleSignInService.observable().subscribe(user => {
       this.user = user;
       this.ref.detectChanges();
     });
@@ -53,15 +52,13 @@ export class HelpMenuComponent implements OnInit {
 
   signOut() {
     this.googleSignInService.signout();
-  }
 
-  navigateToMyFiles() {
-    this.ngZone.run(() => {
-      this.router.navigateByUrl('/my-files')
-    })
+    if (this.router.url == "/my-files") {
+      this.router.navigateByUrl('/')
+    }    
   }
-
 }
+
 @NgModule({
   declarations: [
     HelpMenuComponent
@@ -79,4 +76,4 @@ export class HelpMenuComponent implements OnInit {
     IgxDropDownModule
   ]
 })
-export class HelpModule {}
+export class HelpModule { }
