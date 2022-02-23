@@ -6,6 +6,7 @@ import { environment } from 'src/environments/environment';
 import { CSV } from '../io/csv';
 import { Excel } from '../io/excel';
 import { FileStorageService } from '../services/file-storage.service';
+import { FileService } from '../services/file.service';
 
 @Component({
   selector: 'app-editor',
@@ -25,7 +26,8 @@ export class EditorComponent implements OnInit, AfterViewInit {
   workbookIds: Map<string, string> = new Map<string, string>();
   shareLink: string = "Creating share link...";
 
-  constructor(private fileStorage: FileStorageService) {
+  constructor(private fileStorage: FileStorageService,
+              private fileService: FileService) {
 
   }
 
@@ -101,33 +103,25 @@ export class EditorComponent implements OnInit, AfterViewInit {
   }
 
   async onGetLinkClicked() {
-
-    const activeWorksheetName = this.spreadsheet.activeWorksheet.name;
-
-    let url = environment.filesUri;
-    let params = {
-      headers: {
-        "content-type": "application/json; charset=utf-8",
-        "Authorization": `Bearer ${localStorage.getItem("token")}`
-      },
-      body: JSON.stringify({ 
-        Name: activeWorksheetName, 
-        Text: this.code 
-      }),
-      method: "POST"
-    }
+    let id = null;
+    const activeWorksheetName = this.spreadsheet.activeWorksheet.name;    
 
     let fileExists = false;    
     if (this.workbookIds.has(activeWorksheetName)){
-      url = `${environment.filesUri}/${this.workbookIds.get(activeWorksheetName)}`;
-      params.method = "PUT";
-      fileExists = true
+      id = this.workbookIds.get(activeWorksheetName)!;
+
+      await this.fileService.updateFile({
+        id: id,
+        name: activeWorksheetName,
+        text: this.code,
+        canShare: true
+      });
+
+      fileExists = true;
+    } else {
+      id = await this.fileService.CreateFile(activeWorksheetName, this.code);
     }
 
-    var resp = await fetch(url, params); 
-    var json = await resp.json();
-
-    var id = json.id;
     this.shareLink = `${environment.shareUri}/${id}`;
 
     if (!fileExists && id != null){
