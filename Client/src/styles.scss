@@ -29,6 +29,7 @@ $include: (igx-avatar,
           igx-button,
           igx-dialog,
           igx-input-group,
+          igx-checkbox,
           igx-drop-down);
 
 @include igx-theme($palette: $custom-palette,

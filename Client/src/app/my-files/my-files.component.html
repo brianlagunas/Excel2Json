@@ -19,10 +19,11 @@
                     <igx-avatar icon="insert_drive_file" [roundShape]="false" size="small" class="avatar"></igx-avatar>
                 </span>
                 <span igxListLineTitle>{{file.name}}</span>
-                <span igxListLineSubTitle>Uploaded on Sept. 16, 2021</span>
+                <!-- <span igxListLineSubTitle>Created on Sept. 16, 2021</span> -->
                 <span>
                     <igx-icon igxListAction family="material" class="icon_delete" (click)="deleteFile(file.id)">delete_outline</igx-icon>
                     <igx-icon igxListAction family="material" class="icon_share" (click)="getShareLink(file.id)" [igxToggleAction]="dialogWindow">share</igx-icon>
+                    <igx-checkbox igxListAction class="chkBox_canShare" [(ngModel)]="file.canShare" (click)="updateCanShare(file)"></igx-checkbox>
                 </span>
             </igx-list-item>
         </igx-list>

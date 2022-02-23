@@ -79,6 +79,7 @@ namespace Excel2Json.Controllers.v1
             if (file.UserId != userId)
                 return Unauthorized("User does not have access to this file.");
 
+            file.CanShare = fileRequest.CanShare;
             file.Name = fileRequest.Name;
             file.Text = fileRequest.Text;
 

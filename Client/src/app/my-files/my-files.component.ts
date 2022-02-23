@@ -17,21 +17,22 @@ export class MyFilesComponent implements OnInit {
 
   constructor(private fileService: FileService) { }
 
-  ngOnInit(): void {
-    this.fileService.getFiles().then(response => {
-      this.files = response;
-    });
+  async ngOnInit() {
+    this.files = await this.fileService.getFiles();
   }
 
   loadFileText(text: string) {
     this.code = text;
   }
 
-  deleteFile(id: string) {
-    this.fileService.deleteFile(id).then(response => {
-      this.files = this.files.filter(x => x.id != id);
-      this.code = "";
-    });
+  async deleteFile(id: string) {
+    await this.fileService.deleteFile(id);
+    this.files = this.files.filter(x => x.id != id);
+    this.code = "";
+  }
+
+  async updateCanShare(file: File) {
+    await this.fileService.updateFile(file);
   }
 
   getShareLink(id: string) {
