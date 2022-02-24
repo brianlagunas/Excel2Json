@@ -1,5 +1,5 @@
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FilterExpression, Tile } from 'igniteui-angular-core';
 import { environment } from 'src/environments/environment';
 import { File } from '../business/file';
 
@@ -8,73 +8,45 @@ import { File } from '../business/file';
 })
 export class FileService {
 
-    constructor() { }
+    constructor(private httpClient: HttpClient) { }
 
     public async CreateFile(name: string, text: string): Promise<string> {
         let url = environment.filesUri;
-        let params = {
-            headers: {
-                "content-type": "application/json; charset=utf-8",
-                "Authorization": `Bearer ${localStorage.getItem("token")}`
-            },
-            body: JSON.stringify({
-                Name: name,
-                Text: text
-            }),
-            method: "POST"
-        }
 
-        var resp = await fetch(url, params);
-        var result = await resp.json();
+        var headers = new HttpHeaders({'Content-Type': 'application/json; charset=utf-8'});
+
+        var body = JSON.stringify({
+            name: name,
+            text: text
+        });
+
+        var result = await this.httpClient.post<any>(url, body, { headers }).toPromise();
         return result.id;
     }
 
-    public async getFiles(): Promise<File[]> {
-
-        let url = environment.filesUri;
-        let params = {
-            headers: {
-                "content-type": "application/json; charset=utf-8",
-                "Authorization": `Bearer ${localStorage.getItem("token")}`
-            },
-        }
-
-        var resp = await fetch(url, params);
-        return resp.json();
+    public async getFiles() : Promise<File[]>{
+        return this.httpClient.get<File[]>(environment.filesUri).toPromise();
     }
 
     public async deleteFile(id: string): Promise<File> {
 
         let url = `${environment.filesUri}/${id}`;
-        let params = {
-            headers: {
-                "content-type": "application/json; charset=utf-8",
-                "Authorization": `Bearer ${localStorage.getItem("token")}`
-            },
-            method: "DELETE",
-        }
-
-        var resp = await fetch(url, params);
-        return resp.json();
+        return this.httpClient.delete<File>(url).toPromise();
     }
 
-    public async updateFile(file: File): Promise<File> {
+    public async updateFile(file: File) {
 
         let url = `${environment.filesUri}/${file.id}`;
-        let params = {
-            headers: {
-                "content-type": "application/json; charset=utf-8",
-                "Authorization": `Bearer ${localStorage.getItem("token")}`
-            },
-            method: "PUT",
-            body: JSON.stringify({
-                canShare: file.canShare,
-                name: file.name,
-                text: file.text
-            })
-        }
 
-        var resp = await fetch(url, params);
-        return resp.json();
+        var headers = new HttpHeaders({'Content-Type': 'application/json; charset=utf-8'});
+        
+        var body = JSON.stringify({
+            canShare: file.canShare,
+            name: file.name,
+            text: file.text
+        });
+
+        var result = await this.httpClient.put<any>(url, body, { headers }).toPromise();
+        console.log(result);
     }
 }

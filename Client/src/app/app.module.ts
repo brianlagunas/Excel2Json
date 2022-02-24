@@ -10,6 +10,8 @@ import { FormsModule } from '@angular/forms';
 
 import { UploadComponent } from './upload/upload.component';
 import { HelpModule } from './help-menu/help-menu.component';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { TokenInterceptorService } from './services/token-interceptor.service';
 
 @NgModule({
   declarations: [
@@ -18,6 +20,7 @@ import { HelpModule } from './help-menu/help-menu.component';
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     HammerModule,
     AppRoutingModule,
     BrowserAnimationsModule,
@@ -31,7 +34,11 @@ import { HelpModule } from './help-menu/help-menu.component';
     IgxSelectModule,
     HelpModule
   ],
-  providers: [],
+  providers: [ {
+    provide: HTTP_INTERCEPTORS,
+    useClass: TokenInterceptorService,
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule {
