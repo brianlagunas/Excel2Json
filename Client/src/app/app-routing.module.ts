@@ -5,13 +5,14 @@ import { PageNotFoundComponent } from './error-routing/not-found/not-found.compo
 import { UncaughtErrorComponent } from './error-routing/error/uncaught-error.component';
 import { ErrorRoutingModule } from './error-routing/error-routing.module';
 import { UploadComponent } from './upload/upload.component';
+import { AuthRouteGuard } from './services/auth-route-guard.service';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'upload', pathMatch: 'full' },
   { path: 'error', component: UncaughtErrorComponent },
   { path: 'upload', component: UploadComponent, data: { text: 'Upload' } },
   { path: 'editor', loadChildren: () => import('./editor/editor.module').then(m => m.EditorModule) },
-  { path: 'my-files', loadChildren: () => import('./my-files/my-files.module').then(m => m.MyFilesModule) },
+  { path: 'my-files', loadChildren: () => import('./my-files/my-files.module').then(m => m.MyFilesModule), canActivate: [ AuthRouteGuard] },
   { path: '**', component: PageNotFoundComponent } // must always be last
 ];
 

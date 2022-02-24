@@ -120,7 +120,6 @@ export class EditorComponent implements OnInit, AfterViewInit {
       fileExists = true;
     } else {
       id = await this.fileService.CreateFile(activeWorksheetName, this.code);
-      console.log(id);
     }
 
     this.shareLink = `${environment.shareUri}/${id}`;

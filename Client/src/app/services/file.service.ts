@@ -46,7 +46,6 @@ export class FileService {
             text: file.text
         });
 
-        var result = await this.httpClient.put<any>(url, body, { headers }).toPromise();
-        console.log(result);
+        await this.httpClient.put<any>(url, body, { headers }).toPromise();
     }
 }
