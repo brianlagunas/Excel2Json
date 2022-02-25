@@ -4,7 +4,7 @@
     <igx-avatar src="{{user.image}}" [roundShape]="true" size="small" *ngIf="user != null"
                 [igxToggleAction]="helpDropDown" [overlaySettings]="overlaySettings" [igxDropDownItemNavigation]="helpDropDown"></igx-avatar>
     <igx-drop-down height="max-content" #helpDropDown class="drop-down">
-        <igx-drop-down-item (click)="signIn()" *ngIf="user == null"
+        <igx-drop-down-item *ngIf="user == null" routerLink="/login"
                             [disabled]="false" [isHeader]="false" class="dropdown-item">
             Sign In
         </igx-drop-down-item>

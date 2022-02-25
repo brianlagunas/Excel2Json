@@ -46,10 +46,6 @@ export class HelpMenuComponent implements OnInit {
     });
   }
 
-  signIn() {
-    this.googleSignInService.signin();
-  }
-
   signOut() {
     this.googleSignInService.signout();
 

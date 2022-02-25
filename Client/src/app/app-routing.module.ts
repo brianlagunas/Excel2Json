@@ -6,9 +6,13 @@ import { UncaughtErrorComponent } from './error-routing/error/uncaught-error.com
 import { ErrorRoutingModule } from './error-routing/error-routing.module';
 import { UploadComponent } from './upload/upload.component';
 import { AuthRouteGuard } from './services/auth-route-guard.service';
+import { RegisterComponent } from './register/register.component';
+import { LoginComponent } from './login/login.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'upload', pathMatch: 'full' },
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
   { path: 'error', component: UncaughtErrorComponent },
   { path: 'upload', component: UploadComponent, data: { text: 'Upload' } },
   { path: 'editor', loadChildren: () => import('./editor/editor.module').then(m => m.EditorModule) },

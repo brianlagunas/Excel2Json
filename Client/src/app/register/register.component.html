@@ -1,0 +1,26 @@
+<div class="group-logo column">
+	<img src="../../assets/images/logo-big.svg" class="image-logo" />
+</div>
+<div class="form-container">
+	<div class="group row">
+        <div class="group_1 column">
+            <h5 class="h5">Register</h5>
+            <igx-input-group type="border" class="user-input">
+                <igx-suffix>
+                    <igx-icon family="material" class="icon">person</igx-icon>
+                </igx-suffix>
+                <input type="text" [required]="false" igxInput />
+                <label igxLabel>Email / Username</label>
+            </igx-input-group>
+            <igx-input-group type="border" class="input">
+                <igx-suffix>
+                    <igx-icon family="material" class="icon">remove_red_eye</igx-icon>
+                </igx-suffix>
+                <input type="password" [required]="false" igxInput />
+                <label igxLabel>Password</label>
+            </igx-input-group>
+            <button igxButton="raised" igxRipple class="user-input">Create New Account</button>
+            <a routerLink="/login" class="igx-typography__body-2 hyperlink">Already have an account?</a>
+        </div>
+    </div>
+</div>

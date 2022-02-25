@@ -1,0 +1,29 @@
+<div class="group-logo column">
+	<img routerLink="/" src="../../assets/images/logo-big.svg" class="image-logo" style="cursor: pointer;" />
+</div>
+<div class="form-container">
+    <div class="group row">
+        <div class="group_2 column">
+            <h5 class="h5">Sign in</h5>
+            <div class="group_1 row">
+                <button igxButton="outlined" igxRipple class="button" (click)="loginWithGoogle()">Google</button>
+                <!-- <button igxButton="outlined" igxRipple class="button_1">Github</button> -->
+            </div>
+            <igx-input-group type="border" class="user-input">
+                <input type="text" [required]="false" igxInput />
+                <label igxLabel>Email / Username</label>
+            </igx-input-group>
+            <igx-input-group type="border" class="user-input">
+                <igx-suffix>
+                    <igx-icon family="material" class="icon">remove_red_eye</igx-icon>
+                </igx-suffix>
+                <input type="password" [required]="false" igxInput />
+                <label igxLabel>Password</label>
+            </igx-input-group>
+            <igx-checkbox labelPosition="after" class="checkbox">Keep me signed in</igx-checkbox>
+            <button igxButton="raised" igxRipple class="user-input">Sign in</button>
+            <a target="_blank" class="igx-typography__body-2 hyperlink">Forgot password?</a>
+            <button igxButton="outlined" igxRipple class="user-input" routerLink="/register">Create New Account</button>
+        </div>
+    </div>
+</div>

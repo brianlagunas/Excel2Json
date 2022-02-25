@@ -1,0 +1,131 @@
+:host {
+	height: 100%;
+	display: flex;
+	align-items: stretch;
+}
+.group-logo {
+	justify-content: center;
+	align-items: center;
+	overflow: hidden;
+	min-width: 160px;
+	min-height: 50px;
+    background-image: url('../../assets/images/background_shapes.svg');
+	background-color: var(--igx-secondary-500);
+	position: relative;
+	flex-grow: 1;
+	flex-basis: 0;
+}
+
+.column {
+	display: flex;
+	flex-direction: column;
+}
+
+.image-background {
+	position: absolute;
+	min-width: 0;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	min-height: 0;
+	object-fit: cover;
+}
+.image-logo {
+	min-width: 130px;
+	width: 28%;
+	flex-shrink: 0;
+	object-fit: cover;
+}
+.form-container {
+	min-width: min-content;
+	position: relative;
+	min-height: 0;
+	flex-grow: 1;
+	flex-basis: 0;
+    justify-content: center;
+    align-items: stretch;
+    height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+.group {
+	padding: 80px;
+	justify-content: center;
+	min-width: 50px;
+	flex-grow: 1;
+	flex-basis: 0;
+	align-items: stretch;
+	position: relative;
+	min-height: 50px;
+}
+.group_1 {
+	padding: 16px 0;
+	margin: 0 0 16px;
+	min-width: 50px;
+	align-items: stretch;
+	position: relative;
+	min-height: 50px;
+}
+.group_2 {
+	min-width: 240px;
+	max-width: 560px;
+	justify-content: center;
+	flex-grow: 1;
+	flex-basis: 0;
+	align-items: stretch;
+	position: relative;
+	min-height: 50px;
+}
+.hyperlink {
+	color: hsla(var(--igx-primary-100));
+	min-width: min-content;
+	margin: 0 0 24px;
+	height: max-content;
+}
+.h5 {
+	min-width: min-content;
+	margin: 0 0 24px;
+	height: max-content;
+}
+.button {
+	margin: 0 16px 0 0;
+	flex-shrink: 0;
+	min-width: min-content;
+	height: max-content;
+}
+.checkbox {
+	margin: 0 0 24px;
+	width: max-content;
+	height: max-content;
+}
+.button_1 {
+	flex-shrink: 0;
+	min-width: min-content;
+	height: max-content;
+}
+.user-input {
+	margin: 0 0 16px;
+	min-width: min-content;
+	height: max-content;
+}
+.icon {
+	width: 24px;
+	height: 24px;
+	font-size: 24px;
+}
+.row {
+	display: flex;
+}
