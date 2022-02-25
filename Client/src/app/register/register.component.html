@@ -9,17 +9,17 @@
                 <igx-suffix>
                     <igx-icon family="material" class="icon">person</igx-icon>
                 </igx-suffix>
-                <input type="text" [required]="false" igxInput />
+                <input type="text" [required]="false" igxInput [(ngModel)]="email" />
                 <label igxLabel>Email / Username</label>
             </igx-input-group>
             <igx-input-group type="border" class="input">
                 <igx-suffix>
                     <igx-icon family="material" class="icon">remove_red_eye</igx-icon>
                 </igx-suffix>
-                <input type="password" [required]="false" igxInput />
+                <input type="password" [required]="false" igxInput igxInput [(ngModel)]="password"/>
                 <label igxLabel>Password</label>
             </igx-input-group>
-            <button igxButton="raised" igxRipple class="user-input">Create New Account</button>
+            <button igxButton="raised" igxRipple class="user-input" (click)="register()">Create New Account</button>
             <a routerLink="/login" class="igx-typography__body-2 hyperlink">Already have an account?</a>
         </div>
     </div>
