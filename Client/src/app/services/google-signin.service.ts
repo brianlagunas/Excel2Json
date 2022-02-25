@@ -20,7 +20,6 @@ export class GoogleSigninService {
   }
 
   public async initialize() {
-    //TODO: check for valid token, if not valid sign the user out
     await this.ensureGapiLoaded();
     const isSignedIn = this.auth2.isSignedIn.get();
     if (isSignedIn) {
@@ -32,26 +31,22 @@ export class GoogleSigninService {
     }
   }
 
-  public signin() {
-    this.ngZone.run(async () => {
-      try {
-        const user = await this.auth2.signIn();
-        this.validateToken(user);
-        this.createUser(user);
-      }
-      catch {
-        this.subject.next(null);
-      }
-    });
+  public async signin(): Promise<void> {
+    try {
+      const user = await this.auth2.signIn();
+      await this.validateToken(user);
+      this.createUser(user);
+    }
+    catch {
+      this.subject.next(null);
+    }
   }
 
-  public signout() {
-    this.ngZone.run(async () => {
+  public async signout(): Promise<void> {
       await this.auth2.signOut();
       this.subject.next(null);
       localStorage.removeItem("token");
       localStorage.removeItem("user");
-    });
   }
 
   async validateToken(user: gapi.auth2.GoogleUser) {
