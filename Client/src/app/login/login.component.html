@@ -10,18 +10,18 @@
                 <!-- <button igxButton="outlined" igxRipple class="button_1">Github</button> -->
             </div>
             <igx-input-group type="border" class="user-input">
-                <input type="text" [required]="false" igxInput />
+                <input type="text" [required]="false" igxInput [(ngModel)]="email"/>
                 <label igxLabel>Email / Username</label>
             </igx-input-group>
             <igx-input-group type="border" class="user-input">
                 <igx-suffix>
                     <igx-icon family="material" class="icon">remove_red_eye</igx-icon>
                 </igx-suffix>
-                <input type="password" [required]="false" igxInput />
+                <input type="password" [required]="false" igxInput [(ngModel)]="password"/>
                 <label igxLabel>Password</label>
             </igx-input-group>
             <igx-checkbox labelPosition="after" class="checkbox">Keep me signed in</igx-checkbox>
-            <button igxButton="raised" igxRipple class="user-input">Sign in</button>
+            <button igxButton="raised" igxRipple class="user-input" (click)="signIn()">Sign in</button>
             <a target="_blank" class="igx-typography__body-2 hyperlink">Forgot password?</a>
             <button igxButton="outlined" igxRipple class="user-input" routerLink="/register">Create New Account</button>
         </div>

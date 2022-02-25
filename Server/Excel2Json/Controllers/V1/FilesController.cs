@@ -24,8 +24,7 @@ namespace Excel2Json.Controllers.v1
             _context = context;
         }
 
-        [HttpGet]
-        [Route("{id}")]
+        [HttpGet("{id}")]
         public IActionResult Get([FromRoute] Guid id)
         {
             var file = _context.Files.FirstOrDefault(x => x.Id == id);
@@ -67,8 +66,7 @@ namespace Excel2Json.Controllers.v1
             return CreatedAtAction(nameof(Get), new { id = response.Id }, response);
         }
 
-        [HttpPut]
-        [Route("{id}")]
+        [HttpPut("{id}")]
         public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateFileRequest fileRequest)
         {
             var file = _context.Files.FirstOrDefault(x => x.Id == id);
@@ -88,8 +86,7 @@ namespace Excel2Json.Controllers.v1
             return Ok(file);
         }
 
-        [HttpDelete]
-        [Route("{id}")]
+        [HttpDelete("{id}")]
         public IActionResult Delete([FromRoute]Guid id)
         {
             var file = _context.Files.FirstOrDefault(x => x.Id == id);

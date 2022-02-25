@@ -7,7 +7,7 @@ namespace Excel2Json.Services
 {
     public interface IIdentityService
     {
-        void Login(string email, string password);
+        Task<AuthenticationResult> Login(string email, string password);
         Task<AuthenticationResult> Register(string email, string password);
     }
 
@@ -22,9 +22,23 @@ namespace Excel2Json.Services
             _tokenService = tokenService;
         }
 
-        public void Login(string email, string password)
+        public async Task<AuthenticationResult> Login(string email, string password)
         {
-            throw new System.NotImplementedException();
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+                return new AuthenticationResult() { Error = "User does not exist.", Success = false };
+
+            var userHasValidPassword = await _userManager.CheckPasswordAsync(user, password);
+            if (!userHasValidPassword)
+                return new AuthenticationResult() { Error = "Username/Password combination is invalid", Success = false };
+
+            var token = _tokenService.BuildToken(user);
+
+            return new AuthenticationResult()
+            {
+                Success = true,
+                Token = token
+            };
         }
 
         public async Task<AuthenticationResult> Register(string email, string password)

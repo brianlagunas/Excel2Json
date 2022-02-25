@@ -16,8 +16,7 @@ namespace Excel2Json.Controllers.v1
             _context = context;
         }
 
-        [HttpGet]
-        [Route("{id}")]
+        [HttpGet("{id}")]
         public IActionResult Get([FromRoute] Guid id)
         {
             var file = _context.Files.FirstOrDefault(x => x.Id == id);

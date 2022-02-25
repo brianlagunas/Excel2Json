@@ -8,8 +8,9 @@ import { environment } from 'src/environments/environment';
 export class AuthService {
     constructor(private httpClient: HttpClient) {}
 
-    public signIn() {
-
+    public async signIn(email: string, password: string) {
+        let url = `${environment.authUri}/login`;
+        await this.signInOrRegister(url, email, password);
     }
 
     public signOut() {
@@ -18,7 +19,10 @@ export class AuthService {
 
     public async register(email: string, password: string) {
         let url = `${environment.authUri}/register`;
+        await this.signInOrRegister(url, email, password);
+    }
 
+    public async signInOrRegister(url: string, email: string, password: string) {
         var headers = new HttpHeaders({'Content-Type': 'application/json; charset=utf-8'});
 
         var body = JSON.stringify({
