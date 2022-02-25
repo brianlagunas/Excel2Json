@@ -9,16 +9,13 @@ using System.Linq;
 namespace Excel2Json.Controllers.v1
 {
     [Route("api/v1/identity")]
-    //[ApiController]
     public class IdentityController : Controller
     {
         private readonly IIdentityService _identityService;
-        private readonly IGoogleSignInService _googleSignInService;
 
-        public IdentityController(IIdentityService identityService, IGoogleSignInService googleSignInService)
+        public IdentityController(IIdentityService identityService)
         {
             _identityService = identityService;
-            _googleSignInService = googleSignInService;
         }
 
         [HttpPost("register")]
@@ -47,9 +44,9 @@ namespace Excel2Json.Controllers.v1
         }
 
         [HttpPost("google")]
-        public async Task<IActionResult> GoogleSignIn([FromBody] GoogleSignInRequest request)
+        public async Task<IActionResult> GoogleLogin([FromBody] GoogleSignInRequest request)
         {
-            var authResponse = await _googleSignInService.SignInAsync(request.Token);
+            var authResponse = await _identityService.GoogleLogin(request.Token);
             if (!authResponse.Success)
                 return BadRequest(new AuthFailedResponse { Error = authResponse.Error, });
 

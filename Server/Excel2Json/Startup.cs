@@ -1,5 +1,5 @@
 using Excel2Json.Data;
-using Excel2Json.Domain;
+using Excel2Json.Options;
 using Excel2Json.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -45,35 +45,32 @@ namespace Excel2Json
             services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            var jwtSettings = new JwtSettings();
-            Configuration.Bind(nameof(JwtSettings), jwtSettings);
-            services.AddSingleton(jwtSettings);
+            services.Configure<JwtOptions>(Configuration.GetSection(JwtOptions.Jwt));
+            services.Configure<GoogleOptions>(Configuration.GetSection(GoogleOptions.Google));
 
+            var jwtOptions = Configuration.GetSection(JwtOptions.Jwt).Get<JwtOptions>();
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(options =>
+            }).AddJwtBearer(options =>
             {
                 options.SaveToken = true;
                 options.TokenValidationParameters = new TokenValidationParameters()
                 {
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings.Secret)),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtOptions.Secret)),
                     ValidateIssuer = false,
-                    ValidIssuer = jwtSettings.Issuer,
+                    ValidIssuer = jwtOptions.Issuer,
                     ValidateAudience = false,
-                    ValidAudience = jwtSettings.Audience,
+                    ValidAudience = jwtOptions.Audience,
                     RequireExpirationTime = false,
                     ValidateLifetime = true,
                 };
             });
 
             services.AddScoped<IIdentityService, IdentityService>();
-            services.AddScoped<IGoogleSignInService, GoogleSignInService>();
-
             services.AddScoped<ITokenService, TokenService>();
 
             services.AddResponseCompression(options =>

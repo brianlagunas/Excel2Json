@@ -9,6 +9,7 @@ namespace Excel2Json.Services
     {
         Task<AuthenticationResult> Login(string email, string password);
         Task<AuthenticationResult> Register(string email, string password);
+        Task<AuthenticationResult> GoogleLogin(string token);
     }
 
     public class IdentityService :IIdentityService
@@ -68,6 +69,44 @@ namespace Excel2Json.Services
                 Success = true,
                 Token = token
             };
+        }
+
+        public async Task<AuthenticationResult> GoogleLogin(string token)
+        {
+            var payload = await _tokenService.ValidateGoogleTokenAsync(token);
+            if (payload == null)
+                return new AuthenticationResult { Success = false, Error = "Token Validation Failed" };
+
+            var info = new UserLoginInfo(payload.Issuer, payload.Subject, payload.Issuer);
+            var user = await _userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
+            if (user == null)
+            {
+                user = await _userManager.FindByEmailAsync(payload.Email);
+                if (user == null)
+                {
+                    user = new IdentityUser
+                    {
+                        Email = payload.Email,
+                        UserName = payload.Email,
+                        EmailConfirmed = payload.EmailVerified,
+                    };
+
+                    await _userManager.CreateAsync(user);
+                    await _userManager.AddToRoleAsync(user, "User");
+                    await _userManager.AddLoginAsync(user, info);
+                }
+                else
+                {
+                    await _userManager.AddLoginAsync(user, info);
+                }
+            }
+
+            if (user == null)
+                return new AuthenticationResult { Success = false, Error = "User Authentication Failed" };
+
+            var jwtToken = _tokenService.BuildToken(user);
+
+            return new AuthenticationResult { Success = true, Token = jwtToken };
         }
     }
 }

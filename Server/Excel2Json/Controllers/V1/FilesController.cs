@@ -14,7 +14,6 @@ namespace Excel2Json.Controllers.v1
 {
     [Route("api/v1/files")]
     [Authorize]
-    [ApiController]
     public class FilesController : Controller
     {
         private readonly ApplicationDbContext _context;

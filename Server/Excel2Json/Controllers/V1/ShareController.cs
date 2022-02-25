@@ -6,7 +6,6 @@ using System.Linq;
 namespace Excel2Json.Controllers.v1
 {
     [Route("api/v1/share")]
-    [ApiController]
     public class ShareController : ControllerBase
     {
         private readonly ApplicationDbContext _context;

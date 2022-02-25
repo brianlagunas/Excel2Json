@@ -1,33 +1,37 @@
-﻿using Excel2Json.Domain;
+﻿using Excel2Json.Options;
+using Google.Apis.Auth;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Excel2Json.Services
 {
     public interface ITokenService
     {
         string BuildToken(IdentityUser user);
-
-        bool ValidateToken(string token);
+        Task<GoogleJsonWebSignature.Payload> ValidateGoogleTokenAsync(string token);
     }
 
     public class TokenService : ITokenService
     {
-        private readonly JwtSettings _jwtSettings;
+        private readonly JwtOptions _jwtOptions;
+        private readonly GoogleOptions _googleOptions;
 
-        public TokenService(JwtSettings jwtSettings)
+        public TokenService(IOptions<JwtOptions> jwtOptions, IOptions<GoogleOptions> googleOptions)
         {
-            _jwtSettings = jwtSettings;
+            _jwtOptions = jwtOptions.Value;
+            _googleOptions = googleOptions.Value;
         }
 
         public string BuildToken(IdentityUser user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_jwtSettings.Secret);
+            var key = Encoding.ASCII.GetBytes(_jwtOptions.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[]
@@ -46,9 +50,21 @@ namespace Excel2Json.Services
             return tokenHandler.WriteToken(token);
         }
 
-        public bool ValidateToken(string token)
+        public async Task<GoogleJsonWebSignature.Payload> ValidateGoogleTokenAsync(string token)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var payload = await GoogleJsonWebSignature.ValidateAsync(token, new GoogleJsonWebSignature.ValidationSettings()
+                {
+                    Audience = new[] { _googleOptions.ClientId }
+                });
+
+                return payload;
+            }
+            catch
+            {
+                return null;
+            }
         }
     }
 }

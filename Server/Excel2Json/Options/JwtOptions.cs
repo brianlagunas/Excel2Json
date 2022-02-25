@@ -1,7 +1,9 @@
-﻿namespace Excel2Json.Domain
+﻿namespace Excel2Json.Options
 {
-    public class JwtSettings
+    public class JwtOptions
     {
+        public const string Jwt = "Jwt";
+
         public string Secret { get; set; }
 
         public string Issuer { get; set; }
