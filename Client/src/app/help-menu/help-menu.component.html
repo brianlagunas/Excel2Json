@@ -1,15 +1,18 @@
 <ng-container>
-    <igx-avatar icon="person" [roundShape]="true" size="small" *ngIf="user == null"
-                [igxToggleAction]="helpDropDown" [overlaySettings]="overlaySettings" [igxDropDownItemNavigation]="helpDropDown"></igx-avatar>
-    <igx-avatar src="{{user.image}}" [roundShape]="true" size="small" *ngIf="user != null"
-                [igxToggleAction]="helpDropDown" [overlaySettings]="overlaySettings" [igxDropDownItemNavigation]="helpDropDown"></igx-avatar>
+    <igx-avatar icon="menu_open" [roundShape]="true" size="small" *ngIf="user === null || user.imageUrl === null"
+        [igxToggleAction]="helpDropDown" [overlaySettings]="overlaySettings" [igxDropDownItemNavigation]="helpDropDown">
+    </igx-avatar>
+    <igx-avatar src="{{user?.imageUrl}}" [roundShape]="true" size="small" *ngIf="user?.imageUrl !== null" 
+        [igxToggleAction]="helpDropDown" [overlaySettings]="overlaySettings"
+        [igxDropDownItemNavigation]="helpDropDown">
+    </igx-avatar>
     <igx-drop-down height="max-content" #helpDropDown class="drop-down">
-        <igx-drop-down-item *ngIf="user == null" routerLink="/login"
-                            [disabled]="false" [isHeader]="false" class="dropdown-item">
+        <igx-drop-down-item *ngIf="user == null" routerLink="/login" [disabled]="false" [isHeader]="false"
+            class="dropdown-item">
             Sign In
         </igx-drop-down-item>
-        <igx-drop-down-item *ngIf="user != null" routerLink="/my-files"
-                            [disabled]="false" [isHeader]="false" class="dropdown-item">
+        <igx-drop-down-item *ngIf="user != null" routerLink="/my-files" [disabled]="false" [isHeader]="false"
+            class="dropdown-item">
             My Files
         </igx-drop-down-item>
         <a class="menu-item-help" href="https://github.com/brianlagunas/Excel2Json/issues" target="_blank">
@@ -22,8 +25,8 @@
                 Support this Project
             </igx-drop-down-item>
         </a>
-        <igx-drop-down-item (click)="signOut()" *ngIf="user != null" 
-                            [disabled]="false" [isHeader]="false" class="dropdown-item">
+        <igx-drop-down-item (click)="signOut()" *ngIf="user != null" [disabled]="false" [isHeader]="false"
+            class="dropdown-item">
             Sign Out
         </igx-drop-down-item>
     </igx-drop-down>

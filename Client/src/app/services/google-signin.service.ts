@@ -1,5 +1,4 @@
 import { Injectable, NgZone } from '@angular/core';
-import { Observable, ReplaySubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { User } from '../business/user';
 
@@ -9,47 +8,32 @@ import { User } from '../business/user';
 export class GoogleSigninService {
 
   private auth2!: gapi.auth2.GoogleAuthBase;
-  private subject = new ReplaySubject<User | null>(1);
 
   constructor(private ngZone: NgZone) {
-    this.initialize();
+    //this.initialize();
   }
 
-  public observable(): Observable<User | null> {
-    return this.subject.asObservable();
-  }
+  // public async initialize() {
+  //   await this.ensureGapiLoaded();
+  // }
 
-  public async initialize() {
-    await this.ensureGapiLoaded();
-    const isSignedIn = this.auth2.isSignedIn.get();
-    if (isSignedIn) {
-      const user: User = JSON.parse(localStorage.getItem("user")!);
-      this.subject.next(user);
-    }
-    else {
-      this.subject.next(null);
-    }
-  }
-
-  public async signin(): Promise<void> {
+  public async signin(): Promise<User | null> {
     try {
+      await this.ensureGapiLoaded();
       const user = await this.auth2.signIn();
-      await this.validateToken(user);
-      this.createUser(user);
+      const clientUser = await this.validateGoogleLogin(user);
+      return clientUser;
     }
     catch {
-      this.subject.next(null);
+      return null;
     }
   }
 
   public async signout(): Promise<void> {
       await this.auth2.signOut();
-      this.subject.next(null);
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
   }
 
-  async validateToken(user: gapi.auth2.GoogleUser) {
+  async validateGoogleLogin(user: gapi.auth2.GoogleUser): Promise<User> {
     var id_token = user.getAuthResponse().id_token;
 
     let url = `${environment.authUri}/google/`;
@@ -63,18 +47,12 @@ export class GoogleSigninService {
     var resp = await fetch(url, params);
     var result = await resp.json();
 
-    localStorage.setItem("token", result.token);
-  }
+    let clientUser: User = {
+      imageUrl: result.imageUrl,
+      token: result.token
+    }
 
-  private createUser(user: gapi.auth2.GoogleUser) {
-    const profile = user.getBasicProfile();
-    let newUser: User = {
-      name: profile.getName(),
-      image: profile.getImageUrl(),
-    };
-    this.subject.next(newUser);
-
-    localStorage.setItem("user", JSON.stringify(newUser));
+    return clientUser;
   }
 
   ensureGapiLoaded(): Promise<void> {

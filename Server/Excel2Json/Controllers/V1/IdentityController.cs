@@ -50,7 +50,7 @@ namespace Excel2Json.Controllers.v1
             if (!authResponse.Success)
                 return BadRequest(new AuthFailedResponse { Error = authResponse.Error, });
 
-            return Ok(new AuthSuccessResponse { Token = authResponse.Token });
+            return Ok(new AuthSuccessResponse { Token = authResponse.Token, ImageUrl = authResponse.ImageURL });
         }
     }
 }

@@ -2,6 +2,7 @@
 {
     public class AuthSuccessResponse
     {
+        public string ImageUrl { get; set; }
         public string Token { get; set; }
     }
 }

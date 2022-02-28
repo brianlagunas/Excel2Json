@@ -3,21 +3,21 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TokenInterceptorService implements HttpInterceptor {
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private authService: AuthService) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-
-    let token = localStorage.getItem("token");
-    if (token) {
+    const user = this.authService.getSignedInUser();
+    if (user) {
       let tokenizedReq = req.clone({
         setHeaders: {
-          Authorization: "Bearer " + token
+          Authorization: "Bearer " + user.token
         }
       });
 
@@ -39,7 +39,7 @@ export class TokenInterceptorService implements HttpInterceptor {
   }
 
   handle401() {
-    //make sure we are logged out
+    this.authService.signOut();
     this.router.navigateByUrl("/"); //redirect to login screen
   }
 }

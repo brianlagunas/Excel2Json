@@ -13,9 +13,8 @@ import {
   OverlaySettings,
   VerticalAlignment
 } from 'igniteui-angular';
-import { ConcatOperator } from 'igniteui-angular-excel';
 import { User } from '../business/user';
-import { GoogleSigninService } from '../services/google-signin.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-help-menu',
@@ -34,21 +33,20 @@ export class HelpMenuComponent implements OnInit {
     scrollStrategy: new NoOpScrollStrategy()
   };
 
-  constructor(private googleSignInService: GoogleSigninService,
+  constructor(private authService: AuthService,
               private ref: ChangeDetectorRef,
               private router: Router) {
   }
 
   ngOnInit(): void {
-    this.googleSignInService.observable().subscribe(user => {
+    this.authService.observable().subscribe(user => {
       this.user = user;
       this.ref.detectChanges();
     });
   }
 
   signOut() {
-    this.googleSignInService.signout();
-
+    this.authService.signOut();
     if (this.router.url == "/my-files") {
       this.router.navigateByUrl('/')
     }    

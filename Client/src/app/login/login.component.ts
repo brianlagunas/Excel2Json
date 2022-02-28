@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
-import { GoogleSigninService } from '../services/google-signin.service';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +13,6 @@ export class LoginComponent implements OnInit {
   password: string = "";
 
   constructor(private authService: AuthService,
-              private googleSignInService: GoogleSigninService,
               private router: Router) { }
 
   ngOnInit(): void {
@@ -26,7 +24,7 @@ export class LoginComponent implements OnInit {
   }
 
   async loginWithGoogle() {
-      await this.googleSignInService.signin();
-      this.router.navigateByUrl('/my-files');
+    await this.authService.signInGoogle();
+    this.router.navigateByUrl('/my-files');
   }
 }

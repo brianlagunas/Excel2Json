@@ -106,7 +106,7 @@ namespace Excel2Json.Services
 
             var jwtToken = _tokenService.BuildToken(user);
 
-            return new AuthenticationResult { Success = true, Token = jwtToken };
+            return new AuthenticationResult { Success = true, Token = jwtToken, ImageURL = payload.Picture };
         }
     }
 }
