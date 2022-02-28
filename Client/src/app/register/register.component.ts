@@ -11,6 +11,7 @@ export class RegisterComponent implements OnInit {
 
   email: string = "";
   password: string = "";
+  showPassword: boolean = false;
 
   constructor(private authService: AuthService, private router: Router) { }
 
@@ -20,6 +21,10 @@ export class RegisterComponent implements OnInit {
   async register() {
     await this.authService.register(this.email, this.password);    
     this.router.navigateByUrl('/my-files');
+  }
+
+  showHidePassword() {
+    this.showPassword = !this.showPassword;
   }
 
 }

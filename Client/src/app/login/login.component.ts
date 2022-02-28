@@ -11,6 +11,7 @@ export class LoginComponent implements OnInit {
 
   email: string = "";
   password: string = "";
+  showPassword: boolean = false;
 
   constructor(private authService: AuthService,
               private router: Router) { }
@@ -26,5 +27,9 @@ export class LoginComponent implements OnInit {
   async loginWithGoogle() {
     await this.authService.signInGoogle();
     this.router.navigateByUrl('/my-files');
+  }
+
+  showHidePassword() {
+    this.showPassword = !this.showPassword;
   }
 }

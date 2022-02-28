@@ -14,9 +14,9 @@
             </igx-input-group>
             <igx-input-group type="border" class="input">
                 <igx-suffix>
-                    <igx-icon family="material" class="icon">remove_red_eye</igx-icon>
+                    <igx-icon family="material" class="icon" (click)="showHidePassword()">{{ showPassword ? 'visibility_off' : 'visibility' }}</igx-icon>
                 </igx-suffix>
-                <input type="password" [required]="false" igxInput igxInput [(ngModel)]="password"/>
+                <input [type]="showPassword ? 'text' : 'password'" [required]="false" igxInput [(ngModel)]="password"/>
                 <label igxLabel>Password</label>
             </igx-input-group>
             <button igxButton="raised" igxRipple class="user-input" (click)="register()">Create New Account</button>
