@@ -47,7 +47,7 @@ export class AuthService {
 
     public getSignedInUser() : User | null {
         const userJson: string | null = localStorage.getItem("user");
-        let user: User | null = userJson !== null ? JSON.parse(userJson) : null;
+        const user: User | null = userJson !== null ? JSON.parse(userJson) : null;
         return user;
     }
 

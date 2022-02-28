@@ -5,6 +5,7 @@ import { IgxSpreadsheetActionExecutedEventArgs, IgxSpreadsheetActiveTableChanged
 import { environment } from 'src/environments/environment';
 import { CSV } from '../io/csv';
 import { Excel } from '../io/excel';
+import { AuthService } from '../services/auth.service';
 import { FileStorageService } from '../services/file-storage.service';
 import { FileService } from '../services/file.service';
 
@@ -20,6 +21,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
   @ViewChild("loadingDialog")
   loadingDialog!: IgxDialogComponent;
 
+  isUserLoggedIn: boolean = false;
   editorOptions = {theme: 'vs-dark', language: 'javascript', readOnly: true};
   fileName: string = "New File";
   code: string = "[]";
@@ -27,7 +29,8 @@ export class EditorComponent implements OnInit, AfterViewInit {
   shareLink: string = "Creating share link...";
 
   constructor(private fileStorage: FileStorageService,
-              private fileService: FileService) {
+              private fileService: FileService,
+              private authService: AuthService) {
 
   }
 
@@ -36,6 +39,15 @@ export class EditorComponent implements OnInit, AfterViewInit {
       this.fileName = this.fileStorage.file.name;
       this.loadFile(this.fileStorage.file);
     }
+
+    this.authService.observable().subscribe( user => {
+      if (user) {
+        this.isUserLoggedIn = true;
+      }
+      else {
+        this.isUserLoggedIn = false;
+      }
+    });
   }
 
   ngAfterViewInit(): void {

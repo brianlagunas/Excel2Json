@@ -11,7 +11,7 @@
     <button (buttonClick)="onDownloadJsonClicked()" igxButton="outlined" igxRipple [disabled]="false" class="button">
       <span>DOWNLOAD JSON</span>
     </button>
-    <button (buttonClick)="onGetLinkClicked()" igxButton="raised" igxRipple igxButtonColor="var(--igx-primary-700)" igxButtonBackground="var(--igx-grays-900)" [disabled]="false" [igxToggleAction]="dialogWindow" class="button_1">
+    <button (buttonClick)="onGetLinkClicked()" *ngIf="isUserLoggedIn" igxButton="raised" igxRipple igxButtonColor="var(--igx-primary-700)" igxButtonBackground="var(--igx-grays-900)" [disabled]="false" [igxToggleAction]="dialogWindow" class="button_1">
       <span>GET LINK</span>
     </button>
     <app-help-menu class="help-menu"></app-help-menu>
