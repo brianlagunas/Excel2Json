@@ -1,22 +1,6 @@
-<div class="nav-bar row">
-  <div class="row-layout_3 row">
-    <img src="../../assets/images/logo.svg" alt="Excel2Json logo" routerLink="/upload" class="image" />
-    <h5 class="title">|</h5>
-    <h6 class="title_2">{{fileName}}</h6>
-  </div>
-  <div class="row-layout_3 row">
-    <button igxButton="flat" igxRipple igxButtonColor="var(--igx-grays-900)" igxButtonBackground="transparent" [disabled]="false" routerLink="/upload" class="button_1">
-      <span>UPLOAD ANOTHER FILE</span>
-    </button>
-    <button (buttonClick)="onDownloadJsonClicked()" igxButton="outlined" igxRipple [disabled]="false" class="button">
-      <span>DOWNLOAD JSON</span>
-    </button>
-    <button (buttonClick)="onGetLinkClicked()" *ngIf="isUserLoggedIn" igxButton="raised" igxRipple igxButtonColor="var(--igx-primary-700)" igxButtonBackground="var(--igx-grays-900)" [disabled]="false" [igxToggleAction]="dialogWindow" class="button_1">
-      <span>GET LINK</span>
-    </button>
-    <app-help-menu class="help-menu"></app-help-menu>
-  </div>
-</div>
+<app-navbar [title]="fileName" [showUploadButton]="true"
+            [showDownloadButton]="true" (downloadJsonClick)="onDownloadJsonClicked()"
+            [showGetLinkButton]="true" (getLinkClick)="onGetLinkClicked()"></app-navbar>
 <div class="row-layout_2 row">
   <div class="column-layout column">
     <igx-spreadsheet #spreadsheet height="100%" width="100%" style="background-color: white;"

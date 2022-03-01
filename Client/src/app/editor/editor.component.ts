@@ -20,8 +20,9 @@ export class EditorComponent implements OnInit, AfterViewInit {
   spreadsheet!: IgxSpreadsheetComponent;
   @ViewChild("loadingDialog")
   loadingDialog!: IgxDialogComponent;
+  @ViewChild("dialogWindow")
+  dialogWindow!: IgxDialogComponent;
 
-  isUserLoggedIn: boolean = false;
   editorOptions = {theme: 'vs-dark', language: 'javascript', readOnly: true};
   fileName: string = "New File";
   code: string = "[]";
@@ -29,8 +30,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
   shareLink: string = "Creating share link...";
 
   constructor(private fileStorage: FileStorageService,
-              private fileService: FileService,
-              private authService: AuthService) {
+              private fileService: FileService) {
 
   }
 
@@ -39,15 +39,6 @@ export class EditorComponent implements OnInit, AfterViewInit {
       this.fileName = this.fileStorage.file.name;
       this.loadFile(this.fileStorage.file);
     }
-
-    this.authService.observable().subscribe( user => {
-      if (user) {
-        this.isUserLoggedIn = true;
-      }
-      else {
-        this.isUserLoggedIn = false;
-      }
-    });
   }
 
   ngAfterViewInit(): void {
@@ -139,6 +130,8 @@ export class EditorComponent implements OnInit, AfterViewInit {
     if (!fileExists && id != null){
       this.workbookIds.set(activeWorksheetName, id);
     }
+
+    this.dialogWindow.open();
   }
 
   onCopyShareLinkClicked(){

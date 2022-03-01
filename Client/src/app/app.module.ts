@@ -9,11 +9,11 @@ import { IgxButtonModule, IgxDialogModule, IgxIconModule, IgxAvatarModule, IgxIn
 import { FormsModule } from '@angular/forms';
 
 import { UploadComponent } from './upload/upload.component';
-import { HelpModule } from './help-menu/help-menu.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptorService } from './services/token-interceptor.service';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
+import { NavbarModule } from './navbar/navbar.module';
 
 @NgModule({
   declarations: [
@@ -37,7 +37,7 @@ import { RegisterComponent } from './register/register.component';
     IgxAvatarModule,
     IgxInputGroupModule,
     IgxSelectModule,
-    HelpModule
+    NavbarModule,
   ],
   providers: [ {
     provide: HTTP_INTERCEPTORS,

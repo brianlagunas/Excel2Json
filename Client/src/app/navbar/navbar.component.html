@@ -1,0 +1,53 @@
+<div class="nav-bar row">
+  <div class="row row-layout">
+    <img src="../../assets/images/logo.svg" alt="Excel2Json logo" routerLink="/" class="logo-image" />
+    <h5 class="separator" *ngIf="title !== null">|</h5>
+    <h6 class="title" *ngIf="title !== null">{{title}}</h6>
+  </div>
+  <div class="row row-layout">
+    <button *ngIf="showUploadButton" igxButton="flat" igxRipple igxButtonColor="var(--igx-grays-900)"
+      igxButtonBackground="transparent" [disabled]="false" routerLink="/" class="button">
+      <span>UPLOAD ANOTHER FILE</span>
+    </button>
+    <button *ngIf="showDownloadButton" igxButton="outlined" igxRipple [disabled]="false" class="button" (buttonClick)="onDownloadJsonClicked()">
+      <span>DOWNLOAD JSON</span>
+    </button>
+    <button *ngIf="user === null ? false : showGetLinkButton" igxButton="raised" igxRipple igxButtonColor="var(--igx-primary-700)"
+      igxButtonBackground="var(--igx-grays-900)" [disabled]="false" class="button" (buttonClick)="onGetLinkClicked()">
+      <span>GET LINK</span>
+    </button>
+
+    <div class="help-menu">
+      <igx-avatar icon="menu_open" [roundShape]="true" size="small" *ngIf="user === null || user.imageUrl === null"
+        [igxToggleAction]="helpDropDown" [overlaySettings]="overlaySettings" [igxDropDownItemNavigation]="helpDropDown">
+      </igx-avatar>
+      <igx-avatar src="{{user?.imageUrl}}" [roundShape]="true" size="small" *ngIf="user?.imageUrl !== null"
+        [igxToggleAction]="helpDropDown" [overlaySettings]="overlaySettings" [igxDropDownItemNavigation]="helpDropDown">
+      </igx-avatar>
+      <igx-drop-down height="max-content" #helpDropDown class="drop-down">
+        <igx-drop-down-item *ngIf="user == null" routerLink="/login" [disabled]="false" [isHeader]="false"
+          class="dropdown-item">
+          Sign In
+        </igx-drop-down-item>
+        <igx-drop-down-item *ngIf="user != null" routerLink="/my-files" [disabled]="false" [isHeader]="false"
+          class="dropdown-item">
+          My Files
+        </igx-drop-down-item>
+        <a class="menu-item-help" href="https://github.com/brianlagunas/Excel2Json/issues" target="_blank">
+          <igx-drop-down-item [disabled]="false" [isHeader]="false" class="dropdown-item">
+            Submit an Issue
+          </igx-drop-down-item>
+        </a>
+        <a class="menu-item-help" href="https://github.com/sponsors/brianlagunas/" target="_blank">
+          <igx-drop-down-item [disabled]="false" [isHeader]="false" class="dropdown-item">
+            Support this Project
+          </igx-drop-down-item>
+        </a>
+        <igx-drop-down-item (click)="signOut()" *ngIf="user != null" [disabled]="false" [isHeader]="false"
+          class="dropdown-item">
+          Sign Out
+        </igx-drop-down-item>
+      </igx-drop-down>
+    </div>
+  </div>
+</div>

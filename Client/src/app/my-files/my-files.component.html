@@ -1,58 +1,54 @@
-<div class="nav-bar row">
-    <div class="row-layout_3 row">
-      <img src="../../assets/images/logo.svg" alt="Excel2Json logo" routerLink="/upload" class="image" />
-      <h5 class="separator">|</h5>
-      <h6 class="title">My Files</h6>
-    </div>
-    <div class="row-layout_3 row">
-      <button igxButton="flat" igxRipple igxButton="outlined" [disabled]="false" routerLink="/upload" class="button">
-        <span>UPLOAD ANOTHER FILE</span>
-      </button>
-      <app-help-menu class="help-menu"></app-help-menu>
+<app-navbar title="My Files" [showUploadButton]="true"></app-navbar>
+<div class="row-layout_2 row">
+  <div class="column-layout column" style="margin: 25px 0px 0px 0px">
+    <igx-list>
+      <igx-list-item [isHeader]="false" igxRipple igxRippleTarget=".igx-list__item-content" *ngFor="let file of files"
+        (click)="loadFileText(file.text)">
+        <span igxListThumbnail>
+          <igx-avatar icon="insert_drive_file" [roundShape]="false" size="small" class="avatar_file"></igx-avatar>
+        </span>
+        <span igxListLineTitle>{{file.name}}</span>
+        <!-- <span igxListLineSubTitle>Created on Sept. 16, 2021</span> -->
+        <span>
+          <igx-icon igxListAction family="material" class="icon_delete" (click)="deleteFile(file.id)">delete_outline
+          </igx-icon>
+          <igx-icon igxListAction family="material" class="icon_share" (click)="getShareLink(file.id)"
+            [igxToggleAction]="dialogWindow">share</igx-icon>
+          <igx-checkbox igxListAction class="chkBox_canShare" [(ngModel)]="file.canShare"
+            (click)="updateCanShare(file)"></igx-checkbox>
+        </span>
+      </igx-list-item>
+    </igx-list>
+  </div>
+  <div class="column-layout column" style="justify-content: center; align-items: center;">
+    <ngx-monaco-editor *ngIf="code != ''" [options]="editorOptions" [(ngModel)]="code"
+      style="height: 100%; width: 100%;"></ngx-monaco-editor>
+    <div *ngIf="code == ''" class="image_json_group column_json_preview">
+      <img src="../../assets/images/json-preview.svg" class="image_json" />
+      <h6 class="h6">Preview JSON</h6>
+      <p class="igx-typography__subtitle-1 text_json_preview">Select a file to preview</p>
     </div>
   </div>
-  <div class="row-layout_2 row">
-    <div class="column-layout column" style="margin: 25px 0px 0px 0px" >
-        <igx-list>
-            <igx-list-item [isHeader]="false" igxRipple igxRippleTarget=".igx-list__item-content" *ngFor="let file of files" (click)="loadFileText(file.text)">
-                <span igxListThumbnail>
-                    <igx-avatar icon="insert_drive_file" [roundShape]="false" size="small" class="avatar"></igx-avatar>
-                </span>
-                <span igxListLineTitle>{{file.name}}</span>
-                <!-- <span igxListLineSubTitle>Created on Sept. 16, 2021</span> -->
-                <span>
-                    <igx-icon igxListAction family="material" class="icon_delete" (click)="deleteFile(file.id)">delete_outline</igx-icon>
-                    <igx-icon igxListAction family="material" class="icon_share" (click)="getShareLink(file.id)" [igxToggleAction]="dialogWindow">share</igx-icon>
-                    <igx-checkbox igxListAction class="chkBox_canShare" [(ngModel)]="file.canShare" (click)="updateCanShare(file)"></igx-checkbox>
-                </span>
-            </igx-list-item>
-        </igx-list>
-    </div>
-    <div class="column-layout column" style="justify-content: center; align-items: center;">
-        <ngx-monaco-editor *ngIf="code != ''" [options]="editorOptions" [(ngModel)]="code" style="height: 100%; width: 100%;"></ngx-monaco-editor>
-        <div *ngIf="code == ''" class="image_json_group column_json_preview" >
-            <img src="../../assets/images/json-preview.svg" class="image_json" />
-            <h6 class="h6">Preview JSON</h6>
-            <p class="igx-typography__subtitle-1 text_json_preview">Select a file to preview</p>
-        </div>
-    </div>
-  </div>
+</div>
 
-  <igx-dialog [closeOnOutsideSelect]="true" [closeOnEscape]="true" #dialogWindow class="dialog-window">
-    <div>
-      <div class="column-layout_2 column">
-        <div class="row-layout_1 row">
-          <igx-avatar [roundShape]="true" color="var(--igx-grays-800)" bgColor="var(--igx-primary-500)" size="small" icon="check" class="avatar"></igx-avatar>
-          <h5 class="title_1">Link to file created</h5>
-        </div>
-        <div class="row-layout row">
-          <igx-input-group type="box" placeholder class="input-group">
-            <input type="text" id="shareLinkInputField" [required]="false" [disabled]="false" readonly="true" igxInput [value]="shareLink" />
-          </igx-input-group>
-          <button (buttonClick)="onCopyShareLinkClicked()" igxButton="raised" igxRipple [disabled]="false" [igxToggleAction]="dialogWindow" class="button_1">
-            <span>COPY</span>
-          </button>
-        </div>
+<igx-dialog [closeOnOutsideSelect]="true" [closeOnEscape]="true" #dialogWindow class="dialog-window">
+  <div>
+    <div class="column-layout_2 column">
+      <div class="row-layout_1 row">
+        <igx-avatar [roundShape]="true" color="var(--igx-grays-800)" bgColor="var(--igx-primary-500)" size="small"
+          icon="check" class="avatar"></igx-avatar>
+        <h5 class="title_1">Link to file</h5>
+      </div>
+      <div class="row-layout row">
+        <igx-input-group type="box" placeholder class="input-group">
+          <input type="text" id="shareLinkInputField" [required]="false" [disabled]="false" readonly="true" igxInput
+            [value]="shareLink" />
+        </igx-input-group>
+        <button (buttonClick)="onCopyShareLinkClicked()" igxButton="raised" igxRipple [disabled]="false"
+          [igxToggleAction]="dialogWindow" class="button_1">
+          <span>COPY</span>
+        </button>
       </div>
     </div>
-  </igx-dialog>
+  </div>
+</igx-dialog>

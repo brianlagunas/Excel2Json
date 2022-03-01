@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HelpModule } from '../help-menu/help-menu.component';
 import { MyFilesComponent } from './my-files.component';
 import { MyFilesRoutingModule } from './my-files-routing.module';
 import { MonacoEditorModule } from 'ngx-monaco-editor';
-import { IgxAvatarModule, IgxCheckboxModule, IgxDialogModule, IgxIconModule, IgxInputGroupModule, IgxListModule, IgxRippleModule, IgxToggleModule } from 'igniteui-angular';
+import { IgxAvatarModule, IgxButtonModule, IgxCheckboxModule, IgxDialogModule, IgxIconModule, IgxInputGroupModule, IgxListModule, IgxRippleModule, IgxToggleModule } from 'igniteui-angular';
+import { NavbarModule } from '../navbar/navbar.module';
 
 @NgModule({
     declarations: [
@@ -14,8 +14,9 @@ import { IgxAvatarModule, IgxCheckboxModule, IgxDialogModule, IgxIconModule, Igx
     imports: [
       CommonModule,
       FormsModule,
-      HelpModule,
+      NavbarModule,
       MyFilesRoutingModule,
+      IgxButtonModule,
       IgxListModule,
       IgxDialogModule,
       IgxAvatarModule,
