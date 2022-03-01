@@ -1,10 +1,12 @@
 ﻿using Excel2Json.Data;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 
 namespace Excel2Json.Controllers.v1
 {
+    [EnableCors(Startup.ShareCorsPolicy)]
     [Route("api/v1/share")]
     public class ShareController : ControllerBase
     {

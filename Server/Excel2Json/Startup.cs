@@ -20,7 +20,7 @@ namespace Excel2Json
     public class Startup
     {
         readonly string DebugCorsPolicy = "DebugCorsPolicy";
-        readonly string ProductionCorsPolicy = "ProductionCorsPolicy";
+        public const string ShareCorsPolicy = "ShareCorsPolicy";
 
         public Startup(IConfiguration configuration)
         {
@@ -122,7 +122,7 @@ namespace Excel2Json
                            .AllowAnyMethod()
                            .WithExposedHeaders("location");
                 });
-                options.AddPolicy(ProductionCorsPolicy, builder =>
+                options.AddPolicy(ShareCorsPolicy, builder =>
                 {
                     builder.AllowAnyOrigin().WithMethods("Get");
                 });
@@ -155,8 +155,6 @@ namespace Excel2Json
 
             if (env.IsDevelopment())
                 app.UseCors(DebugCorsPolicy);
-            else
-                app.UseCors(ProductionCorsPolicy);
 
             app.UseAuthentication();
             app.UseAuthorization();
