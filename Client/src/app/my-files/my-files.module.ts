@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { MyFilesComponent } from './my-files.component';
 import { MyFilesRoutingModule } from './my-files-routing.module';
 import { MonacoEditorModule } from 'ngx-monaco-editor';
-import { IgxAvatarModule, IgxButtonModule, IgxCheckboxModule, IgxDialogModule, IgxIconModule, IgxInputGroupModule, IgxListModule, IgxRippleModule, IgxToggleModule } from 'igniteui-angular';
+import { IgxAvatarModule, IgxButtonModule, IgxCheckboxModule, IgxDialogModule, IgxIconModule, IgxInputGroupModule, IgxListModule, IgxRippleModule, IgxToggleModule, IgxTooltipModule } from 'igniteui-angular';
 import { NavbarModule } from '../navbar/navbar.module';
 
 @NgModule({
@@ -25,6 +25,7 @@ import { NavbarModule } from '../navbar/navbar.module';
       IgxRippleModule,
       IgxToggleModule,
       IgxCheckboxModule,
+      IgxTooltipModule,
       MonacoEditorModule.forRoot(),
     ]
   })

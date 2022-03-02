@@ -10,12 +10,9 @@
         <span igxListLineTitle>{{file.name}}</span>
         <!-- <span igxListLineSubTitle>Created on Sept. 16, 2021</span> -->
         <span>
-          <igx-icon igxListAction family="material" class="icon_delete" (click)="deleteFile(file.id)">delete_outline
-          </igx-icon>
-          <igx-icon igxListAction family="material" class="icon_share" (click)="getShareLink(file.id)"
-            [igxToggleAction]="dialogWindow">share</igx-icon>
-          <igx-checkbox igxListAction class="chkBox_canShare" [(ngModel)]="file.canShare"
-            (click)="updateCanShare(file)"></igx-checkbox>
+          <igx-icon [igxTooltipTarget]="deleteTooltipRef" igxListAction family="material" class="icon_delete" (click)="deleteFile(file.id)">delete_outline</igx-icon>
+          <igx-icon [igxToggleAction]="dialogWindow" [igxTooltipTarget]="shareLinkTooltipRef" igxListAction family="material" class="icon_share" (click)="getShareLink(file.id)" >share</igx-icon>
+          <igx-checkbox [igxTooltipTarget]="canShareTooltipRef" igxListAction class="chkBox_canShare" [(ngModel)]="file.canShare" (click)="updateCanShare(file)"></igx-checkbox>
         </span>
       </igx-list-item>
     </igx-list>
@@ -29,6 +26,18 @@
       <p class="igx-typography__subtitle-1 text_json_preview">Select a file to preview</p>
     </div>
   </div>
+</div>
+
+<div #deleteTooltipRef="tooltip" igxTooltip>
+  Delete File
+</div>
+
+<div #shareLinkTooltipRef="tooltip" igxTooltip>
+  Get Share Link
+</div>
+
+<div #canShareTooltipRef="tooltip" igxTooltip>
+  Enable/Disable Sharing
 </div>
 
 <igx-dialog [closeOnOutsideSelect]="true" [closeOnEscape]="true" #dialogWindow class="dialog-window">
