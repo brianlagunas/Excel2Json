@@ -63,4 +63,12 @@ export class RegisterComponent implements OnInit {
     //return group level error
     return { passwordMistmatch: true }
   }
+
+  fieldHasError(field: string, error: string) {
+    return ((this.form.get(field)?.touched || this.form.get(field)?.dirty) && this.form.get(field)?.errors?.[error]);
+  }
+
+  fieldHasErrors(field: string) {
+    return ((this.form.get(field)?.touched || this.form.get(field)?.dirty) && this.form.get(field)?.errors != null);
+  }
 }

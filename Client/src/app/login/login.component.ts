@@ -45,4 +45,8 @@ export class LoginComponent implements OnInit {
   showHidePassword() {
     this.showPassword = !this.showPassword;
   }
+
+  fieldHasError(field: string, error: string) {
+    return ((this.form.get(field)?.touched || this.form.get(field)?.dirty) && this.form.get(field)?.errors?.[error]);
+  }
 }
