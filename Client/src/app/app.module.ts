@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { IgxButtonModule, IgxDialogModule, IgxIconModule, IgxAvatarModule, IgxInputGroupModule,
          IgxSelectModule, IgxRippleModule, IgxCheckboxModule } from 'igniteui-angular';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { UploadComponent } from './upload/upload.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -20,24 +20,25 @@ import { NavbarModule } from './navbar/navbar.module';
     AppComponent,
     UploadComponent,
     LoginComponent,
-    RegisterComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
+    FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
     HammerModule,
     AppRoutingModule,
+    NavbarModule,
     BrowserAnimationsModule,
     IgxButtonModule,
     IgxRippleModule,
     IgxDialogModule,
     IgxIconModule,
     IgxCheckboxModule,
-    FormsModule,
     IgxAvatarModule,
     IgxInputGroupModule,
     IgxSelectModule,
-    NavbarModule,
   ],
   providers: [ {
     provide: HTTP_INTERCEPTORS,

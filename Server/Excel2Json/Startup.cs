@@ -42,8 +42,15 @@ namespace Excel2Json
         {
             services.AddDbContext<ApplicationDbContext>();
 
-            services.AddIdentity<IdentityUser, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddIdentity<IdentityUser, IdentityRole>(options =>
+            {
+                options.Password.RequireDigit = false;
+                options.Password.RequiredLength = 6;
+                options.Password.RequiredUniqueChars = 0;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+            }).AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.Configure<JwtOptions>(Configuration.GetSection(JwtOptions.Jwt));
             services.Configure<GoogleOptions>(Configuration.GetSection(GoogleOptions.Google));

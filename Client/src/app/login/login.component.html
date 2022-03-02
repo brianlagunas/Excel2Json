@@ -1,29 +1,34 @@
 <div class="group-logo column">
-	<img routerLink="/" src="../../assets/images/logo-big.svg" class="image-logo" style="cursor: pointer;" />
+    <img routerLink="/" src="../../assets/images/logo-big.svg" class="image-logo" style="cursor: pointer;" />
 </div>
 <div class="form-container">
-    <div class="group row">
-        <div class="group_2 column">
-            <h5 class="h5">Sign in</h5>
-            <div class="group_1 row">
-                <button igxButton="outlined" igxRipple class="button" (click)="loginWithGoogle()">Google</button>
-                <!-- <button igxButton="outlined" igxRipple class="button_1">Github</button> -->
+    <form [formGroup]="form" (ngSubmit)="signIn()">
+        <div class="group row">
+            <div class="group_2 column">
+                <h5 class="h5">Sign in</h5>
+                <div class="group_1 row">
+                    <button igxButton="outlined" igxRipple class="button" (click)="loginWithGoogle()">Google</button>
+                    <!-- <button igxButton="outlined" igxRipple class="button_1">Github</button> -->
+                </div>
+                <igx-input-group type="border" class="user-input">
+                    <input type="text" [required]="false" igxInput formControlName="email"/>
+                    <label igxLabel>Email</label>
+                    <igx-hint *ngIf="(form.get('email')?.touched || form.get('email')?.dirty)&& form.get('email')?.errors?.required">Please enter your email.</igx-hint>
+                    <igx-hint *ngIf="(form.get('email')?.touched || form.get('email')?.dirty) && form.get('email')?.errors?.email">Please enter a valid email address.</igx-hint>
+                </igx-input-group>
+                <igx-input-group type="border" class="user-input">
+                    <igx-suffix>
+                        <igx-icon family="material" class="icon" (click)="showHidePassword()">{{ showPassword ?
+                            'visibility' : 'visibility_off' }}</igx-icon>
+                    </igx-suffix>
+                    <input [type]="showPassword ? 'text' : 'password'" [required]="false" igxInput formControlName="password"/>
+                    <label igxLabel>Password</label>
+                    <igx-hint *ngIf="(form.get('password')?.touched || form.get('password')?.dirty) && form.get('password')?.errors?.required">Please enter your password.</igx-hint>
+                </igx-input-group>
+                <button igxButton="raised" igxRipple class="user-input" (click)="signIn()">Sign in</button>
+                <!-- <a target="_blank" class="igx-typography__body-2 hyperlink">Forgot password?</a> -->
+                <button igxButton="outlined" igxRipple class="user-input" routerLink="/register">Create New Account</button>
             </div>
-            <igx-input-group type="border" class="user-input">
-                <input type="text" [required]="false" igxInput [(ngModel)]="email"/>
-                <label igxLabel>Email</label>
-            </igx-input-group>
-            <igx-input-group type="border" class="user-input">
-                <igx-suffix>
-                    <igx-icon family="material" class="icon" (click)="showHidePassword()">{{ showPassword ? 'visibility_off' : 'visibility' }}</igx-icon>
-                </igx-suffix>
-                <input [type]="showPassword ? 'text' : 'password'" [required]="false" igxInput [(ngModel)]="password"/>
-                <label igxLabel>Password</label>
-            </igx-input-group>
-            <!-- <igx-checkbox labelPosition="after" class="checkbox">Keep me signed in</igx-checkbox> -->
-            <button igxButton="raised" igxRipple class="user-input" (click)="signIn()">Sign in</button>
-            <a target="_blank" class="igx-typography__body-2 hyperlink">Forgot password?</a>
-            <button igxButton="outlined" igxRipple class="user-input" routerLink="/register">Create New Account</button>
         </div>
-    </div>
+    </form>
 </div>
