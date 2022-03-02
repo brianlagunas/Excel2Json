@@ -34,6 +34,8 @@ namespace Excel2Json.Services
             var key = Encoding.ASCII.GetBytes(_jwtOptions.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
+                Audience = _jwtOptions.Audience,
+                Issuer = _jwtOptions.Issuer,
                 Subject = new ClaimsIdentity(new[]
                 {
                     new Claim("id", user.Id),

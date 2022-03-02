@@ -68,12 +68,10 @@ namespace Excel2Json
                 {
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtOptions.Secret)),
-                    ValidateIssuer = false,
+                    ValidateIssuer = true,
                     ValidIssuer = jwtOptions.Issuer,
-                    ValidateAudience = false,
-                    ValidAudience = jwtOptions.Audience,
-                    RequireExpirationTime = false,
-                    ValidateLifetime = true,
+                    ValidateAudience = true,
+                    ValidAudience = jwtOptions.Audience
                 };
             });
 
