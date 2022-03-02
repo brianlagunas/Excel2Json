@@ -11,6 +11,7 @@ import { AuthService } from '../services/auth.service';
 export class LoginComponent implements OnInit {
 
   showPassword: boolean = false;
+  serverErrorMessage: string = "";
 
   form: FormGroup = new FormGroup({
     email: new FormControl("", [Validators.required, Validators.email]),
@@ -25,8 +26,13 @@ export class LoginComponent implements OnInit {
 
   async signIn() {
     if (this.form.valid) {
-      await this.authService.signIn(this.form.value.email, this.form.value.password);
-      this.router.navigateByUrl('/my-files');
+      try {
+        await this.authService.signIn(this.form.value.email, this.form.value.password);
+        this.router.navigateByUrl('/my-files');
+      }
+      catch (error: any) {
+        this.serverErrorMessage = error;
+      }      
     }
     else {
       Object.keys(this.form.controls).forEach(field => {

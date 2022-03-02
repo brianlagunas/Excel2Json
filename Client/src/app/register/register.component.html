@@ -35,8 +35,8 @@
                     <label igxLabel>Confirm Password</label>
                     <igx-hint *ngIf="fieldHasErrors('passwordConfirm')">Passwords do not match.</igx-hint>
                 </igx-input-group>
-                <button type="submit" igxButton="raised" igxRipple class="user-input" >Create
-                    New Account</button>
+                <span class="error" *ngIf="serverErrorMessage">{{serverErrorMessage}}</span>
+                <button type="submit" igxButton="raised" igxRipple class="user-input" >Create New Account</button>
                 <a routerLink="/login" class="igx-typography__body-2 hyperlink">Already have an account?</a>
             </div>
         </div>

@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, ReplaySubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -6,7 +6,7 @@ import { User } from '../business/user';
 import { GoogleSigninService } from './google-signin.service';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class AuthService {
     private subject = new ReplaySubject<User | null>(1);
@@ -22,7 +22,15 @@ export class AuthService {
 
     public async signIn(email: string, password: string) {
         let url = `${environment.authUri}/login`;
-        await this.signInOrRegister(url, email, password);
+        try {
+            await this.signInOrRegister(url, email, password);
+        }
+        catch (error: any) {
+            if (error.error.error) {
+                throw error.error.error;
+            }            
+            throw "Error code: " + error.status;
+        }
     }
 
     public async signInGoogle() {
@@ -42,24 +50,33 @@ export class AuthService {
 
     public async register(email: string, password: string) {
         let url = `${environment.authUri}/register`;
-        await this.signInOrRegister(url, email, password);
+
+        try {
+            await this.signInOrRegister(url, email, password);
+        }
+        catch (error: any) {
+            if (error.error.error) {
+                throw error.error.error;
+            }            
+            throw "Error code: " + error.status;
+        }
     }
 
-    public getSignedInUser() : User | null {
+    public getSignedInUser(): User | null {
         const userJson: string | null = localStorage.getItem("user");
         const user: User | null = userJson !== null ? JSON.parse(userJson) : null;
         return user;
     }
 
     private async signInOrRegister(url: string, email: string, password: string) {
-        var headers = new HttpHeaders({'Content-Type': 'application/json; charset=utf-8'});
+        var headers = new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8' });
 
         var body = JSON.stringify({
             email: email,
             password: password
         });
 
-        var user = await this.httpClient.post<User>(url, body, { headers }).toPromise();             
+        var user = await this.httpClient.post<User>(url, body, { headers }).toPromise();
         this.setUser(user);
     }
 

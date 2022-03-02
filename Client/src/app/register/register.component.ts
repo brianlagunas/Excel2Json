@@ -12,6 +12,7 @@ export class RegisterComponent implements OnInit {
 
   showPassword: boolean = false;
   showConfirmPassword: boolean = false;
+  serverErrorMessage: string = "";
 
   form: FormGroup = new FormGroup({
     email: new FormControl("", [ Validators.required, Validators.email]),      
@@ -25,8 +26,13 @@ export class RegisterComponent implements OnInit {
 
   async register() {
     if (this.form.valid){
-      await this.authService.register(this.form.value.email, this.form.value.password);    
-      this.router.navigateByUrl('/my-files');
+      try {
+        await this.authService.register(this.form.value.email, this.form.value.password);    
+        this.router.navigateByUrl('/my-files');
+      }
+      catch (error: any) {
+        this.serverErrorMessage = error;
+      }      
     }
     else {
       Object.keys(this.form.controls).forEach(field => {

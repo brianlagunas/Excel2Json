@@ -27,11 +27,11 @@ namespace Excel2Json.Services
         {
             var user = await _userManager.FindByEmailAsync(email);
             if (user == null)
-                return new AuthenticationResult() { Error = "User does not exist.", Success = false };
+                return new AuthenticationResult() { Error = "The email or password you entered is invalid.", Success = false };
 
             var userHasValidPassword = await _userManager.CheckPasswordAsync(user, password);
             if (!userHasValidPassword)
-                return new AuthenticationResult() { Error = "Username/Password combination is invalid", Success = false };
+                return new AuthenticationResult() { Error = "The email or password you entered is invalid.", Success = false };
 
             var token = _tokenService.BuildToken(user);
 
@@ -46,7 +46,7 @@ namespace Excel2Json.Services
         {
             var existingUser = await _userManager.FindByEmailAsync(email);
             if (existingUser != null)
-                return new AuthenticationResult() { Error = "User with email already exists.", Success = false };
+                return new AuthenticationResult() { Error = "User already exists.", Success = false };
 
             var newUser = new IdentityUser()
             {
