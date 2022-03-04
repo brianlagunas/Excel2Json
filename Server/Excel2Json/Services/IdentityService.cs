@@ -17,11 +17,11 @@ namespace Excel2Json.Services
 
     public class IdentityService : IIdentityService
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly ITokenService _tokenService;
         private readonly ApplicationDbContext _context;
 
-        public IdentityService(UserManager<IdentityUser> userManager, ITokenService tokenService, ApplicationDbContext context)
+        public IdentityService(UserManager<ApplicationUser> userManager, ITokenService tokenService, ApplicationDbContext context)
         {
             _userManager = userManager;
             _tokenService = tokenService;
@@ -60,7 +60,7 @@ namespace Excel2Json.Services
             if (existingUser != null)
                 return new AuthenticationResult() { Error = "User already exists.", Success = false };
 
-            var user = new IdentityUser()
+            var user = new ApplicationUser()
             {
                 Email = email,
                 UserName = email,
@@ -90,11 +90,14 @@ namespace Excel2Json.Services
                 user = await _userManager.FindByEmailAsync(payload.Email);
                 if (user == null)
                 {
-                    user = new IdentityUser
+                    user = new ApplicationUser
                     {
                         Email = payload.Email,
                         UserName = payload.Email,
                         EmailConfirmed = payload.EmailVerified,
+                        ImageUrl = payload.Picture,
+                        FirstName = payload.GivenName,
+                        LastName = payload.FamilyName,
                     };
 
                     await _userManager.CreateAsync(user);
@@ -111,7 +114,6 @@ namespace Excel2Json.Services
                 return new AuthenticationResult { Success = false, Error = "User Authentication Failed" };
 
             var result = await CreateAuthenticationResultAsync(user);
-            result.ImageURL = payload.Picture;
             return result;
         }
 
@@ -128,10 +130,10 @@ namespace Excel2Json.Services
             return await CreateAuthenticationResultAsync(user);
         }
 
-        private async Task<AuthenticationResult> CreateAuthenticationResultAsync(IdentityUser user)
+        private async Task<AuthenticationResult> CreateAuthenticationResultAsync(ApplicationUser user)
         {
             var tokens = await _tokenService.CreateAuthenticatedTokens(user);
-            return new AuthenticationResult() { Success = true, Token = tokens.Token, RefreshToken = tokens.RefreshToken };
+            return new AuthenticationResult() { Success = true, Token = tokens.Token, RefreshToken = tokens.RefreshToken, ImageURL = user.ImageUrl };
         }
     }
 }

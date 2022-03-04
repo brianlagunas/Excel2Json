@@ -3,7 +3,6 @@ using Excel2Json.Domain;
 using Excel2Json.Extensions;
 using Excel2Json.Options;
 using Google.Apis.Auth;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -17,7 +16,7 @@ namespace Excel2Json.Services
 {
     public interface ITokenService
     {
-        Task<(string Token, string RefreshToken)> CreateAuthenticatedTokens(IdentityUser user);
+        Task<(string Token, string RefreshToken)> CreateAuthenticatedTokens(ApplicationUser user);
         Task<(bool IsValid, string UserId)> ValidateTokenAsync(string token, string refreshToken);
         Task<GoogleJsonWebSignature.Payload> ValidateGoogleTokenAsync(string token);
     }
@@ -35,7 +34,7 @@ namespace Excel2Json.Services
             _context = applicationDbContext;
         }
 
-        public async Task<(string Token, string RefreshToken)> CreateAuthenticatedTokens(IdentityUser user)
+        public async Task<(string Token, string RefreshToken)> CreateAuthenticatedTokens(ApplicationUser user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_jwtOptions.Secret);
