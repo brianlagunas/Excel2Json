@@ -38,6 +38,7 @@ export class AuthService {
     public async signInGoogle() {
         try {
             const result = await this.googleSignInService.signin();
+            console.log(result);
             this.saveAuthenticatedUser(result);
             this.isGoogleSignIn = true;
         }

@@ -15,12 +15,12 @@ export class TokenService {
     localStorage.setItem(REFRESHTOKEN_KEY, refreshToken);
   }
 
-  public getToken() {
+  public getToken(): string | null {
     return localStorage.getItem(TOKEN_KEY);
   }
 
-  public getRefreshToken() {
-    localStorage.getItem(REFRESHTOKEN_KEY);
+  public getRefreshToken(): string | null {
+    return localStorage.getItem(REFRESHTOKEN_KEY);
   }
 
   public clearTokens() {
