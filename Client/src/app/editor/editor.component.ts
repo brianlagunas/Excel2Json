@@ -5,7 +5,8 @@ import { IgxSpreadsheetActionExecutedEventArgs, IgxSpreadsheetActiveTableChanged
 import { environment } from 'src/environments/environment';
 import { CSV } from '../io/csv';
 import { Excel } from '../io/excel';
-import { FileStorageService } from '../services/file-storage.service';
+import { FileStorageService } from '../_services/file-storage.service';
+import { FileService } from '../_services/file.service';
 
 @Component({
   selector: 'app-editor',
@@ -18,14 +19,17 @@ export class EditorComponent implements OnInit, AfterViewInit {
   spreadsheet!: IgxSpreadsheetComponent;
   @ViewChild("loadingDialog")
   loadingDialog!: IgxDialogComponent;
+  @ViewChild("dialogWindow")
+  dialogWindow!: IgxDialogComponent;
 
   editorOptions = {theme: 'vs-dark', language: 'javascript', readOnly: true};
   fileName: string = "New File";
   code: string = "[]";
-  workbookShareLinks: Map<string, string> = new Map<string, string>();
+  workbookIds: Map<string, string> = new Map<string, string>();
   shareLink: string = "Creating share link...";
 
-  constructor(private fileStorage: FileStorageService) {
+  constructor(private fileStorage: FileStorageService,
+              private fileService: FileService) {
 
   }
 
@@ -101,29 +105,32 @@ export class EditorComponent implements OnInit, AfterViewInit {
   }
 
   async onGetLinkClicked() {
-    let url = environment.baseUri;
-    let params = {
-      headers: {
-        "content-type": "application/json; charset=utf-8"
-      },
-      body: JSON.stringify(this.code),
-      method: "POST"
+    let id = null;
+    const activeWorksheetName = this.spreadsheet.activeWorksheet.name;    
+
+    let fileExists = false;    
+    if (this.workbookIds.has(activeWorksheetName)){
+      id = this.workbookIds.get(activeWorksheetName)!;
+
+      await this.fileService.updateFile({
+        id: id,
+        name: activeWorksheetName,
+        text: this.code,
+        canShare: true
+      });
+
+      fileExists = true;
+    } else {
+      id = await this.fileService.CreateFile(activeWorksheetName, this.code);
     }
 
-    let shareLinkExists = false;
-    const activeWorksheetName = this.spreadsheet.activeWorksheet.name;
-    if (this.workbookShareLinks.has(activeWorksheetName)){
-      url = this.workbookShareLinks.get(activeWorksheetName)!;
-      params.method = "PUT";
-      shareLinkExists = true
+    this.shareLink = `${environment.shareUri}/${id}`;
+
+    if (!fileExists && id != null){
+      this.workbookIds.set(activeWorksheetName, id);
     }
 
-    var resp = await fetch(url, params);
-    this.shareLink = resp.headers.get("location")!;
-
-    if (!shareLinkExists){
-      this.workbookShareLinks.set(activeWorksheetName, this.shareLink);
-    }
+    this.dialogWindow.open();
   }
 
   onCopyShareLinkClicked(){

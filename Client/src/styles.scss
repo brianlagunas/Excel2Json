@@ -23,12 +23,17 @@ $custom-palette: igx-palette(
 $include: (igx-avatar,
           igx-navbar,
           igx-ripple,
+          igx-list,
           igx-icon,
           igx-overlay,
           igx-button,
+          igx-label,
           igx-dialog,
           igx-input-group,
-          igx-drop-down);
+          igx-input,
+          igx-checkbox,
+          igx-drop-down,
+          igx-tooltip);
 
 @include igx-theme($palette: $custom-palette,
                    $schema: $dark-fluent-schema,

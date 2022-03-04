@@ -1,0 +1,146 @@
+  :host {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .row {
+    display: flex;
+  }
+
+  .row-layout {
+    align-items: flex-end;
+    position: relative;
+    min-width: 50px;
+  }
+
+  .row-layout_1 {
+    margin: 0 0 24px;
+    align-items: center;
+    position: relative;
+    min-width: 50px;
+  }
+
+  .row-layout_2 {
+    flex: 1 1 0;
+    align-items: stretch;
+    min-height: 50px;
+    position: relative;
+    min-width: 50px;
+  }
+
+  .column {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .column-layout {
+    overflow: auto;
+    flex: 1 1 0;
+    align-items: stretch;
+    min-height: 50px;
+    min-width: 50px;
+  }
+
+  /* JSON Preview */
+
+  .column_json_preview {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .image_json {
+    min-width: 0;
+    min-height: 0;
+    width: 220px;
+    height: 160px;
+    flex-shrink: 0;
+    object-fit: cover;
+  }
+
+  .text_json_preview {
+    margin: 8px 0 20px;
+    color: var(--igx-grays-800);
+    min-width: min-content;
+    height: max-content;
+    text-align: center;
+  }
+
+  /* List */
+
+  .h6 {
+    margin: 30px 0 0;
+    min-width: min-content;
+    height: max-content;
+    text-align: center;
+  }
+
+  .image_json_group {
+    align-items: center;
+    min-width: 50px;
+    min-height: 50px;
+  }
+
+  .avatar_file {
+    margin: 0 10px 0 0;
+    background-color: var(--igx-primary-500);
+    color: var(--igx-grays-800);
+  }  
+
+  .icon_share {
+    margin: 0 0 0 16px;
+    width: 24px;
+    height: 24px;
+    font-size: 24px;
+  }
+  .icon_delete {
+    width: 24px;
+    height: 24px;
+    font-size: 24px;
+  }
+
+  .chkBox_canShare {
+    margin: 0 0 0 16px;
+  }
+
+  /* Dialog */
+
+  .dialog-window {
+    min-width: 0;
+    height: 165px;
+    flex: 0 0 auto;
+  }
+
+  .column-layout_2 {
+    margin: 30px 12px 17px;
+    align-items: stretch;
+    min-height: 50px;
+    position: relative;
+    min-width: 50px;
+  }
+
+  .avatar {
+    margin: 0 10px 0 0;
+    flex: 0 0 auto;
+  }
+
+  .title_1 {
+    color: var(--igx-grays-900);
+    height: max-content;
+    min-width: min-content;
+    flex: 0 0 auto;
+  }
+  
+  .input-group {
+    min-width: 460px;
+    margin: 0 16px 0 0;
+    height: max-content;
+    flex: 0 0 auto;
+  }
+
+  .button_1 {
+    min-width: min-content;
+    height: max-content;
+    flex: 0 0 auto;
+  }

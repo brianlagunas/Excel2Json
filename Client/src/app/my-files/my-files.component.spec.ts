@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HelpMenuComponent } from './help-menu.component';
+import { MyFilesComponent } from './my-files.component';
 
-describe('HelpMenuComponent', () => {
-  let component: HelpMenuComponent;
-  let fixture: ComponentFixture<HelpMenuComponent>;
+describe('MyFilesComponent', () => {
+  let component: MyFilesComponent;
+  let fixture: ComponentFixture<MyFilesComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ HelpMenuComponent ]
+      declarations: [ MyFilesComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(HelpMenuComponent);
+    fixture = TestBed.createComponent(MyFilesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,0 +1,73 @@
+  :host {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .nav-bar {
+    justify-content: space-between;
+    padding: 0 24px;
+    min-height: 60px;
+    background-color: var(--igx-secondary-500);
+    position: relative;
+    min-width: 50px;
+    align-items: center;
+  }
+
+  .row {
+    display: flex;
+  }
+
+  .row-layout {
+    align-items: center;
+    position: relative;
+    min-width: 50px;
+  }
+
+  .logo-image {
+    width: 138px;
+    height: 24px;
+    object-fit: none;
+    min-width: 0;
+    min-height: 0;
+    flex: 0 0 auto;
+    cursor: pointer;
+  }
+
+  .separator {
+    margin: 0 16px;
+    color: var(--igx-grays-400);
+    height: max-content;
+    min-width: min-content;
+    flex: 0 0 auto;
+  }
+
+  .title {
+    height: max-content;
+    min-width: min-content;
+    flex: 0 0 auto;
+  }
+
+  .button {
+    margin: 0 8px 0 8px;
+    min-width: min-content;
+    height: max-content;
+    flex: 0 0 auto;
+  }
+
+  .help-menu {
+    margin: 0 0 0 16px;
+    min-width: min-content;
+    height: max-content;
+    flex: 0 0 auto;
+  }
+
+  .menu-item-help {
+      color: white;
+      text-decoration: none;
+  }
+
+  igx-avatar {
+    cursor: pointer;
+  }
