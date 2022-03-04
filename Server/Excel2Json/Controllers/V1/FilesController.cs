@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Excel2Json.Domain;
 using Excel2Json.Contracts.v1.Requests;
 using Excel2Json.Contracts.v1.Responses;
+using Microsoft.EntityFrameworkCore;
 
 namespace Excel2Json.Controllers.v1
 {
@@ -24,9 +25,9 @@ namespace Excel2Json.Controllers.v1
         }
 
         [HttpGet("{id}")]
-        public IActionResult Get([FromRoute] Guid id)
+        public async Task<IActionResult> Get([FromRoute] Guid id)
         {
-            var file = _context.Files.FirstOrDefault(x => x.Id == id);
+            var file = await _context.Files.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
             if (file == null)
                 return NotFound();
 
@@ -41,7 +42,7 @@ namespace Excel2Json.Controllers.v1
         public IActionResult GetFiles()
         {
             var userId = HttpContext.GetUserId();
-            var files = _context.Files.Where(f => f.UserId == userId);
+            var files = _context.Files.AsNoTracking().Where(f => f.UserId == userId);
             return Ok(files);
         }
 
@@ -68,7 +69,7 @@ namespace Excel2Json.Controllers.v1
         [HttpPut("{id}")]
         public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateFileRequest fileRequest)
         {
-            var file = _context.Files.FirstOrDefault(x => x.Id == id);
+            var file = await _context.Files.FirstOrDefaultAsync(x => x.Id == id);
             if (file == null)
                 return NotFound();
 
@@ -86,9 +87,9 @@ namespace Excel2Json.Controllers.v1
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete([FromRoute]Guid id)
+        public async Task<IActionResult> Delete([FromRoute]Guid id)
         {
-            var file = _context.Files.FirstOrDefault(x => x.Id == id);
+            var file = await _context.Files.FirstOrDefaultAsync(x => x.Id == id);
             if (file == null)
                 return NotFound();
 
@@ -97,7 +98,7 @@ namespace Excel2Json.Controllers.v1
                 return Unauthorized("User does not have access to this file.");
 
             _context.Files.Remove(file);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return Ok(file);
         }

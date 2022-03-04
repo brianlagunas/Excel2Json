@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { IgxDialogComponent } from 'igniteui-angular';
 import { Delimiter } from '../business/delimiter';
-import { FileStorageService } from '../services/file-storage.service';
+import { FileStorageService } from '../_services/file-storage.service';
 
 @Component({
   selector: 'app-upload',

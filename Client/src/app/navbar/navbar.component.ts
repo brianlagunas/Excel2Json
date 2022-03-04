@@ -1,9 +1,8 @@
 
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Router } from '@angular/router';
 import { ConnectedPositioningStrategy, HorizontalAlignment, NoOpScrollStrategy, OverlaySettings, VerticalAlignment } from 'igniteui-angular';
 import { User } from '../business/user';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../_services/auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -31,8 +30,7 @@ export class NavbarComponent implements OnInit {
   };
 
   constructor(private authService: AuthService,
-              private ref: ChangeDetectorRef,
-              private router: Router) { }
+              private ref: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.authService.observable().subscribe(user => {
@@ -49,10 +47,7 @@ export class NavbarComponent implements OnInit {
     this.getLinkClick.emit();
   }
 
-  signOut() {
-    this.authService.signOut();
-    if (this.router.url == "/my-files") {
-      this.router.navigateByUrl('/')
-    }    
+  async signOut() {
+    await this.authService.signOut();  
   }
 }

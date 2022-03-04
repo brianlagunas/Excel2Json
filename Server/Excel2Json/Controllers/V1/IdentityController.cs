@@ -5,6 +5,8 @@ using Excel2Json.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
+using Excel2Json.Extensions;
 
 namespace Excel2Json.Controllers.v1
 {
@@ -23,34 +25,56 @@ namespace Excel2Json.Controllers.v1
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(new AuthFailedResponse { Error = ModelState.Values.First().Errors.First().ErrorMessage });
+                return BadRequest(new AuthResponse { Error = ModelState.Values.First().Errors.First().ErrorMessage });
             }
 
-            var authResponse = await _identityService.Register(request.Email, request.Password);
+            var authResponse = await _identityService.RegisterAsync(request.Email, request.Password);
             if (!authResponse.Success)
-                return BadRequest(new AuthFailedResponse { Error = authResponse.Error, });
+                return BadRequest(new AuthResponse { Error = authResponse.Error, });
 
-            return Ok(new AuthSuccessResponse { Token = authResponse.Token });
+            return Ok(new AuthResponse { IsAuthenticated = true, Token = authResponse.Token, RefreshToken = authResponse.RefreshToken });
         }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
-            var authResponse = await _identityService.Login(request.Email, request.Password);
+            var authResponse = await _identityService.LoginAsync(request.Email, request.Password);
             if (!authResponse.Success)
-                return BadRequest(new AuthFailedResponse { Error = authResponse.Error, });
+                return BadRequest(new AuthResponse { Error = authResponse.Error, });
 
-            return Ok(new AuthSuccessResponse { Token = authResponse.Token });
+            return Ok(new AuthResponse { IsAuthenticated = true, Token = authResponse.Token, RefreshToken = authResponse.RefreshToken });
+        }
+
+        [Authorize]
+        [HttpPost("logout")]
+        public async Task<IActionResult> Logout()
+        {
+            string id = HttpContext.GetUserId();
+            var authResponse = await _identityService.LogoutAsync(id);
+            if (!authResponse.Success)
+                return BadRequest(new AuthResponse { Error = authResponse.Error, });
+
+            return Ok();
         }
 
         [HttpPost("google")]
         public async Task<IActionResult> GoogleLogin([FromBody] GoogleSignInRequest request)
         {
-            var authResponse = await _identityService.GoogleLogin(request.Token);
+            var authResponse = await _identityService.GoogleLoginAsync(request.Token);
             if (!authResponse.Success)
-                return BadRequest(new AuthFailedResponse { Error = authResponse.Error, });
+                return BadRequest(new AuthResponse { Error = authResponse.Error, });
 
-            return Ok(new AuthSuccessResponse { Token = authResponse.Token, ImageUrl = authResponse.ImageURL });
+            return Ok(new AuthResponse { IsAuthenticated = true, Token = authResponse.Token, RefreshToken = authResponse.RefreshToken, ImageUrl = authResponse.ImageURL });
+        }
+
+        [HttpPost("refresh")]
+        public async Task<IActionResult> Refresh([FromBody] RefreshTokenRequest request)
+        {
+            var authResponse = await _identityService.RefreshTokenAsync(request.Token, request.RefreshToken);
+            if (!authResponse.Success)
+                return BadRequest(new AuthResponse { Error = authResponse.Error, });
+
+            return Ok(new AuthResponse { IsAuthenticated = true, Token = authResponse.Token, RefreshToken = authResponse.RefreshToken });
         }
     }
 }

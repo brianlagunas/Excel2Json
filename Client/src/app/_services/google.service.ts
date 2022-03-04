@@ -1,6 +1,7 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, NgZone } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { User } from '../business/user';
+import { AuthResult } from '../_contracts/auth-result';
 
 @Injectable({
   providedIn: 'root'
@@ -9,50 +10,29 @@ export class GoogleSigninService {
 
   private auth2!: gapi.auth2.GoogleAuthBase;
 
-  constructor(private ngZone: NgZone) {
-    //this.initialize();
+  constructor(private httpClient: HttpClient, private ngZone: NgZone) {
   }
 
-  // public async initialize() {
-  //   await this.ensureGapiLoaded();
-  // }
-
-  public async signin(): Promise<User | null> {
-    try {
-      await this.ensureGapiLoaded();
-      const user = await this.auth2.signIn();
-      const clientUser = await this.validateGoogleLogin(user);
-      return clientUser;
-    }
-    catch {
-      return null;
-    }
+  public async signin(): Promise<AuthResult> {
+    await this.ensureGapiLoaded();
+    const user = await this.auth2.signIn();
+    return this.validateGoogleLogin(user);
   }
 
   public async signout(): Promise<void> {
       await this.auth2.signOut();
   }
 
-  async validateGoogleLogin(user: gapi.auth2.GoogleUser): Promise<User> {
+  async validateGoogleLogin(user: gapi.auth2.GoogleUser): Promise<AuthResult> {
     var id_token = user.getAuthResponse().id_token;
 
     let url = `${environment.authUri}/google/`;
-    let params = {
-      headers: {
-        "content-type": "application/json; charset=utf-8"
-      },
-      method: "POST",
-      body: JSON.stringify({ token: id_token })
-    }
-    var resp = await fetch(url, params);
-    var result = await resp.json();
+    var headers = new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8' });
+    var body = JSON.stringify({
+        token: id_token
+    });
 
-    let clientUser: User = {
-      imageUrl: result.imageUrl,
-      token: result.token
-    }
-
-    return clientUser;
+    return this.httpClient.post<AuthResult>(url, body, { headers }).toPromise();
   }
 
   ensureGapiLoaded(): Promise<void> {

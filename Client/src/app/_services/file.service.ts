@@ -25,7 +25,14 @@ export class FileService {
     }
 
     public async getFiles() : Promise<File[]>{
-        return this.httpClient.get<File[]>(environment.filesUri).toPromise();
+        let files: File[] = [];
+        try {
+            files = await this.httpClient.get<File[]>(environment.filesUri).toPromise();
+        }
+        catch (error: any) {
+            console.log("Error getting files: " + error.status);
+        }
+        return files;
     }
 
     public async deleteFile(id: string): Promise<File> {

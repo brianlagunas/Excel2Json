@@ -5,9 +5,8 @@ import { IgxSpreadsheetActionExecutedEventArgs, IgxSpreadsheetActiveTableChanged
 import { environment } from 'src/environments/environment';
 import { CSV } from '../io/csv';
 import { Excel } from '../io/excel';
-import { AuthService } from '../services/auth.service';
-import { FileStorageService } from '../services/file-storage.service';
-import { FileService } from '../services/file.service';
+import { FileStorageService } from '../_services/file-storage.service';
+import { FileService } from '../_services/file.service';
 
 @Component({
   selector: 'app-editor',

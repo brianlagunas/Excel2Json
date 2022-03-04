@@ -2,11 +2,11 @@
 
 namespace Excel2Json.Contracts.v1.Requests
 {
-    public class LoginRequest
+    public class RefreshTokenRequest
     {
         [Required]
-        public string Email { get; set; }
+        public string Token { get; set; }
         [Required]
-        public string Password { get; set; }
+        public string RefreshToken { get; set; }
     }
 }

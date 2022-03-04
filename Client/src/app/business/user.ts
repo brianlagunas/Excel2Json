@@ -1,4 +1,5 @@
-export interface User {
-    imageUrl: string | null;
-    token: string;
+export class User {
+    constructor(public imageUrl: string | null) {
+        
+     }
 } 

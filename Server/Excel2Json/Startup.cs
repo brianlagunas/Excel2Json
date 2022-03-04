@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System;
 using System.Text;
 
 namespace Excel2Json
@@ -56,6 +57,7 @@ namespace Excel2Json
             services.Configure<GoogleOptions>(Configuration.GetSection(GoogleOptions.Google));
 
             var jwtOptions = Configuration.GetSection(JwtOptions.Jwt).Get<JwtOptions>();
+
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -71,7 +73,8 @@ namespace Excel2Json
                     ValidateIssuer = true,
                     ValidIssuer = jwtOptions.Issuer,
                     ValidateAudience = true,
-                    ValidAudience = jwtOptions.Audience
+                    ValidAudience = jwtOptions.Audience,
+                    ClockSkew = TimeSpan.Zero
                 };
             });
 

@@ -7,6 +7,7 @@ namespace Excel2Json.Data
     public class ApplicationDbContext : IdentityDbContext
     {
         public DbSet<File> Files { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

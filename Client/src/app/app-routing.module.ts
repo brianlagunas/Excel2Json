@@ -5,10 +5,9 @@ import { PageNotFoundComponent } from './error-routing/not-found/not-found.compo
 import { UncaughtErrorComponent } from './error-routing/error/uncaught-error.component';
 import { ErrorRoutingModule } from './error-routing/error-routing.module';
 import { UploadComponent } from './upload/upload.component';
-import { AuthRouteGuard } from './services/auth-route-guard.service';
+import { AuthRouteGuard } from './_helpers/auth.routeguard';
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
-import { EditorComponent } from 'ngx-monaco-editor';
 
 export const routes: Routes = [
   { path: '', component: UploadComponent, pathMatch: "full" },

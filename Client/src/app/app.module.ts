@@ -10,7 +10,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { UploadComponent } from './upload/upload.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { TokenInterceptorService } from './services/token-interceptor.service';
+import { AuthInterceptor } from './_helpers/auth.interceptor';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { NavbarModule } from './navbar/navbar.module';
@@ -42,7 +42,7 @@ import { NavbarModule } from './navbar/navbar.module';
   ],
   providers: [ {
     provide: HTTP_INTERCEPTORS,
-    useClass: TokenInterceptorService,
+    useClass: AuthInterceptor,
     multi: true
   }],
   bootstrap: [AppComponent]
