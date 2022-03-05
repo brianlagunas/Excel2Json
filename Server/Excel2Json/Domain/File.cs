@@ -9,11 +9,18 @@ namespace Excel2Json.Domain
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
+
         public bool CanShare { get; set; } = true;
+
         public DateTime CreationDate { get; set; }
+
         public DateTime? UpdatedDate { get; set; }
+
+        [MaxLength(100)]
         public string Name { get; set; }
+
         public string Text { get; set; }
+
         public string UserId { get; set; }
         
         [ForeignKey(nameof(UserId))]
