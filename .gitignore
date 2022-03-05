@@ -1,6 +1,3 @@
 
-Server/Excel2Json/Data/Sqlite/Excel2Json.db
-
-Server/Excel2Json/Data/Sqlite/Excel2Json.db-shm
-
-Server/Excel2Json/Data/Sqlite/Excel2Json.db-wal
+Server/Excel2Json/Properties/
+Server/Excel2Json/wwwroot/

@@ -4,6 +4,6 @@
     {
         public const string ConnectionStrings = "ConnectionStrings";
 
-        public string DefaultConnection { get; set; }
+        public string Excel2JsonDb { get; set; }
     }
 }

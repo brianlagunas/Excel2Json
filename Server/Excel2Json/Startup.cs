@@ -13,7 +13,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using System;
 using System.Text;
 
 namespace Excel2Json
@@ -65,8 +64,7 @@ namespace Excel2Json
                     ValidateIssuer = true,
                     ValidIssuer = jwtOptions.Issuer,
                     ValidateAudience = true,
-                    ValidAudience = jwtOptions.Audience,
-                    ClockSkew = TimeSpan.Zero
+                    ValidAudience = jwtOptions.Audience
                 };
             });
 
@@ -155,6 +153,8 @@ namespace Excel2Json
 
             if (env.IsDevelopment())
                 app.UseCors(DebugCorsPolicy);
+            else
+                app.UseCors();
 
             app.UseAuthentication();
             app.UseAuthorization();

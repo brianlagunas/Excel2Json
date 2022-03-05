@@ -28,7 +28,7 @@ namespace Excel2Json.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(_connectionStringOptions.DefaultConnection);
+            optionsBuilder.UseSqlServer(_connectionStringOptions.Excel2JsonDb);
         }
     }
 }
