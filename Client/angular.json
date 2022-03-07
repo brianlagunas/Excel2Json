@@ -39,6 +39,14 @@
             "es5": {
                 "tsConfig": "tsconfig-es5.app.json"
             },
+            "staging": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.staging.ts"
+                }
+              ]
+            },
             "production": {
                 "budgets": [
                 {
@@ -77,6 +85,9 @@
             "browserTarget": "excel2json:build"
           },
           "configurations": {
+            "staging": {
+              "browserTarget": "excel2json:build:staging"
+            },
             "production": {
               "browserTarget": "excel2json:build:production"
             },

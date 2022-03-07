@@ -1,4 +1,5 @@
 using Excel2Json.Data;
+using Excel2Json.Domain;
 using Excel2Json.Options;
 using Excel2Json.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -7,13 +8,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.ResponseCompression;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using System;
 using System.Text;
 
 namespace Excel2Json
@@ -23,27 +22,23 @@ namespace Excel2Json
         readonly string DebugCorsPolicy = "DebugCorsPolicy";
         public const string ShareCorsPolicy = "ShareCorsPolicy";
 
+        public IConfiguration Configuration { get; }
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-
-            var options = new DbContextOptionsBuilder<ApplicationDbContext>().Options;
-            using (var db = new ApplicationDbContext(options))
-            {
-                //db.Database.EnsureDeleted(); //clean up for testing
-                db.Database.EnsureCreated();
-                db.Database.Migrate();
-            }
         }
-
-        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<ConnectionStringOptions>(Configuration.GetSection(ConnectionStringOptions.ConnectionStrings));
+            services.Configure<JwtOptions>(Configuration.GetSection(JwtOptions.Jwt));
+            services.Configure<GoogleOptions>(Configuration.GetSection(GoogleOptions.Google));
+
             services.AddDbContext<ApplicationDbContext>();
 
-            services.AddIdentity<IdentityUser, IdentityRole>(options =>
+            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
                 options.Password.RequireDigit = false;
                 options.Password.RequiredLength = 6;
@@ -53,11 +48,7 @@ namespace Excel2Json
                 options.Password.RequireUppercase = false;
             }).AddEntityFrameworkStores<ApplicationDbContext>();
 
-            services.Configure<JwtOptions>(Configuration.GetSection(JwtOptions.Jwt));
-            services.Configure<GoogleOptions>(Configuration.GetSection(GoogleOptions.Google));
-
             var jwtOptions = Configuration.GetSection(JwtOptions.Jwt).Get<JwtOptions>();
-
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -73,8 +64,7 @@ namespace Excel2Json
                     ValidateIssuer = true,
                     ValidIssuer = jwtOptions.Issuer,
                     ValidateAudience = true,
-                    ValidAudience = jwtOptions.Audience,
-                    ClockSkew = TimeSpan.Zero
+                    ValidAudience = jwtOptions.Audience
                 };
             });
 
@@ -163,6 +153,8 @@ namespace Excel2Json
 
             if (env.IsDevelopment())
                 app.UseCors(DebugCorsPolicy);
+            else
+                app.UseCors();
 
             app.UseAuthentication();
             app.UseAuthorization();

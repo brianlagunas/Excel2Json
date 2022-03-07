@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -10,14 +9,20 @@ namespace Excel2Json.Domain
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Token { get; set; }
+
+        [Required]
+        [MaxLength(256)]
         public string JwtId { get; set; }
+
         public DateTime CreationDate { get; set; }
+
         public DateTime ExpireDate { get; set; }
+
         public bool IsUsed { get; set; }
-        //public bool Invalidated { get; set; }
+
         public string UserId { get; set; }
 
         [ForeignKey(nameof(UserId))]
-        public IdentityUser User { get; set; }
+        public ApplicationUser User { get; set; }
     }
 }

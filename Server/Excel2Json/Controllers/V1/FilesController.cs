@@ -56,6 +56,7 @@ namespace Excel2Json.Controllers.v1
                 Name = fileRequest.Name,
                 Text = fileRequest.Text,
                 UserId = userId,
+                CreationDate = DateTime.UtcNow
             };
 
             await _context.Files.AddAsync(newFile);
@@ -80,6 +81,7 @@ namespace Excel2Json.Controllers.v1
             file.CanShare = fileRequest.CanShare;
             file.Name = fileRequest.Name;
             file.Text = fileRequest.Text;
+            file.UpdatedDate = DateTime.UtcNow;
 
             await _context.SaveChangesAsync();
 

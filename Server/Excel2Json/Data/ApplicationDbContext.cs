@@ -1,17 +1,22 @@
 ﻿using Excel2Json.Domain;
+using Excel2Json.Options;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace Excel2Json.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
+        private readonly ConnectionStringOptions _connectionStringOptions;
+
         public DbSet<File> Files { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
 
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IOptions<ConnectionStringOptions> connectionStringOptions)
             : base(options)
         {
+            _connectionStringOptions = connectionStringOptions.Value;
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -23,7 +28,7 @@ namespace Excel2Json.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("Filename=Data/Sqlite/Excel2Json.db");
+            optionsBuilder.UseSqlServer(_connectionStringOptions.Excel2JsonDb);
         }
     }
 }
