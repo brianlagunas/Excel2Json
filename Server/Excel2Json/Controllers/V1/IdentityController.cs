@@ -28,7 +28,7 @@ namespace Excel2Json.Controllers.v1
                 return BadRequest(new AuthResponse { Error = ModelState.Values.First().Errors.First().ErrorMessage });
             }
 
-            var authResponse = await _identityService.RegisterAsync(request.Email, request.Password);
+            var authResponse = await _identityService.RegisterAsync($"{Request.Scheme}://{Request.Host}", request.Email, request.Password);
             if (!authResponse.Success)
                 return BadRequest(new AuthResponse { Error = authResponse.Error, });
 
@@ -71,6 +71,16 @@ namespace Excel2Json.Controllers.v1
         public async Task<IActionResult> Refresh([FromBody] RefreshTokenRequest request)
         {
             var authResponse = await _identityService.RefreshTokenAsync(request.Token, request.RefreshToken);
+            if (!authResponse.Success)
+                return BadRequest(new AuthResponse { Error = authResponse.Error, });
+
+            return Ok(new AuthResponse { IsAuthenticated = true, Token = authResponse.Token, RefreshToken = authResponse.RefreshToken });
+        }
+
+        [HttpPost("confirm")]
+        public async Task<IActionResult> ConfirmEmail([FromBody] ConfirmEmailRequest request)
+        {
+            var authResponse = await _identityService.ConfirmEmail(request.Id, request.Token);
             if (!authResponse.Success)
                 return BadRequest(new AuthResponse { Error = authResponse.Error, });
 
