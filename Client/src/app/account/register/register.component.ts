@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../_services/auth.service';
+import { AuthService } from '../../_services/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -27,8 +27,8 @@ export class RegisterComponent implements OnInit {
   async register() {
     if (this.form.valid){
       try {
-        await this.authService.register(this.form.value.email, this.form.value.password);    
-        this.router.navigateByUrl('/my-files');
+        await this.authService.register(this.form.value.email, this.form.value.password);
+        this.router.navigateByUrl('/account/confirm');
       }
       catch (error: any) {
         this.serverErrorMessage = error;

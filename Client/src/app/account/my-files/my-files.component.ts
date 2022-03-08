@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FileService } from '../_services/file.service';
-import { File } from '../business/file';
+import { FileService } from '../../_services/file.service';
+import { File } from '../../business/file';
 import { environment } from 'src/environments/environment';
 
 @Component({

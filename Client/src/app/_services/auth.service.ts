@@ -26,8 +26,15 @@ export class AuthService {
 
     public async signIn(email: string, password: string) {
         let url = `${environment.authUri}/login`;
-        try {
-            await this.signInOrRegister(url, email, password);
+        var headers = new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8' });
+        var body = JSON.stringify({
+            email: email,
+            password: password
+        });
+
+        try {    
+            var result = await this.httpClient.post<AuthResult>(url, body, { headers }).toPromise();
+            this.saveAuthenticatedUser(result);
         }
         catch (error: any) {
             this.clearAuthenticatedUser();
@@ -38,7 +45,6 @@ export class AuthService {
     public async signInGoogle() {
         try {
             const result = await this.googleSignInService.signin();
-            console.log(result);
             this.saveAuthenticatedUser(result);
             this.isGoogleSignIn = true;
         }
@@ -75,8 +81,17 @@ export class AuthService {
 
     public async register(email: string, password: string) {
         let url = `${environment.authUri}/register`;
-        try {
-            await this.signInOrRegister(url, email, password);
+        var headers = new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8' });
+        var body = JSON.stringify({
+            email: email,
+            password: password
+        });
+
+        try {    
+            var result = await this.httpClient.post<AuthResult>(url, body, { headers }).toPromise();
+            if (!result.isAuthenticated) {
+                throw result.error;
+            }
         }
         catch (error: any) {
             this.clearAuthenticatedUser();
@@ -86,9 +101,7 @@ export class AuthService {
 
     public refresh(): Observable<AuthResult> {
         let url = `${environment.authUri}/refresh`;
-
         var headers = new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8' });
-
         var body = JSON.stringify({
             token: this.tokenService.getToken(),
             refreshToken: this.tokenService.getRefreshToken()
@@ -107,20 +120,42 @@ export class AuthService {
         );
     }
 
-    public isLoggedIn(): boolean {
-        return this.tokenService.getToken() !== null && this.tokenService.getRefreshToken() !== null;
-    }
-
-    private async signInOrRegister(url: string, email: string, password: string) {
+    public async confirmEmail(id: string, token: string): Promise<boolean> {
+        let url = `${environment.authUri}/confirm`;
         var headers = new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8' });
-
         var body = JSON.stringify({
-            email: email,
-            password: password
+            id: id,
+            token: token
         });
 
-        var result = await this.httpClient.post<AuthResult>(url, body, { headers }).toPromise();
-        this.saveAuthenticatedUser(result);
+        try{
+            var result = await this.httpClient.post<AuthResult>(url, body, { headers }).toPromise();
+            return result.isAuthenticated;
+        }
+        catch (error: any) {
+            this.handleError(error);
+        }
+
+        return false;
+    }
+
+    public async resendConfirmationEmail(email: string) {
+        let url = `${environment.authUri}/resend`;
+        var headers = new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8' });
+        var body = JSON.stringify({
+            email: email
+        });
+
+        try{
+            await this.httpClient.post<AuthResult>(url, body, { headers }).toPromise();
+        }
+        catch (error: any) {
+            this.handleError(error);
+        }
+    }
+
+    public isLoggedIn(): boolean {
+        return this.tokenService.getToken() !== null && this.tokenService.getRefreshToken() !== null;
     }
 
     private saveAuthenticatedUser(result: AuthResult) {
@@ -168,7 +203,7 @@ export class AuthService {
     }
 
     private navigateToHome() {
-        if (this.router.url == "/my-files") {
+        if (this.router.url == "/account/my-files") {
             this.router.navigateByUrl('/')
         } 
     }

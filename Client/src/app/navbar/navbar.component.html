@@ -18,18 +18,18 @@
     </button>
 
     <div class="help-menu">
-      <igx-avatar icon="menu_open" [roundShape]="true" size="small" *ngIf="user === null || user.imageUrl === null"
+      <igx-avatar icon="menu" [roundShape]="true" size="small" *ngIf="user === null || user.imageUrl === null"
         [igxToggleAction]="helpDropDown" [overlaySettings]="overlaySettings" [igxDropDownItemNavigation]="helpDropDown">
       </igx-avatar>
       <igx-avatar src="{{user?.imageUrl}}" [roundShape]="true" size="small" *ngIf="user?.imageUrl !== null"
         [igxToggleAction]="helpDropDown" [overlaySettings]="overlaySettings" [igxDropDownItemNavigation]="helpDropDown">
       </igx-avatar>
       <igx-drop-down height="max-content" #helpDropDown class="drop-down">
-        <igx-drop-down-item *ngIf="user == null" routerLink="/login" [disabled]="false" [isHeader]="false"
+        <igx-drop-down-item *ngIf="user == null" routerLink="/account/login" [disabled]="false" [isHeader]="false"
           class="dropdown-item">
           Sign In
         </igx-drop-down-item>
-        <igx-drop-down-item *ngIf="user != null" routerLink="/my-files" [disabled]="false" [isHeader]="false"
+        <igx-drop-down-item *ngIf="user != null" routerLink="/account/my-files" [disabled]="false" [isHeader]="false"
           class="dropdown-item">
           My Files
         </igx-drop-down-item>

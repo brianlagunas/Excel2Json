@@ -11,16 +11,20 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UploadComponent } from './upload/upload.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './_helpers/auth.interceptor';
-import { LoginComponent } from './login/login.component';
-import { RegisterComponent } from './register/register.component';
+import { LoginComponent } from './account/login/login.component';
+import { RegisterComponent } from './account/register/register.component';
 import { NavbarModule } from './navbar/navbar.module';
+import { AccountComponent } from './account/account.component';
+import { ConfirmComponent } from './account/confirm/confirm.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     UploadComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    AccountComponent,
+    ConfirmComponent
   ],
   imports: [
     BrowserModule,

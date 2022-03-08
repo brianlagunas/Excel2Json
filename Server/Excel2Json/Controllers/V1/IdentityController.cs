@@ -84,7 +84,17 @@ namespace Excel2Json.Controllers.v1
             if (!authResponse.Success)
                 return BadRequest(new AuthResponse { Error = authResponse.Error, });
 
-            return Ok(new AuthResponse { IsAuthenticated = true, Token = authResponse.Token, RefreshToken = authResponse.RefreshToken });
+            return Ok(new AuthResponse { IsAuthenticated = true });
+        }
+
+        [HttpPost("resend")]
+        public async Task<IActionResult> ResendConfirmationEmail([FromBody] ResendEmailRequest request)
+        {
+            var authResponse = await _identityService.ResendConfirmationEmail($"{Request.Scheme}://{Request.Host}", request.Email);
+            if (!authResponse.Success)
+                return BadRequest(new AuthResponse { Error = authResponse.Error, });
+
+            return Ok(new AuthResponse { IsAuthenticated = true });
         }
     }
 }
