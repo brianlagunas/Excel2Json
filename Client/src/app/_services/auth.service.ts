@@ -88,7 +88,7 @@ export class AuthService {
         });
 
         try {    
-            await this.httpClient.post<AuthResult>(url, body, { headers }).toPromise();
+            await this.httpClient.post(url, body, { headers }).toPromise();
         }
         catch (error: any) {
             this.clearAuthenticatedUser();
@@ -126,7 +126,7 @@ export class AuthService {
         });
 
         try{
-            await this.httpClient.post<AuthResult>(url, body, { headers }).toPromise();
+            await this.httpClient.post(url, body, { headers }).toPromise();
         }
         catch (error: any) {
             this.handleError(error);
@@ -143,7 +143,7 @@ export class AuthService {
         });
 
         try{
-            await this.httpClient.post<AuthResult>(url, body, { headers }).toPromise();
+            await this.httpClient.post(url, body, { headers }).toPromise();
         }
         catch (error: any) {
             this.handleError(error);
@@ -158,7 +158,7 @@ export class AuthService {
         });
 
         try{
-            await this.httpClient.post<AuthResult>(url, body, { headers }).toPromise();
+            await this.httpClient.post(url, body, { headers }).toPromise();
         }
         catch (error: any) {
             this.handleError(error);
@@ -175,7 +175,7 @@ export class AuthService {
         });
 
         try{
-            await this.httpClient.post<AuthResult>(url, body, { headers }).toPromise();
+            await this.httpClient.post(url, body, { headers }).toPromise();
         }
         catch (error: any) {
             this.handleError(error);
