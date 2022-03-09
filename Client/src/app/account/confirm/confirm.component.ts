@@ -26,10 +26,8 @@ export class ConfirmComponent implements OnInit, OnDestroy {
 
       if (id !== undefined && token !== undefined) {
         try {
-          const result = await this.authService.confirmEmail(id, token);
-          if (result) {
-            this.confirmed = true;
-          }
+          await this.authService.confirmEmail(id, token);
+          this.confirmed = true;
         }
         catch (error: any) {
           this.serverErrorMessage = error;

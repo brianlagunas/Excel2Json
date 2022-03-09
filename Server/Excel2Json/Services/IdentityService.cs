@@ -10,13 +10,15 @@ namespace Excel2Json.Services
 {
     public interface IIdentityService
     {
-        Task<AuthenticationResult> LogoutAsync(string userId);
+        Task<ServiceResult> LogoutAsync(string userId);
         Task<AuthenticationResult> LoginAsync(string email, string password);
-        Task<AuthenticationResult> RegisterAsync(string baseUri, string email, string password);
+        Task<ServiceResult> RegisterAsync(string baseUri, string email, string password);
         Task<AuthenticationResult> GoogleLoginAsync(string token);
         Task<AuthenticationResult> RefreshTokenAsync(string token, string refreshToken);
-        Task<AuthenticationResult> ConfirmEmail(string id, string token);
-        Task<AuthenticationResult> ResendConfirmationEmail(string baseUri, string email);
+        Task<ServiceResult> ConfirmEmail(string id, string token);
+        Task<ServiceResult> ResendConfirmationEmail(string baseUri, string email);
+        Task<ServiceResult> SendPasswordResetEmail(string baseUri, string email);
+        Task<ServiceResult> ResetPassword(string email, string password, string token);
     }
 
     public class IdentityService : IIdentityService
@@ -34,17 +36,17 @@ namespace Excel2Json.Services
             _context = context;
         }
 
-        public async Task<AuthenticationResult> LogoutAsync(string userId)
+        public async Task<ServiceResult> LogoutAsync(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
-                return new AuthenticationResult { Success = false, Error = "User does not exist" };
+                return new ServiceResult { Success = false, Error = "User does not exist" };
 
             var refreshTokens = _context.RefreshTokens.Where(x => x.UserId == userId);
             _context.RefreshTokens.RemoveRange(refreshTokens);
             await _context.SaveChangesAsync();            
 
-            return new AuthenticationResult { Success = true };
+            return new ServiceResult { Success = true };
         }
 
         public async Task<AuthenticationResult> LoginAsync(string email, string password)
@@ -63,11 +65,11 @@ namespace Excel2Json.Services
             return await CreateAuthenticationResultAsync(user);
         }
 
-        public async Task<AuthenticationResult> RegisterAsync(string baseUri, string email, string password)
+        public async Task<ServiceResult> RegisterAsync(string baseUri, string email, string password)
         {
             var existingUser = await _userManager.FindByEmailAsync(email);
             if (existingUser != null)
-                return new AuthenticationResult() { Error = "User already exists.", Success = false };
+                return new ServiceResult() { Error = "User already exists." };
 
             var user = new ApplicationUser()
             {
@@ -78,48 +80,48 @@ namespace Excel2Json.Services
             var createdUser = await _userManager.CreateAsync(user, password);
             if (!createdUser.Succeeded)
             {
-                return new AuthenticationResult() { Error = createdUser.Errors.First().Description, Success = false };
+                return new ServiceResult() { Error = createdUser.Errors.First().Description };
             }
 
             await _userManager.AddToRoleAsync(user, "User");
 
             await SendConfirmationEmail(baseUri, user);
 
-            return new AuthenticationResult { Success = true };
+            return new ServiceResult { Success = true };
         }
 
         
-        public async Task<AuthenticationResult> ConfirmEmail(string id, string token)
+        public async Task<ServiceResult> ConfirmEmail(string id, string token)
         {
             var user = await _userManager.FindByIdAsync(id);
             if (user == null)
-                return new AuthenticationResult { Success = false, Error = "Account is not registered." };
+                return new ServiceResult { Error = "Unable to verify email." };
 
             if (user.EmailConfirmed)
-                return new AuthenticationResult { Success = false, Error = "Email has already been verified." };
+                return new ServiceResult { Error = "Unable to verify email." };
 
             var decodedToken = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(token));
             var result = await _userManager.ConfirmEmailAsync(user, decodedToken);
             if (!result.Succeeded)
             {
-                return new AuthenticationResult { Success = false, Error = result.Errors.FirstOrDefault()?.Description };
+                return new ServiceResult { Error = result.Errors.FirstOrDefault()?.Description };
             }
             
-            return new AuthenticationResult { Success = true };
+            return new ServiceResult { Success = true };
         }
 
-        public async Task<AuthenticationResult> ResendConfirmationEmail(string baseUri, string email)
+        public async Task<ServiceResult> ResendConfirmationEmail(string baseUri, string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
             if (user == null)
-                return new AuthenticationResult { Success = false, Error = "Email is not registered." };
+                return new ServiceResult { Error = "Unable to send email." };
 
             if (user.EmailConfirmed)
-                return new AuthenticationResult { Success = false, Error = "Email has already been verified." };
+                return new ServiceResult { Error = "Unable to send email." };
 
             await SendConfirmationEmail(baseUri, user);
 
-            return new AuthenticationResult { Success = true };
+            return new ServiceResult { Success = true };
         }
 
         public async Task<AuthenticationResult> GoogleLoginAsync(string token)
@@ -173,9 +175,40 @@ namespace Excel2Json.Services
 
             var user = await _userManager.FindByIdAsync(result.UserId);
             if (user == null)
-                return new AuthenticationResult { Success = false, Error = "Email has not been registered" };
+                return new AuthenticationResult { Success = false, Error = "Invalid User" };
 
             return await CreateAuthenticationResultAsync(user);
+        }
+
+        public async Task<ServiceResult> SendPasswordResetEmail(string baseUri, string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+                return new ServiceResult { Error = "Unable to send email." };
+
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var encodedToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
+            var resetPassordLink = $"{baseUri}/account/reset-password?email={user.Email}&token={encodedToken}";
+
+            await _emailService.SendResetPasswordEmailAsync(user.Email, resetPassordLink);
+
+            return new ServiceResult { Success = true };
+        }
+
+        public async Task<ServiceResult> ResetPassword(string email, string password, string token)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+                return new ServiceResult { Error = "Unabe to reset password." };
+
+            var decodedToken = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(token));
+            var result = await _userManager.ResetPasswordAsync(user, decodedToken, password);
+            if (!result.Succeeded)
+            {
+                return new ServiceResult { Error = result.Errors.FirstOrDefault()?.Description };
+            }
+
+            return new ServiceResult { Success = true };
         }
 
         private async Task<AuthenticationResult> CreateAuthenticationResultAsync(ApplicationUser user)

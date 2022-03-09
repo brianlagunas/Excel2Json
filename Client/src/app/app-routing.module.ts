@@ -12,6 +12,8 @@ import { AccountComponent } from './account/account.component';
 import { ConfirmComponent } from './account/confirm/confirm.component';
 import { VerifyComponent } from './account/verify/verify.component';
 import { ResendConfirmationComponent } from './account/resend-confirmation/resend-confirmation.component';
+import { ForgotPasswordComponent } from './account/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './account/reset-password/reset-password.component';
 
 export const routes: Routes = [
   { path: '', component: UploadComponent, pathMatch: "full" },
@@ -23,6 +25,8 @@ export const routes: Routes = [
     { path: 'confirm', component: ConfirmComponent },
     { path: 'verify', component: VerifyComponent },
     { path: 'resend-confirmation', component: ResendConfirmationComponent },
+    { path: 'forgot-password', component: ForgotPasswordComponent },
+    { path: 'reset-password', component: ResetPasswordComponent },
   ] },
   { path: 'account/my-files', loadChildren: () => import('./account/my-files/my-files.module').then(m => m.MyFilesModule), canActivate: [ AuthRouteGuard] },
   { path: '**', component: PageNotFoundComponent } // must always be last

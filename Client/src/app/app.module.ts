@@ -18,6 +18,8 @@ import { AccountComponent } from './account/account.component';
 import { ConfirmComponent } from './account/confirm/confirm.component';
 import { VerifyComponent } from './account/verify/verify.component';
 import { ResendConfirmationComponent } from './account/resend-confirmation/resend-confirmation.component';
+import { ForgotPasswordComponent } from './account/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './account/reset-password/reset-password.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,9 @@ import { ResendConfirmationComponent } from './account/resend-confirmation/resen
     AccountComponent,
     ConfirmComponent,
     VerifyComponent,
-    ResendConfirmationComponent
+    ResendConfirmationComponent,
+    ForgotPasswordComponent,
+    ResetPasswordComponent
   ],
   imports: [
     BrowserModule,

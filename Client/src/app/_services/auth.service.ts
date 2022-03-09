@@ -88,10 +88,7 @@ export class AuthService {
         });
 
         try {    
-            var result = await this.httpClient.post<AuthResult>(url, body, { headers }).toPromise();
-            if (!result.isAuthenticated) {
-                throw result.error;
-            }
+            await this.httpClient.post<AuthResult>(url, body, { headers }).toPromise();
         }
         catch (error: any) {
             this.clearAuthenticatedUser();
@@ -129,8 +126,7 @@ export class AuthService {
         });
 
         try{
-            var result = await this.httpClient.post<AuthResult>(url, body, { headers }).toPromise();
-            return result.isAuthenticated;
+            await this.httpClient.post<AuthResult>(url, body, { headers }).toPromise();
         }
         catch (error: any) {
             this.handleError(error);
@@ -139,11 +135,43 @@ export class AuthService {
         return false;
     }
 
-    public async resendConfirmationEmail(email: string) {
-        let url = `${environment.authUri}/resend`;
+    public async sendConfirmationEmail(email: string) {
+        let url = `${environment.authUri}/send-confirmation-email`;
         var headers = new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8' });
         var body = JSON.stringify({
             email: email
+        });
+
+        try{
+            await this.httpClient.post<AuthResult>(url, body, { headers }).toPromise();
+        }
+        catch (error: any) {
+            this.handleError(error);
+        }
+    }
+
+    public async sendPasswordResetEmail(email: string) {
+        let url = `${environment.authUri}/send-password-reset-email`;
+        var headers = new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8' });
+        var body = JSON.stringify({
+            email: email
+        });
+
+        try{
+            await this.httpClient.post<AuthResult>(url, body, { headers }).toPromise();
+        }
+        catch (error: any) {
+            this.handleError(error);
+        }
+    }
+
+    public async resetPassword(email: string, password: string, token: string) {
+        let url = `${environment.authUri}/reset-password`;
+        var headers = new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8' });
+        var body = JSON.stringify({
+            email: email,
+            password: password,
+            token: token
         });
 
         try{
@@ -196,8 +224,13 @@ export class AuthService {
     }
 
     private handleError(error: any){
+        //auth result error
         if (error.error.error) {
             throw error.error.error;
+        }
+        //standard response error
+        else if (error.error) {
+            throw error.error;
         }
         throw "Error code: " + error.status;
     }
