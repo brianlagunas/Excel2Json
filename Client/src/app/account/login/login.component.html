@@ -2,7 +2,7 @@
     <div class="group_2 column">
         <h5 class="h5">Sign in</h5>
         <div class="group_1 row">
-            <button igxButton="outlined" igxRipple class="button" (click)="loginWithGoogle()">Google</button>
+            <button type="button" igxButton="outlined" igxRipple class="button" (click)="loginWithGoogle()">Google</button>
             <!-- <button igxButton="outlined" igxRipple class="button_1">Github</button> -->
         </div>
         <form class="column" [formGroup]="form" (ngSubmit)="signIn()">
@@ -23,9 +23,9 @@
                 <igx-hint *ngIf="fieldHasError('password', 'required')">Please enter your password.</igx-hint>
             </igx-input-group>
             <span class="error" *ngIf="serverErrorMessage">{{serverErrorMessage}}</span>
-            <button igxButton="raised" igxRipple class="user-input">Sign in</button>
+            <button type="button" igxButton="raised" igxRipple class="user-input">Sign in</button>
             <!-- <a target="_blank" class="igx-typography__body-2 hyperlink">Forgot password?</a> -->
-            <button igxButton="outlined" igxRipple class="user-input" routerLink="/account/register">Create New Account</button>
+            <button type="button" igxButton="outlined" igxRipple class="user-input" routerLink="/account/register">Create New Account</button>
         </form>
     </div>
 </div>

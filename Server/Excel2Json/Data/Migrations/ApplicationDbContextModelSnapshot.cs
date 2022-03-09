@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Excel2Json.data.Migrations
+namespace Excel2Json.data.migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -113,15 +113,15 @@ namespace Excel2Json.data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "61608913-e7c1-444d-8463-fc69fb0ff7e2",
-                            ConcurrencyStamp = "13918b87-a63b-40df-90e5-ee7365940f54",
+                            Id = "05aba504-58be-4cb9-a933-c3fac4346894",
+                            ConcurrencyStamp = "720eccc7-d3c8-4146-bb73-23ba5e64b7a3",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "fc96d5df-520d-4cb8-b030-2fbcc8f0568b",
-                            ConcurrencyStamp = "07afb613-5c22-4376-8801-bc7613e2fdab",
+                            Id = "3c7f6e38-d240-47b2-a1c3-4dd519587c34",
+                            ConcurrencyStamp = "5e5873a4-6d40-420d-a689-fc8e9b4f1aa7",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -326,8 +326,9 @@ namespace Excel2Json.data.Migrations
             modelBuilder.Entity("Excel2Json.Domain.File", b =>
                 {
                     b.HasOne("Excel2Json.Domain.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
+                        .WithMany("Files")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("User");
                 });
@@ -335,8 +336,9 @@ namespace Excel2Json.data.Migrations
             modelBuilder.Entity("Excel2Json.Domain.RefreshToken", b =>
                 {
                     b.HasOne("Excel2Json.Domain.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
+                        .WithMany("RefreshTokens")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("User");
                 });
@@ -390,6 +392,13 @@ namespace Excel2Json.data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Excel2Json.Domain.ApplicationUser", b =>
+                {
+                    b.Navigation("Files");
+
+                    b.Navigation("RefreshTokens");
                 });
 #pragma warning restore 612, 618
         }

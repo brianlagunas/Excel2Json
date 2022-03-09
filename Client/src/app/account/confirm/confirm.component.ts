@@ -33,7 +33,6 @@ export class ConfirmComponent implements OnInit, OnDestroy {
         }
         catch (error: any) {
           this.serverErrorMessage = error;
-          console.log(error);
         }
       }
     });
