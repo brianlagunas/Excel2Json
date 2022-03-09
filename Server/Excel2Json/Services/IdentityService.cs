@@ -93,7 +93,7 @@ namespace Excel2Json.Services
         {
             var user = await _userManager.FindByIdAsync(id);
             if (user == null)
-                return new AuthenticationResult { Success = false, Error = "Account not found" };
+                return new AuthenticationResult { Success = false, Error = "Account is not registered." };
 
             if (user.EmailConfirmed)
                 return new AuthenticationResult { Success = false, Error = "Email has already been verified." };

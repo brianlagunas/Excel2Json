@@ -23,7 +23,7 @@
                 <igx-hint *ngIf="fieldHasError('password', 'required')">Please enter your password.</igx-hint>
             </igx-input-group>
             <span class="error" *ngIf="serverErrorMessage">{{serverErrorMessage}}</span>
-            <button type="button" igxButton="raised" igxRipple class="user-input">Sign in</button>
+            <button igxButton="raised" igxRipple class="user-input">Sign in</button>
             <!-- <a target="_blank" class="igx-typography__body-2 hyperlink">Forgot password?</a> -->
             <button type="button" igxButton="outlined" igxRipple class="user-input" routerLink="/account/register">Create New Account</button>
         </form>
