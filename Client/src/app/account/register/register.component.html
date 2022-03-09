@@ -1,0 +1,40 @@
+<form [formGroup]="form" (ngSubmit)="register()">
+    <div class="group row">
+        <div class="group_1 column">
+            <h5 class="h5">Register</h5>
+            <igx-input-group type="border" class="user-input">
+                <igx-suffix>
+                    <igx-icon family="material" class="icon">person</igx-icon>
+                </igx-suffix>
+                <input name="email" type="email" igxInput formControlName="email" />
+                <label igxLabel>Email</label>
+                <igx-hint *ngIf="fieldHasError('email', 'required')">Please enter your email.</igx-hint>
+                <igx-hint *ngIf="fieldHasError('email', 'email')">Please enter a valid email address.</igx-hint>
+            </igx-input-group>
+            <igx-input-group type="border" class="input">
+                <igx-suffix>
+                    <igx-icon family="material" class="icon" (click)="showHidePassword()">{{ showPassword ?
+                        'visibility' : 'visibility_off' }}</igx-icon>
+                </igx-suffix>
+                <input [type]="showPassword ? 'text' : 'password'" igxInput formControlName="password" />
+                <label igxLabel>Password</label>
+                <igx-hint *ngIf="fieldHasError('password', 'required')">Please enter a password.</igx-hint>
+                <igx-hint *ngIf="fieldHasError('password', 'minlength')">Password must be at least 6 characters.</igx-hint>
+            </igx-input-group>
+            <igx-input-group type="border" class="input">
+                <igx-suffix>
+                    <igx-icon family="material" class="icon" (click)="showHideConfirmPassword()">{{
+                        showConfirmPassword ? 'visibility' : 'visibility_off' }}</igx-icon>
+                </igx-suffix>
+                <input [type]="showConfirmPassword ? 'text' : 'password'" igxInput
+                    formControlName="passwordConfirm" />
+                <label igxLabel>Confirm Password</label>
+                <igx-hint *ngIf="fieldHasErrors('passwordConfirm')">Passwords do not match.</igx-hint>
+            </igx-input-group>
+            <span class="error" *ngIf="serverErrorMessage">{{serverErrorMessage}}</span>
+            <button igxButton="raised" igxRipple class="user-input" >Create New Account</button>
+            <a routerLink="/account/login" class="igx-typography__body-2 hyperlink">Already have an account?</a>
+            <a routerLink="/account/resend-confirmation" class="igx-typography__body-2 hyperlink">Resend confirmation email?</a>
+        </div>
+    </div>
+</form>

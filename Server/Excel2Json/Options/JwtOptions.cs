@@ -4,7 +4,7 @@ namespace Excel2Json.Options
 {
     public class JwtOptions
     {
-        public const string Jwt = "Jwt";
+        public const string Key = "Jwt";
 
         public string Secret { get; set; }
 

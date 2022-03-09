@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../_services/auth.service';
+import { AuthService } from '../../_services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit {
     if (this.form.valid) {
       try {
         await this.authService.signIn(this.form.value.email, this.form.value.password);
-        this.router.navigateByUrl('/my-files');
+        this.router.navigateByUrl('/account/my-files');
       }
       catch (error: any) {
         this.serverErrorMessage = error;
@@ -46,7 +46,7 @@ export class LoginComponent implements OnInit {
   async loginWithGoogle() {
     try {
       await this.authService.signInGoogle();
-      this.router.navigateByUrl('/my-files');
+      this.router.navigateByUrl('/account/my-files');
     }
     catch (error : any){
       this.serverErrorMessage = error;

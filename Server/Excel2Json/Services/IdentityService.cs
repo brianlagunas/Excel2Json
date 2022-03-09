@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 using System.Linq;
 using Excel2Json.Data;
+using Microsoft.AspNetCore.WebUtilities;
+using System.Text;
 
 namespace Excel2Json.Services
 {
@@ -10,21 +12,25 @@ namespace Excel2Json.Services
     {
         Task<AuthenticationResult> LogoutAsync(string userId);
         Task<AuthenticationResult> LoginAsync(string email, string password);
-        Task<AuthenticationResult> RegisterAsync(string email, string password);
+        Task<AuthenticationResult> RegisterAsync(string baseUri, string email, string password);
         Task<AuthenticationResult> GoogleLoginAsync(string token);
         Task<AuthenticationResult> RefreshTokenAsync(string token, string refreshToken);
+        Task<AuthenticationResult> ConfirmEmail(string id, string token);
+        Task<AuthenticationResult> ResendConfirmationEmail(string baseUri, string email);
     }
 
     public class IdentityService : IIdentityService
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ITokenService _tokenService;
+        private readonly IEmailService _emailService;
         private readonly ApplicationDbContext _context;
 
-        public IdentityService(UserManager<ApplicationUser> userManager, ITokenService tokenService, ApplicationDbContext context)
+        public IdentityService(UserManager<ApplicationUser> userManager, ITokenService tokenService, IEmailService emailService, ApplicationDbContext context)
         {
             _userManager = userManager;
             _tokenService = tokenService;
+            _emailService = emailService;
             _context = context;
         }
 
@@ -51,10 +57,13 @@ namespace Excel2Json.Services
             if (!userHasValidPassword)
                 return new AuthenticationResult() { Error = "The email or password you entered is invalid.", Success = false };
 
+            if (!user.EmailConfirmed)
+                return new AuthenticationResult() { Error = "The email has not been verified.", Success = false };
+
             return await CreateAuthenticationResultAsync(user);
         }
 
-        public async Task<AuthenticationResult> RegisterAsync(string email, string password)
+        public async Task<AuthenticationResult> RegisterAsync(string baseUri, string email, string password)
         {
             var existingUser = await _userManager.FindByEmailAsync(email);
             if (existingUser != null)
@@ -74,7 +83,43 @@ namespace Excel2Json.Services
 
             await _userManager.AddToRoleAsync(user, "User");
 
-            return await CreateAuthenticationResultAsync(user);
+            await SendConfirmationEmail(baseUri, user);
+
+            return new AuthenticationResult { Success = true };
+        }
+
+        
+        public async Task<AuthenticationResult> ConfirmEmail(string id, string token)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+                return new AuthenticationResult { Success = false, Error = "Account is not registered." };
+
+            if (user.EmailConfirmed)
+                return new AuthenticationResult { Success = false, Error = "Email has already been verified." };
+
+            var decodedToken = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(token));
+            var result = await _userManager.ConfirmEmailAsync(user, decodedToken);
+            if (!result.Succeeded)
+            {
+                return new AuthenticationResult { Success = false, Error = result.Errors.FirstOrDefault()?.Description };
+            }
+            
+            return new AuthenticationResult { Success = true };
+        }
+
+        public async Task<AuthenticationResult> ResendConfirmationEmail(string baseUri, string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+                return new AuthenticationResult { Success = false, Error = "Email is not registered." };
+
+            if (user.EmailConfirmed)
+                return new AuthenticationResult { Success = false, Error = "Email has already been verified." };
+
+            await SendConfirmationEmail(baseUri, user);
+
+            return new AuthenticationResult { Success = true };
         }
 
         public async Task<AuthenticationResult> GoogleLoginAsync(string token)
@@ -82,6 +127,9 @@ namespace Excel2Json.Services
             var payload = await _tokenService.ValidateGoogleTokenAsync(token);
             if (payload == null)
                 return new AuthenticationResult { Success = false, Error = "Token Validation Failed" };
+
+            if (!payload.EmailVerified)
+                return new AuthenticationResult { Success = false, Error = "Email must be verified with Google" };
 
             var info = new UserLoginInfo(payload.Issuer, payload.Subject, payload.Issuer);
             var user = await _userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
@@ -125,7 +173,7 @@ namespace Excel2Json.Services
 
             var user = await _userManager.FindByIdAsync(result.UserId);
             if (user == null)
-                return new AuthenticationResult { Success = false, Error = "User does not exist" };
+                return new AuthenticationResult { Success = false, Error = "Email has not been registered" };
 
             return await CreateAuthenticationResultAsync(user);
         }
@@ -134,6 +182,14 @@ namespace Excel2Json.Services
         {
             var tokens = await _tokenService.CreateAuthenticatedTokens(user);
             return new AuthenticationResult() { Success = true, Token = tokens.Token, RefreshToken = tokens.RefreshToken, ImageURL = user.ImageUrl };
+        }
+
+        private async Task SendConfirmationEmail(string baseUri, ApplicationUser user)
+        {
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            var encodedToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
+            var confirmationLink = $"{baseUri}/account/confirm?id={user.Id}&token={encodedToken}";
+            await _emailService.SendEmailConfirmationAsync(user.Email, confirmationLink);
         }
     }
 }

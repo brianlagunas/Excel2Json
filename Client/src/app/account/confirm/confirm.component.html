@@ -1,0 +1,14 @@
+<div class="group">
+    <div class="column" *ngIf="confirmed">
+        <h5 class="element">Registration Complete!</h5>
+        <p class="igx-typography__body-1 element">Thank you for registering for Excel2Json.</p>
+        <button igxButton="raised" igxRipple class="user-input" routerLink="/account/login">Sign in</button>
+    </div>
+
+    <div class="column" *ngIf="!confirmed && serverErrorMessage !== ''">
+        <h5 class="element">Registration Error!</h5>
+        <p class="igx-typography__body-1 element">There was a problem verifying your email. Please try again, or contact support if you continue experiencing issues</p>
+        <span class="error">{{ serverErrorMessage }}</span>
+        <button igxButton="raised" igxRipple class="user-input" routerLink="/account/resend-confirmation">Resend Email Confirmation</button>
+    </div>
+</div>

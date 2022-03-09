@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System;
 using System.Text;
 
 namespace Excel2Json
@@ -32,9 +33,10 @@ namespace Excel2Json
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<ConnectionStringOptions>(Configuration.GetSection(ConnectionStringOptions.ConnectionStrings));
-            services.Configure<JwtOptions>(Configuration.GetSection(JwtOptions.Jwt));
-            services.Configure<GoogleOptions>(Configuration.GetSection(GoogleOptions.Google));
+            services.Configure<ConnectionStringOptions>(Configuration.GetSection(ConnectionStringOptions.Key));
+            services.Configure<EmailOptions>(Configuration.GetSection(EmailOptions.Key));
+            services.Configure<JwtOptions>(Configuration.GetSection(JwtOptions.Key));
+            services.Configure<GoogleOptions>(Configuration.GetSection(GoogleOptions.Key));
 
             services.AddDbContext<ApplicationDbContext>();
 
@@ -46,9 +48,19 @@ namespace Excel2Json
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireLowercase = false;
                 options.Password.RequireUppercase = false;
-            }).AddEntityFrameworkStores<ApplicationDbContext>();
 
-            var jwtOptions = Configuration.GetSection(JwtOptions.Jwt).Get<JwtOptions>();
+                options.User.RequireUniqueEmail = true;
+
+                options.SignIn.RequireConfirmedEmail = true;
+            })
+            .AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddDefaultTokenProviders();
+
+            //services.Configure<DataProtectionTokenProviderOptions>(options => options.TokenLifespan = TimeSpan.FromHours(1));
+
+            services.AddTransient<IEmailService, EmailService>();
+
+            var jwtOptions = Configuration.GetSection(JwtOptions.Key).Get<JwtOptions>();
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

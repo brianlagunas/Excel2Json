@@ -2,7 +2,7 @@
 {
     public class ConnectionStringOptions
     {
-        public const string ConnectionStrings = "ConnectionStrings";
+        public const string Key = "ConnectionStrings";
 
         public string Excel2JsonDb { get; set; }
     }

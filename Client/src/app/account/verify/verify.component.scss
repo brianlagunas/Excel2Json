@@ -1,0 +1,45 @@
+.row {
+	display: flex;
+}
+
+.column {
+	display: flex;
+	flex-direction: column;
+}
+
+.group {
+	padding: 80px;
+	justify-content: center;
+	min-width: 50px;
+	flex-grow: 1;
+	flex-basis: 0;
+	align-items: stretch;
+	position: relative;
+	min-height: 50px;
+}
+
+.element {
+	margin: 0 0 24px;
+	min-width: min-content;
+	height: max-content;
+}
+
+.text {
+	margin: 0 16px 0 0;
+	min-width: min-content;
+	height: max-content;
+}
+
+.hyperlink {
+	flex-shrink: 0;
+	color: var(--igx-primary-100);
+	min-width: min-content;
+	height: max-content;
+	cursor: pointer;
+}
+
+.user-input {
+	margin: 0 0 16px;
+	min-width: min-content;
+	height: max-content;
+}

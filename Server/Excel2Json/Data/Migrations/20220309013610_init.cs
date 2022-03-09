@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Excel2Json.data.Migrations
+namespace Excel2Json.data.migrations
 {
     public partial class init : Migration
     {
@@ -177,7 +177,8 @@ namespace Excel2Json.data.Migrations
                         name: "FK_Files_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -198,18 +199,19 @@ namespace Excel2Json.data.Migrations
                         name: "FK_RefreshTokens_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "61608913-e7c1-444d-8463-fc69fb0ff7e2", "13918b87-a63b-40df-90e5-ee7365940f54", "User", "USER" });
+                values: new object[] { "05aba504-58be-4cb9-a933-c3fac4346894", "720eccc7-d3c8-4146-bb73-23ba5e64b7a3", "User", "USER" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "fc96d5df-520d-4cb8-b030-2fbcc8f0568b", "07afb613-5c22-4376-8801-bc7613e2fdab", "Admin", "ADMIN" });
+                values: new object[] { "3c7f6e38-d240-47b2-a1c3-4dd519587c34", "5e5873a4-6d40-420d-a689-fc8e9b4f1aa7", "Admin", "ADMIN" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

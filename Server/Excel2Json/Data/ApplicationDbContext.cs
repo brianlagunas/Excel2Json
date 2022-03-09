@@ -23,6 +23,16 @@ namespace Excel2Json.Data
         {
             base.OnModelCreating(builder);
 
+            builder.Entity<File>()
+                .HasOne(e => e.User)
+                .WithMany(e => e.Files)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<RefreshToken>()
+                .HasOne(e => e.User)
+                .WithMany(e => e.RefreshTokens)
+                .OnDelete(DeleteBehavior.Cascade);                
+
             builder.ApplyConfiguration(new RoleConfiguration());
         }
 
