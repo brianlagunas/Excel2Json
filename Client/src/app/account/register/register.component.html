@@ -32,9 +32,9 @@
                 <igx-hint *ngIf="fieldHasErrors('passwordConfirm')">Passwords do not match.</igx-hint>
             </igx-input-group>
             <span class="error" *ngIf="serverErrorMessage">{{serverErrorMessage}}</span>
-            <button type="submit" igxButton="raised" igxRipple class="user-input" >Create New Account</button>
+            <button igxButton="raised" igxRipple class="user-input" >Create New Account</button>
             <a routerLink="/account/login" class="igx-typography__body-2 hyperlink">Already have an account?</a>
-            <a [routerLink]="['/account/confirm']" [queryParams]="{ resend: true }" class="igx-typography__body-2 hyperlink">Resend confirmation email?</a>
+            <a routerLink="/account/resend-confirmation" class="igx-typography__body-2 hyperlink">Resend confirmation email?</a>
         </div>
     </div>
 </form>

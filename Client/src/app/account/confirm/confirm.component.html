@@ -1,32 +1,14 @@
 <div class="group">
-    <div class="column" *ngIf="!confirmed && !showResend">
-        <h5 class="element">Verify your email addess</h5>
-        <p class="igx-typography__body-1 element">We have sent you an email to confirm the validity of your email address.</p>
-        <p class="igx-typography__body-1 element">After receiving the email, follow the link provided to complete your
-            registration.</p>
-        <div class="group_2 row">
-            <p class="igx-typography__body-2 text">Didn't get the email?</p>
-            <a class="igx-typography__body-2 hyperlink" (click)="showResendForm()">Resend email</a>
-        </div>
-    </div>
-
-    <div class="column" *ngIf="confirmed && !showResend">
-        <h5 class="element">Registration Complete</h5>
-        <p class="igx-typography__body-1 element">Thank you for registering for Excel2Json!</p>
+    <div class="column" *ngIf="confirmed">
+        <h5 class="element">Registration Complete!</h5>
+        <p class="igx-typography__body-1 element">Thank you for registering for Excel2Json.</p>
         <button igxButton="raised" igxRipple class="user-input" routerLink="/account/login">Sign in</button>
     </div>
 
-    <div *ngIf="showResend">
-        <form class="column" [formGroup]="form" (ngSubmit)="resendEmail()">
-            <h5 class="element">Resend Email Confirmation</h5>
-            <igx-input-group type="border" class="user-input" >
-                <input type="text" igxInput formControlName="email"/>
-                <label igxLabel>Email</label>
-                <igx-hint *ngIf="fieldHasError('email', 'required')">Please enter your email.</igx-hint>
-                <igx-hint *ngIf="fieldHasError('email', 'email')">Please enter a valid email address.</igx-hint>
-            </igx-input-group>
-            <span class="error" *ngIf="serverErrorMessage">{{serverErrorMessage}}</span>
-            <button igxButton="raised" igxRipple class="user-input">Resend</button>
-        </form>
+    <div class="column" *ngIf="!confirmed && serverErrorMessage !== ''">
+        <h5 class="element">Registration Error!</h5>
+        <p class="igx-typography__body-1 element">There was a problem verifying your email. Please try again, or contact support if you continue experiencing issues</p>
+        <span class="error">{{ serverErrorMessage }}</span>
+        <button igxButton="raised" igxRipple class="user-input" routerLink="/account/resend-confirmation">Resend Email Confirmation</button>
     </div>
 </div>

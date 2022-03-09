@@ -28,7 +28,7 @@ export class RegisterComponent implements OnInit {
     if (this.form.valid){
       try {
         await this.authService.register(this.form.value.email, this.form.value.password);
-        this.router.navigateByUrl('/account/confirm');
+        this.router.navigateByUrl('/account/verify');
       }
       catch (error: any) {
         this.serverErrorMessage = error;

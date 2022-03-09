@@ -16,6 +16,8 @@ import { RegisterComponent } from './account/register/register.component';
 import { NavbarModule } from './navbar/navbar.module';
 import { AccountComponent } from './account/account.component';
 import { ConfirmComponent } from './account/confirm/confirm.component';
+import { VerifyComponent } from './account/verify/verify.component';
+import { ResendConfirmationComponent } from './account/resend-confirmation/resend-confirmation.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,9 @@ import { ConfirmComponent } from './account/confirm/confirm.component';
     LoginComponent,
     RegisterComponent,
     AccountComponent,
-    ConfirmComponent
+    ConfirmComponent,
+    VerifyComponent,
+    ResendConfirmationComponent
   ],
   imports: [
     BrowserModule,
