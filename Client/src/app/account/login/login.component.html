@@ -7,6 +7,9 @@
         </div>
         <form class="column" [formGroup]="form" (ngSubmit)="signIn()">
             <igx-input-group type="border" class="user-input">
+                <igx-suffix>
+                    <igx-icon family="material" class="icon">email</igx-icon>
+                </igx-suffix>
                 <input type="text" igxInput formControlName="email" />
                 <label igxLabel>Email</label>
                 <igx-hint *ngIf="fieldHasError('email', 'required')">Please enter your email.</igx-hint>
@@ -24,7 +27,7 @@
             </igx-input-group>
             <span class="error" *ngIf="serverErrorMessage">{{serverErrorMessage}}</span>
             <button igxButton="raised" igxRipple class="user-input">Sign in</button>
-            <!-- <a target="_blank" class="igx-typography__body-2 hyperlink">Forgot password?</a> -->
+            <a routerLink="/account/forgot-password" class="igx-typography__body-2 hyperlink">Forgot password?</a>
             <button type="button" igxButton="outlined" igxRipple class="user-input" routerLink="/account/register">Create New Account</button>
         </form>
     </div>

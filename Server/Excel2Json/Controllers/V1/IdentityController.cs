@@ -25,14 +25,14 @@ namespace Excel2Json.Controllers.v1
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(new AuthResponse { Error = ModelState.Values.First().Errors.First().ErrorMessage });
+                return BadRequest(ModelState.Values.First().Errors.First().ErrorMessage);
             }
 
             var authResponse = await _identityService.RegisterAsync($"{Request.Scheme}://{Request.Host}", request.Email, request.Password);
             if (!authResponse.Success)
-                return BadRequest(new AuthResponse { Error = authResponse.Error, });
+                return BadRequest(authResponse.Error);
 
-            return Ok(new AuthResponse { IsAuthenticated = true, Token = authResponse.Token, RefreshToken = authResponse.RefreshToken });
+            return Ok();
         }
 
         [HttpPost("login")]
@@ -82,19 +82,40 @@ namespace Excel2Json.Controllers.v1
         {
             var authResponse = await _identityService.ConfirmEmail(request.Id, request.Token);
             if (!authResponse.Success)
-                return BadRequest(new AuthResponse { Error = authResponse.Error, });
+                return BadRequest(authResponse.Error);
 
-            return Ok(new AuthResponse { IsAuthenticated = true });
+            return Ok();
         }
 
-        [HttpPost("resend")]
+        [HttpPost("send-confirmation-email")]
         public async Task<IActionResult> ResendConfirmationEmail([FromBody] ResendEmailRequest request)
         {
             var authResponse = await _identityService.ResendConfirmationEmail($"{Request.Scheme}://{Request.Host}", request.Email);
             if (!authResponse.Success)
-                return BadRequest(new AuthResponse { Error = authResponse.Error, });
+                return BadRequest(authResponse.Error);
 
-            return Ok(new AuthResponse { IsAuthenticated = true });
+            return Ok();
+        }
+
+        [HttpPost("send-password-reset-email")]
+        public async Task<IActionResult> SendPasswordResetEmail([FromBody] ResetPasswordEmailRequest request)
+        {
+            var authResponse = await _identityService.SendPasswordResetEmail($"{Request.Scheme}://{Request.Host}", request.Email);
+            if (!authResponse.Success)
+                return BadRequest(authResponse.Error);
+
+            return Ok();
+        }
+
+
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequest request)
+        {
+            var authResponse = await _identityService.ResetPassword(request.Email, request.Password, request.Token);
+            if (!authResponse.Success)
+                return BadRequest(authResponse.Error);
+
+            return Ok();
         }
     }
 }

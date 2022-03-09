@@ -4,31 +4,33 @@ import { Router } from '@angular/router';
 import { AuthService } from 'src/app/_services/auth.service';
 
 @Component({
-  selector: 'app-resend-confirmation',
-  templateUrl: './resend-confirmation.component.html',
-  styleUrls: ['./resend-confirmation.component.scss']
+  selector: 'app-forgot-password',
+  templateUrl: './forgot-password.component.html',
+  styleUrls: ['./forgot-password.component.scss']
 })
-export class ResendConfirmationComponent implements OnInit {
+export class ForgotPasswordComponent implements OnInit {
 
+  passwordResetEmailSent: boolean = false;
+  serverErrorMessage: string = "";
   form: FormGroup = new FormGroup({
     email: new FormControl("", [Validators.required, Validators.email])
   });
-  
-  constructor(private authService: AuthService, private router: Router) { }
+
+  constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
   }
 
-  async resendEmail() {
+  async resetPassword() {
     if (this.form.valid) {
       try {
-        await this.authService.sendConfirmationEmail(this.form.value.email);
+        await this.authService.sendPasswordResetEmail(this.form.value.email);
       }
       catch (error: any){
-        //ignore errors
+        //ignore any errors
       }
-      finally {
-        this.router.navigateByUrl("/account/verify");
+      finally{
+        this.passwordResetEmailSent = true;
       }
     }
     else {
@@ -38,6 +40,10 @@ export class ResendConfirmationComponent implements OnInit {
         control?.updateValueAndValidity();
       });
     }
+  }
+
+  forgotPassword() {
+    this.passwordResetEmailSent = false;
   }
 
   fieldHasError(field: string, error: string) {
