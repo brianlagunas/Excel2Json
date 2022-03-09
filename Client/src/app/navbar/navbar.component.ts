@@ -17,7 +17,7 @@ export class NavbarComponent implements OnInit {
   @Input() showGetLinkButton: boolean = false;
 
   @Output() downloadJsonClick: EventEmitter<void> = new EventEmitter();
-  @Output() getLinkClick: EventEmitter<void> = new EventEmitter();
+  @Output() saveFileClick: EventEmitter<void> = new EventEmitter();
 
   user: User | null = null;
   overlaySettings: OverlaySettings = {
@@ -43,8 +43,8 @@ export class NavbarComponent implements OnInit {
     this.downloadJsonClick.emit();
   }
 
-  onGetLinkClicked() {
-    this.getLinkClick.emit();
+  onSaveFileClicked() {
+    this.saveFileClick.emit();
   }
 
   async signOut() {

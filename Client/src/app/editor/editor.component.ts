@@ -104,7 +104,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
     a.click();
   }
 
-  async onGetLinkClicked() {
+  async onSaveFileClicked() {
     let id = null;
     const activeWorksheetName = this.spreadsheet.activeWorksheet.name;    
 

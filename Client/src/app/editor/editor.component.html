@@ -1,6 +1,6 @@
 <app-navbar [title]="fileName" [showUploadButton]="true"
             [showDownloadButton]="true" (downloadJsonClick)="onDownloadJsonClicked()"
-            [showGetLinkButton]="true" (getLinkClick)="onGetLinkClicked()"></app-navbar>
+            [showGetLinkButton]="true" (saveFileClick)="onSaveFileClicked()"></app-navbar>
 <div class="row-layout_2 row">
   <div class="column-layout column">
     <igx-spreadsheet #spreadsheet height="100%" width="100%" style="background-color: white;"
@@ -18,7 +18,7 @@
     <div class="column-layout_2 column">
       <div class="row-layout_1 row">
         <igx-avatar [roundShape]="true" color="var(--igx-grays-800)" bgColor="var(--igx-primary-500)" size="small" icon="check" class="avatar"></igx-avatar>
-        <h5 class="title_1">Link to file created</h5>
+        <h5 class="title_1">File Saved</h5>
       </div>
       <div class="row-layout row">
         <igx-input-group type="box" placeholder class="input-group">
