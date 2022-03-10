@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { PageNotFoundComponent } from './error-routing/page-not-found/page-not-found.component';
-import { UncaughtErrorComponent } from './error-routing/error/uncaught-error.component';
+import { UncaughtErrorComponent } from './error-routing/uncaught-error/uncaught-error.component';
 import { ErrorRoutingModule } from './error-routing/error-routing.module';
 import { UploadComponent } from './upload/upload.component';
 import { AuthRouteGuard } from './_helpers/auth.routeguard';

@@ -1,0 +1,37 @@
+.row {
+	display: flex;
+}
+
+.column {
+	display: flex;
+	flex-direction: column;
+    align-items: center;
+}
+
+.group {
+	justify-content: center;
+	min-width: 50px;
+	flex-grow: 1;
+	flex-basis: 0;
+	align-items: center;
+	position: relative;
+	min-height: 50px;
+    height: 85%;
+}
+
+.image_error {
+    width: 460px;
+	object-fit: cover;
+	min-width: 0;
+	min-height: 0;
+	flex-shrink: 0;
+}
+
+.text {
+	margin: 20px 0 20px;
+	color: var(--igx-grays-800);
+	min-width: min-content;
+	height: max-content;
+	text-align: center;
+}
+
