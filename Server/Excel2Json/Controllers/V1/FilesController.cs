@@ -40,25 +40,25 @@ namespace Excel2Json.Controllers.v1
         }
 
         [HttpGet]
-        public IActionResult GetFiles([FromQuery] bool includeText = false)
+        public async Task<IActionResult> GetFiles([FromQuery] bool includeText = false)
         {
             IEnumerable<File> files = null;
             var userId = HttpContext.GetUserId();            
 
             if (includeText)
             {
-                files = _context.Files.AsNoTracking().Where(f => f.UserId == userId);
+                files = await _context.Files.AsNoTracking().Where(f => f.UserId == userId).ToListAsync();
             }
             else
             {
-                files = _context.Files.AsNoTracking().Where(f => f.UserId == userId).Select(x => new File
+                files = await _context.Files.AsNoTracking().Where(f => f.UserId == userId).Select(x => new File
                 {
                     Id = x.Id,
                     CanShare = x.CanShare,
                     CreationDate = x.CreationDate,
                     UpdatedDate = x.UpdatedDate,
                     Name = x.Name,
-                });
+                }).ToListAsync();
             }
 
             if (files == null)
