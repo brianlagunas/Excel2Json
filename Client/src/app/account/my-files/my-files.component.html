@@ -66,3 +66,10 @@
     </div>
   </div>
 </igx-dialog>
+
+<igx-dialog #loadingDialog [closeOnOutsideSelect]="false" [closeOnEscape]="false" class="dialog-window">
+  <div class="column-layout_2 column" style="align-items: center;">
+    <h5 class="title_1">Loading Files...</h5>
+    <igx-icon font="material" [active]="true" color="var(--igx-primary-500)" class="loading-icon">donut_large</igx-icon>
+  </div>
+</igx-dialog>

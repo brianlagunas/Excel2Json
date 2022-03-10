@@ -1,15 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { FileService } from '../../_services/file.service';
 import { File } from '../../business/file';
 import { environment } from 'src/environments/environment';
+import { IgxDialogComponent } from 'igniteui-angular';
 
 @Component({
   selector: 'app-my-files',
   templateUrl: './my-files.component.html',
   styleUrls: ['./my-files.component.scss']
 })
-export class MyFilesComponent implements OnInit {
+export class MyFilesComponent implements OnInit, AfterViewInit {
 
+  @ViewChild("loadingDialog")
+  loadingDialog!: IgxDialogComponent;
+  
   editorOptions = { theme: 'vs-dark', language: 'javascript', readOnly: true };
   code: string = "";
   files: File[] = [];
@@ -19,6 +23,11 @@ export class MyFilesComponent implements OnInit {
 
   async ngOnInit() {
     this.files = await this.fileService.getFiles();
+    this.loadingDialog.close();
+  }
+
+  ngAfterViewInit(): void {
+    this.loadingDialog.open();
   }
 
   loadFileText(text: string) {
