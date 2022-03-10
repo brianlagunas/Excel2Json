@@ -42,10 +42,10 @@ export class Excel {
         return JSON.stringify(dataObjects, null, "\t");
     }
 
-    public static convertJsonToWorkbook(json: string) : Workbook {
+    public static convertJsonToWorkbook(json: string, name?: string) : Workbook {
         const csvRows = JSON.parse(json);        
         const workbook = new Workbook(WorkbookFormat.Excel2007);
-        const ws = workbook.worksheets().add("CSV Data");
+        const ws = workbook.worksheets().add(name === undefined ? "CVS Data" : name);
 
         const headers = Object.keys(csvRows[0]);
         for (let x = 0; x < headers.length; x++){

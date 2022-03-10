@@ -1,4 +1,5 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { IgxDialogComponent } from 'igniteui-angular';
 import { Workbook } from 'igniteui-angular-excel';
 import { IgxSpreadsheetActionExecutedEventArgs, IgxSpreadsheetActiveTableChangedEventArgs, IgxSpreadsheetActiveWorksheetChangedEventArgs, IgxSpreadsheetComponent, SpreadsheetAction } from 'igniteui-angular-spreadsheet';
@@ -13,7 +14,7 @@ import { FileService } from '../_services/file.service';
   templateUrl: './editor.component.html',
   styleUrls: ['./editor.component.scss']
 })
-export class EditorComponent implements OnInit, AfterViewInit {
+export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @ViewChild("spreadsheet", { read: IgxSpreadsheetComponent })
   spreadsheet!: IgxSpreadsheetComponent;
@@ -22,27 +23,62 @@ export class EditorComponent implements OnInit, AfterViewInit {
   @ViewChild("dialogWindow")
   dialogWindow!: IgxDialogComponent;
 
-  editorOptions = {theme: 'vs-dark', language: 'javascript', readOnly: true};
+  fileIdForEdit: string | null = null;
+  editorOptions = { theme: 'vs-dark', language: 'javascript', readOnly: true };
   fileName: string = "New File";
   code: string = "[]";
   workbookIds: Map<string, string> = new Map<string, string>();
   shareLink: string = "Creating share link...";
 
   constructor(private fileStorage: FileStorageService,
-              private fileService: FileService) {
+    private fileService: FileService,
+    private route: ActivatedRoute,
+    private router: Router) {
 
   }
 
-  ngOnInit() {
-    if(this.fileStorage.file){
-      this.fileName = this.fileStorage.file.name;
-      this.loadFile(this.fileStorage.file);
+  async ngOnInit() {
+    const id = this.route.snapshot.paramMap.get("id");
+    if (id !== undefined && id !== null) {
+      await this.loadFromExistingFile(id);
+    }
+    else {
+      this.loadFromFileStorage();
     }
   }
 
   ngAfterViewInit(): void {
-    if(this.fileStorage.file) {
+    //only show the dialog if we are loading from file storage and not editing an existing file
+    if (this.fileStorage.file && this.fileIdForEdit === null) {
       this.loadingDialog.open();
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.fileStorage.file = null;
+    this.fileIdForEdit = null;
+  }
+
+  async loadFromExistingFile(id: string) {
+    try {
+      const file = await this.fileService.getFile(id);
+      if (file !== null) {
+        this.fileIdForEdit = file.id;
+        this.fileName = file.name;
+        this.spreadsheet.workbook = Excel.convertJsonToWorkbook(file.text, file.name);
+        this.spreadsheet.allowAddWorksheet = false;
+      }
+    }
+    catch { // if we hit this, it's most likey an authorization error
+      this.router.navigateByUrl("/editor");
+    }
+  }
+
+  loadFromFileStorage() {
+    this.fileIdForEdit = null;
+    if (this.fileStorage.file) {
+      this.fileName = this.fileStorage.file.name;
+      this.loadFile(this.fileStorage.file);
     }
   }
 
@@ -69,12 +105,12 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
   onActionExecuted(args: IgxSpreadsheetActionExecutedEventArgs) {
     if (args.command === SpreadsheetAction.ClearContents ||
-        args.command === SpreadsheetAction.Undo ||
-        args.command === SpreadsheetAction.Redo ||
-        args.command === SpreadsheetAction.Paste ||
-        args.command === SpreadsheetAction.DeleteRows ||
-        args.command === SpreadsheetAction.SortAscending ||
-        args.command === SpreadsheetAction.SortDescending) {
+      args.command === SpreadsheetAction.Undo ||
+      args.command === SpreadsheetAction.Redo ||
+      args.command === SpreadsheetAction.Paste ||
+      args.command === SpreadsheetAction.DeleteRows ||
+      args.command === SpreadsheetAction.SortAscending ||
+      args.command === SpreadsheetAction.SortDescending) {
 
       this.updateJsonOnEdit();
     }
@@ -104,36 +140,49 @@ export class EditorComponent implements OnInit, AfterViewInit {
     a.click();
   }
 
-  async onGetLinkClicked() {
-    let id = null;
-    const activeWorksheetName = this.spreadsheet.activeWorksheet.name;    
+  async onSaveFileClicked() {
+    const activeWorksheetName = this.spreadsheet.activeWorksheet.name;
+    let fileExists = false;
+    let id = this.fileIdForEdit;
 
-    let fileExists = false;    
-    if (this.workbookIds.has(activeWorksheetName)){
-      id = this.workbookIds.get(activeWorksheetName)!;
-
+    if (id !== null) { //we are editing an existing file
       await this.fileService.updateFile({
         id: id,
         name: activeWorksheetName,
         text: this.code,
         canShare: true
       });
-
       fileExists = true;
-    } else {
-      id = await this.fileService.CreateFile(activeWorksheetName, this.code);
     }
+    else { //we are editing a newly created file
+      if (this.workbookIds.has(activeWorksheetName)) {
+        id = this.workbookIds.get(activeWorksheetName)!;
+
+        await this.fileService.updateFile({
+          id: id,
+          name: activeWorksheetName,
+          text: this.code,
+          canShare: true
+        });
+
+        fileExists = true;
+      } else {
+        id = await this.fileService.CreateFile(activeWorksheetName, this.code);
+      }
+    }
+
+    this.fileName = activeWorksheetName;
 
     this.shareLink = `${environment.shareUri}/${id}`;
 
-    if (!fileExists && id != null){
+    if (!fileExists && id != null) {
       this.workbookIds.set(activeWorksheetName, id);
     }
 
     this.dialogWindow.open();
   }
 
-  onCopyShareLinkClicked(){
+  onCopyShareLinkClicked() {
     var shareLinkInput: any = document.getElementById("shareLinkInputField");
     shareLinkInput.select();
     navigator.clipboard.writeText(this.shareLink);

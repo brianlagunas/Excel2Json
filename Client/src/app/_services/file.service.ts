@@ -13,7 +13,7 @@ export class FileService {
     public async CreateFile(name: string, text: string): Promise<string> {
         let url = environment.filesUri;
 
-        var headers = new HttpHeaders({'Content-Type': 'application/json; charset=utf-8'});
+        var headers = new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8' });
 
         var body = JSON.stringify({
             name: name,
@@ -24,7 +24,18 @@ export class FileService {
         return result.id;
     }
 
-    public async getFiles() : Promise<File[]>{
+    public async getFile(id: string): Promise<File | null> {
+        let url = `${environment.filesUri}/${id}`;
+        try {
+            return this.httpClient.get<File>(url).toPromise();
+        }
+        catch (error: any) {
+            console.log("Error getting file: " + error.status);
+            return null;
+        }
+    }
+
+    public async getFiles(): Promise<File[]> {
         let files: File[] = [];
         try {
             files = await this.httpClient.get<File[]>(environment.filesUri).toPromise();
@@ -45,8 +56,8 @@ export class FileService {
 
         let url = `${environment.filesUri}/${file.id}`;
 
-        var headers = new HttpHeaders({'Content-Type': 'application/json; charset=utf-8'});
-        
+        var headers = new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8' });
+
         var body = JSON.stringify({
             canShare: file.canShare,
             name: file.name,
