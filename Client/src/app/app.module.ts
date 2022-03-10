@@ -32,7 +32,7 @@ import { ResetPasswordComponent } from './account/reset-password/reset-password.
     VerifyComponent,
     ResendConfirmationComponent,
     ForgotPasswordComponent,
-    ResetPasswordComponent
+    ResetPasswordComponent,
   ],
   imports: [
     BrowserModule,

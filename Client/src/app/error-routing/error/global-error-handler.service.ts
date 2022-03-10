@@ -7,9 +7,6 @@ export class GlobalErrorHandlerService implements ErrorHandler {
   constructor(private injector: Injector, private zone: NgZone) { }
 
   handleError(error: any) {
-    // handle and/or log error, for example:
-    console.error(error);
-
     // show error page
     const router = this.injector.get(Router);
     if (router) {

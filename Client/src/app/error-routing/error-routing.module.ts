@@ -1,8 +1,10 @@
 import { NgModule, ErrorHandler, Provider } from '@angular/core';
-import { PageNotFoundComponent } from './not-found/not-found.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { UncaughtErrorComponent } from './error/uncaught-error.component';
 import { GlobalErrorHandlerService } from './error/global-error-handler.service';
 import { environment } from '../../environments/environment';
+import { BrowserModule } from '@angular/platform-browser';
+import { NavbarModule } from '../navbar/navbar.module';
 
 const providers: Provider[] = [];
 
@@ -15,6 +17,10 @@ if (environment.production) {
   declarations: [
     PageNotFoundComponent,
     UncaughtErrorComponent
+  ],
+  imports: [
+    BrowserModule,
+    NavbarModule
   ],
   providers
 })
