@@ -19,6 +19,7 @@ export const routes: Routes = [
   { path: '', component: UploadComponent, pathMatch: "full" },
   { path: 'error', component: UncaughtErrorComponent },
   { path: 'editor', loadChildren: () => import('./editor/editor.module').then(m => m.EditorModule) },
+  { path: 'editor/:id', loadChildren: () => import('./editor/editor.module').then(m => m.EditorModule), canActivate: [ AuthRouteGuard] },
   { path: 'account', component: AccountComponent, children: [
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },

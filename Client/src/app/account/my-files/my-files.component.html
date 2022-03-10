@@ -10,6 +10,7 @@
         <span igxListLineTitle>{{file.name}}</span>
         <!-- <span igxListLineSubTitle>Created on Sept. 16, 2021</span> -->
         <span>
+          <igx-icon [igxTooltipTarget]="editTooltipRef" igxListAction family="material" class="icon_edit" [routerLink]="['/editor', file.id]">edit</igx-icon>
           <igx-icon [igxTooltipTarget]="deleteTooltipRef" igxListAction family="material" class="icon_delete" (click)="deleteFile(file.id)">delete_outline</igx-icon>
           <igx-icon [igxToggleAction]="dialogWindow" [igxTooltipTarget]="shareLinkTooltipRef" igxListAction family="material" class="icon_share" (click)="getShareLink(file.id)" >share</igx-icon>
           <igx-checkbox [igxTooltipTarget]="canShareTooltipRef" igxListAction class="chkBox_canShare" [(ngModel)]="file.canShare" (click)="updateCanShare(file)"></igx-checkbox>
@@ -26,6 +27,10 @@
       <p class="igx-typography__subtitle-1 text_json_preview">Select a file to preview</p>
     </div>
   </div>
+</div>
+
+<div #editTooltipRef="tooltip" igxTooltip>
+  Edit File
 </div>
 
 <div #deleteTooltipRef="tooltip" igxTooltip>
