@@ -10,6 +10,7 @@ using Excel2Json.Domain;
 using Excel2Json.Contracts.v1.Requests;
 using Excel2Json.Contracts.v1.Responses;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace Excel2Json.Controllers.v1
 {
@@ -39,10 +40,30 @@ namespace Excel2Json.Controllers.v1
         }
 
         [HttpGet]
-        public IActionResult GetFiles()
+        public IActionResult GetFiles([FromQuery] bool includeText = false)
         {
-            var userId = HttpContext.GetUserId();
-            var files = _context.Files.AsNoTracking().Where(f => f.UserId == userId);
+            IEnumerable<File> files = null;
+            var userId = HttpContext.GetUserId();            
+
+            if (includeText)
+            {
+                files = _context.Files.AsNoTracking().Where(f => f.UserId == userId);
+            }
+            else
+            {
+                files = _context.Files.AsNoTracking().Where(f => f.UserId == userId).Select(x => new File
+                {
+                    Id = x.Id,
+                    CanShare = x.CanShare,
+                    CreationDate = x.CreationDate,
+                    UpdatedDate = x.UpdatedDate,
+                    Name = x.Name,
+                });
+            }
+
+            if (files == null)
+                return NotFound();
+
             return Ok(files);
         }
 

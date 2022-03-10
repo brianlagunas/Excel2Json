@@ -30,8 +30,19 @@ export class MyFilesComponent implements OnInit, AfterViewInit {
     this.loadingDialog.open();
   }
 
-  loadFileText(text: string) {
-    this.code = text;
+  async loadFileText(id: string) {
+    try {
+      var file = await this.fileService.getFile(id);
+      if (file != null) {
+        this.code = file.text;
+      }
+      else {
+        this.code = "[]";
+      }  
+    }
+    catch {
+      //ignore errors
+    }
   }
 
   async deleteFile(id: string) {
