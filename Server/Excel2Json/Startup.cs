@@ -56,8 +56,7 @@ namespace Excel2Json
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
 
-            //services.Configure<DataProtectionTokenProviderOptions>(options => options.TokenLifespan = TimeSpan.FromHours(1));
-
+            //emails aren't sent often. It is cheaper to create the service when we need it then discard it.
             services.AddTransient<IEmailService, EmailService>();
 
             var jwtOptions = Configuration.GetSection(JwtOptions.Key).Get<JwtOptions>();

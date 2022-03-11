@@ -190,7 +190,9 @@ namespace Excel2Json.Services
             var encodedToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
             var resetPassordLink = $"{baseUri}/account/reset-password?email={user.Email}&token={encodedToken}";
 
-            await _emailService.SendResetPasswordEmailAsync(user.Email, resetPassordLink);
+            var htmlContent = await _emailService.GenerateHtmlContent(EmailTemplates.ForgotPassword, resetPassordLink);
+
+            await _emailService.SendEmailAsync(user.Email, "Reset Your Password", htmlContent);
 
             return new ServiceResult { Success = true };
         }
@@ -222,7 +224,10 @@ namespace Excel2Json.Services
             var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             var encodedToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
             var confirmationLink = $"{baseUri}/account/confirm?id={user.Id}&token={encodedToken}";
-            await _emailService.SendEmailConfirmationAsync(user.Email, confirmationLink);
+
+            var htmlContent = await _emailService.GenerateHtmlContent(EmailTemplates.ConfirmEmail, confirmationLink);
+
+            await _emailService.SendEmailAsync(user.Email, "Welcome to Excel2Json! Confirm Your Email", htmlContent);
         }
     }
 }

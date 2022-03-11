@@ -1,15 +1,18 @@
-﻿using Excel2Json.Options;
+﻿using Excel2Json.Domain;
+using Excel2Json.Options;
 using Microsoft.Extensions.Options;
 using SendGrid;
 using SendGrid.Helpers.Mail;
+using System.IO;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Excel2Json.Services
 {
     public interface IEmailService
     {
-        Task SendEmailConfirmationAsync(string to, string link);
-        Task SendResetPasswordEmailAsync(string to, string link);
+        Task SendEmailAsync(string to, string subject, string htmlContent);
+        Task<string> GenerateHtmlContent(EmailTemplates emailTemplate, string actionLink);
     }
 
     public class EmailService : IEmailService
@@ -21,21 +24,16 @@ namespace Excel2Json.Services
             _options = options.Value;
         }
 
-        public async Task SendEmailConfirmationAsync(string to, string link)
+        public async Task SendEmailAsync(string to, string subject, string htmlContent)
         {
             var client = new SendGridClient(_options.ApiKey);
-
-            //TODO: creat templates for plain text and html
             var message = new SendGridMessage
             {
                 From = new EmailAddress(_options.FromEmail, _options.FromName),
-                Subject = _options.ConfirmSubject,
-                PlainTextContent = $"By clicking on the following link, you are confirming your email address. Confirm Email ({link})",
-                HtmlContent = $"<p>By clicking on the following link, you are confirming your email address.</p>" +
-                              $"<a href='{link}'>Confirm Email</strong>"
+                Subject = subject,
+                HtmlContent = htmlContent
             };
             message.AddTo(new EmailAddress(to));
-            message.SetClickTracking(false, false);
 
             var response = await client.SendEmailAsync(message);
             if (!response.IsSuccessStatusCode)
@@ -44,27 +42,29 @@ namespace Excel2Json.Services
             }
         }
 
-        public async Task SendResetPasswordEmailAsync(string to, string link)
+        public async Task<string> GenerateHtmlContent(EmailTemplates emailTemplate, string actionLink)
         {
-            var client = new SendGridClient(_options.ApiKey);
+            var html = await GetEmailTemplate(emailTemplate);
+            return GenerateHtmlContent(html, actionLink);
+        }
 
-            //TODO: creat templates for plain text and html
-            var message = new SendGridMessage
-            {
-                From = new EmailAddress(_options.FromEmail, _options.FromName),
-                Subject = "Reset Your Password",
-                PlainTextContent = $"Click the link to reset your Excel2Json account password. If you didn't request a new password, you can safely delete this email. {link}",
-                HtmlContent = $"<p>Click the link to reset your Excel2Json account password. If you didn't request a new password, you can safely delete this email.</p>" +
-                              $"<a href='{link}'>Reset Password</strong>"
-            };
-            message.AddTo(new EmailAddress(to));
-            message.SetClickTracking(false, false);
+        async Task<string> GetEmailTemplate(EmailTemplates emailTemplate)
+        {
+            return await GetResource($"Excel2Json.EmailTemplates.{emailTemplate}.html");
+        }
 
-            var response = await client.SendEmailAsync(message);
-            if (!response.IsSuccessStatusCode)
+        async Task<string> GetResource(string resourceName)
+        {
+            var resource = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName);
+            using (var reader = new StreamReader(resource))
             {
-                throw new System.Exception("Error sending mail");
+                return await reader.ReadToEndAsync();
             }
+        }
+
+        string GenerateHtmlContent(string html, string actionLink)
+        {
+            return html.Replace("{EMAIL_ACTION_LINK}", actionLink);
         }
     }
 }
