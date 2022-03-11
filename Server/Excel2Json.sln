@@ -1,20 +1,23 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31515.178
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Excel2Json", "Excel2Json\Excel2Json.csproj", "{BC2EE1EF-B0B6-4C12-BD07-21F7C8BF5243}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Excel2Json", "Excel2Json\Excel2Json.csproj", "{BC2EE1EF-B0B6-4C12-BD07-21F7C8BF5243}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
+		Staging|Any CPU = Staging|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{BC2EE1EF-B0B6-4C12-BD07-21F7C8BF5243}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BC2EE1EF-B0B6-4C12-BD07-21F7C8BF5243}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BC2EE1EF-B0B6-4C12-BD07-21F7C8BF5243}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BC2EE1EF-B0B6-4C12-BD07-21F7C8BF5243}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC2EE1EF-B0B6-4C12-BD07-21F7C8BF5243}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
+		{BC2EE1EF-B0B6-4C12-BD07-21F7C8BF5243}.Staging|Any CPU.Build.0 = Staging|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
