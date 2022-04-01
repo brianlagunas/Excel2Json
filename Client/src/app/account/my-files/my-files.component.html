@@ -1,7 +1,7 @@
 <app-navbar title="My Files" [showUploadButton]="true"></app-navbar>
 <div class="row-layout_2 row">
   <div class="column-layout column" style="margin: 25px 0px 0px 0px">
-    <igx-list>
+    <igx-list class="list">
       <igx-list-item [isHeader]="false" igxRipple igxRippleTarget=".igx-list__item-content" *ngFor="let file of files"
         (click)="loadFileText(file.id)">
         <span igxListThumbnail>
