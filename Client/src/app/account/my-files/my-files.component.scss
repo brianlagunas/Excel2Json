@@ -97,11 +97,13 @@
     width: 24px;
     height: 24px;
     font-size: 24px;
+    cursor: pointer;
   }
   .icon_delete {
     width: 24px;
     height: 24px;
     font-size: 24px;
+    cursor: pointer;
   }
 
   .icon_edit {
@@ -109,6 +111,7 @@
     width: 24px;
     height: 24px;
     font-size: 24px;
+    cursor: pointer;
   }
 
   .chkBox_canShare {
@@ -119,7 +122,6 @@
 
   .dialog-window {
     min-width: 0;
-    height: 165px;
     flex: 0 0 auto;
   }
 
