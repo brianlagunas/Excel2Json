@@ -43,21 +43,23 @@ export class Excel {
     }
 
     public static convertJsonToWorkbook(json: string, name?: string) : Workbook {
-        const csvRows = JSON.parse(json);        
         const workbook = new Workbook(WorkbookFormat.Excel2007);
         const ws = workbook.worksheets().add(name === undefined ? "CVS Data" : name);
-
-        const headers = Object.keys(csvRows[0]);
-        for (let x = 0; x < headers.length; x++){
-            ws.rows(0).cells(x).value = headers[x];
-        }
-
-        for (let r = 0; r < csvRows.length; r++) {
-            const dataRow = csvRows[r];
-            const xlRow = ws.rows(r + 1);
-            for (let h = 0; h < headers.length; h++) {
-                xlRow.setCellValue(h, dataRow[headers[h]]);
+        
+        if (json !== null && json !== "[]") {
+            const csvRows = JSON.parse(json);
+            const headers = Object.keys(csvRows[0]);
+            for (let x = 0; x < headers.length; x++){
+                ws.rows(0).cells(x).value = headers[x];
             }
+    
+            for (let r = 0; r < csvRows.length; r++) {
+                const dataRow = csvRows[r];
+                const xlRow = ws.rows(r + 1);
+                for (let h = 0; h < headers.length; h++) {
+                    xlRow.setCellValue(h, dataRow[headers[h]]);
+                }
+            }            
         }
 
         return workbook;
