@@ -14,7 +14,7 @@ import { FileService } from '../_services/file.service';
   templateUrl: './editor.component.html',
   styleUrls: ['./editor.component.scss']
 })
-export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
+export class EditorComponent implements AfterViewInit, OnDestroy {
 
   @ViewChild("spreadsheet", { read: IgxSpreadsheetComponent })
   spreadsheet!: IgxSpreadsheetComponent;
@@ -38,7 +38,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
   }
 
-  async ngOnInit() {
+  async ngAfterViewInit() {
     const id = this.route.snapshot.paramMap.get("id");
     if (id !== undefined && id !== null) {
       await this.loadFromExistingFile(id);
@@ -48,19 +48,13 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  ngAfterViewInit(): void {
-    //only show the dialog if we are loading from file storage and not editing an existing file
-    if (this.fileStorage.file && this.fileIdForEdit === null) {
-      this.loadingDialog.open();
-    }
-  }
-
   ngOnDestroy(): void {
     this.fileStorage.file = null;
     this.fileIdForEdit = null;
   }
 
   async loadFromExistingFile(id: string) {
+    this.loadingDialog.open();
     try {
       const file = await this.fileService.getFile(id);
       if (file !== null) {
@@ -72,6 +66,9 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     catch { // if we hit this, it's most likey an authorization error
       this.router.navigateByUrl("/editor");
+    }
+    finally {
+      this.loadingDialog.close();
     }
   }
 
@@ -86,6 +83,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
   loadFile(file: File) {
     const fileExtension = file.name.split(".").pop();
 
+    this.loadingDialog.open();
     if (fileExtension === "csv") {
       CSV.loadCsvFile(file, this.fileStorage.delimiterSymbol).then(json => {
         this.spreadsheet.workbook = Excel.convertJsonToWorkbook(json);
