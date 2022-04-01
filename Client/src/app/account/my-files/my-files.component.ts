@@ -75,7 +75,7 @@ export class MyFilesComponent implements OnInit, AfterViewInit {
 
   async updateCanShare(file: File) {
     this.listActionClicked = true;
-    await this.fileService.updateFile(file);
+    await this.fileService.updateCanShare(file);
   }
 
   getShareLink(id: string) {

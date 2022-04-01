@@ -109,6 +109,25 @@ namespace Excel2Json.Controllers
             return Ok(file);
         }
 
+        [HttpPut("{id}/can-share")]
+        public async Task<IActionResult> UpdateCanShare([FromRoute] Guid id, [FromBody] bool canShare)
+        {
+            var file = await _context.Files.FirstOrDefaultAsync(x => x.Id == id);
+            if (file == null)
+                return NotFound();
+
+            var userId = HttpContext.GetUserId();
+            if (file.UserId != userId)
+                return Unauthorized("User does not have access to this file.");
+
+            file.CanShare = canShare;
+            file.UpdatedDate = DateTime.UtcNow;
+
+            await _context.SaveChangesAsync();
+
+            return Ok(file);
+        }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete([FromRoute]Guid id)
         {

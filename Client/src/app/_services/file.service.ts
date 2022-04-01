@@ -66,4 +66,15 @@ export class FileService {
 
         await this.httpClient.put<any>(url, body, { headers }).toPromise();
     }
+
+    public async updateCanShare(file: File) {
+
+        let url = `${environment.filesUri}/${file.id}/can-share`;
+
+        var headers = new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8' });
+
+        var body = file.canShare;
+
+        await this.httpClient.put<any>(url, body, { headers }).toPromise();
+    }
 }
