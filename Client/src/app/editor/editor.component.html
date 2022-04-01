@@ -17,10 +17,10 @@
   <div>
     <div class="column-layout_2 column">
       <div class="row-layout_1 row">
-        <igx-avatar [roundShape]="true" color="var(--igx-grays-800)" bgColor="var(--igx-primary-500)" size="small" icon="check" class="avatar"></igx-avatar>
-        <h5 class="title_1">File Saved</h5>
+        <igx-avatar [roundShape]="true" color="var(--igx-grays-800)" bgColor="var(--igx-primary-500)" size="small" icon="{{ shareLink !== '' ? 'check' : 'save' }}" class="avatar"></igx-avatar>
+        <h5 class="title_1">{{dialogWindowTitle}}</h5>
       </div>
-      <div class="row-layout row">
+      <div class="row-layout row" *ngIf="shareLink !== ''">
         <igx-input-group type="box" placeholder class="input-group">
           <input type="text" id="shareLinkInputField" [required]="false" [disabled]="false" readonly="true" igxInput [value]="shareLink" />
         </igx-input-group>

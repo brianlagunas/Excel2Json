@@ -28,7 +28,8 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
   fileName: string = "New File";
   code: string = "[]";
   workbookIds: Map<string, string> = new Map<string, string>();
-  shareLink: string = "Creating share link...";
+  dialogWindowTitle = "Saving file...";
+  shareLink: string = "";
 
   constructor(private fileStorage: FileStorageService,
     private fileService: FileService,
@@ -141,6 +142,11 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   async onSaveFileClicked() {
+
+    this.shareLink = "";
+    this.dialogWindowTitle = "Saving file..."
+    this.dialogWindow.open();
+
     const activeWorksheetName = this.spreadsheet.activeWorksheet.name;
     let fileExists = false;
     let id = this.fileIdForEdit;
@@ -173,13 +179,12 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.fileName = activeWorksheetName;
 
+    this.dialogWindowTitle = "File Saved"
     this.shareLink = `${environment.shareUri}/${id}`;
 
     if (!fileExists && id != null) {
       this.workbookIds.set(activeWorksheetName, id);
     }
-
-    this.dialogWindow.open();
   }
 
   onCopyShareLinkClicked() {
