@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
+using System.Text;
 
 namespace Excel2Json.Controllers
 {
@@ -25,7 +26,7 @@ namespace Excel2Json.Controllers
                 return NotFound();
 
             if (file.CanShare)
-                return Ok(file.Text);
+                return Content(file.Text, "application/json", Encoding.UTF8);
             else
                 return BadRequest("File is not shared");
         }

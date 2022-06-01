@@ -17,7 +17,7 @@ export class FileService {
 
         var body = JSON.stringify({
             name: name,
-            text: text
+            text: JSON.stringify(JSON.parse(text))
         });
 
         var result = await this.httpClient.post<any>(url, body, { headers }).toPromise();
@@ -61,7 +61,7 @@ export class FileService {
         var body = JSON.stringify({
             canShare: file.canShare,
             name: file.name,
-            text: file.text
+            text: JSON.stringify(JSON.parse(file.text))
         });
 
         await this.httpClient.put<any>(url, body, { headers }).toPromise();

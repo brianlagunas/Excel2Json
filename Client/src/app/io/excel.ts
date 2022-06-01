@@ -39,7 +39,7 @@ export class Excel {
             dataObjects.push(dataObject);
         }
 
-        return JSON.stringify(dataObjects, null, "\t");
+        return JSON.stringify(dataObjects, null, 4);
     }
 
     public static convertJsonToWorkbook(json: string, name?: string) : Workbook {
@@ -82,7 +82,7 @@ export class Excel {
 
         Excel.removeEmptyDataObjects(dataObjects);
 
-        return JSON.stringify(dataObjects, null, "\t");
+        return JSON.stringify(dataObjects, null, 4);
     }
 
     static getPropertyNamesFromRow(row: WorksheetRow): string[] {

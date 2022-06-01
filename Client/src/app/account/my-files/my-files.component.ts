@@ -48,7 +48,7 @@ export class MyFilesComponent implements OnInit, AfterViewInit {
     try {
       var file = await this.fileService.getFile(id);
       if (file != null && file.text !== null) {
-        this.code = file.text;
+        this.code = JSON.stringify(JSON.parse(file.text), null, 4);
       }
       else {
         this.code = "[]";
