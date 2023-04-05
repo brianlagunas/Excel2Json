@@ -6,26 +6,16 @@
 // @import '~monaco-editor/min/vs/editor/editor.main.css';
 
 @include core();
-@include typography();
+@include typography($font-family: "Open Sans", $type-scale: $fluent-type-scale);
 
 $custom-palette: palette(
-  $primary: #1B5F9E,
-  $secondary: #4796DE,
-  $surface: #fff,
-  $error: #B03953,
-  $success: #477C29,
-  $warn: #E86A23,
-  $info: #633871);
-@include theme($palette: $custom-palette, $schema: $light-fluent-schema);
-
-// $custom-palette: palette(
-//   $primary: #217346,
-//   $secondary: #217346,
-//   $surface: #222222,
-//   $error: #a80000,
-//   $success: #107c10,
-//   $warn: #797673,
-//   $gray: #ffffff);
+  $primary: #217346,
+  $secondary: #217346,
+  $surface: #222222,
+  $error: #a80000,
+  $success: #107c10,
+  $warn: #797673,
+  $gray: #ffffff);
 
 $include: (igx-avatar,
           igx-navbar,
@@ -46,7 +36,7 @@ $include: (igx-avatar,
 //                    $schema: $dark-fluent-schema,
 //                    $exclude: map-keys(map-remove($components, $include...),));
 
-// @include theme($palette: $custom-palette, $schema: $dark-fluent-schema);
+@include theme($palette: $custom-palette, $schema: $dark-fluent-schema);
                   
 body {
   background: var(--ig-surface-500);
