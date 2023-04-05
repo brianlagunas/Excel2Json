@@ -32,12 +32,11 @@
     "monaco-editor": "^0.37.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.1.0",
-    "web-animations-js": "^2.3.2",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~12.2.7",
-    "@angular/cli": "~12.2.7",
+    "@angular-devkit/build-angular": "~13.3.11",
+    "@angular/cli": "~13.3.11",
     "@angular/compiler-cli": "~15.2.5",
     "@igniteui/angular-schematics": "~15.1.1110",
     "@types/jasmine": "~4.3.1",
