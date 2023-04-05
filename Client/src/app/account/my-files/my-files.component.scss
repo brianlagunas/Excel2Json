@@ -61,7 +61,7 @@
 
   .text_json_preview {
     margin: 8px 0 20px;
-    color: var(--igx-grays-800);
+    color: var(--ig-gray-800);
     min-width: min-content;
     height: max-content;
     text-align: center;
@@ -88,8 +88,8 @@
 
   .avatar_file {
     margin: 0 10px 0 0;
-    background-color: var(--igx-primary-500);
-    color: var(--igx-grays-800);
+    background-color: var(--ig-primary-500);
+    color: var(--ig-gray-800);
   }  
 
   .icon_share {
@@ -139,7 +139,7 @@
   }
 
   .title_1 {
-    color: var(--igx-grays-900);
+    color: var(--ig-gray-900);
     height: max-content;
     min-width: min-content;
     flex: 0 0 auto;

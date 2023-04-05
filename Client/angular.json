@@ -35,7 +35,12 @@
             ],
             "scripts": [
               "./node_modules/hammerjs/hammer.min.js"
-            ]
+            ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "node_modules"
+              ]
+            }
           },
           "configurations": {
             "es5": {
@@ -118,7 +123,12 @@
             "assets": [
               "src/favicon.ico",
               "src/assets"
-            ]
+            ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "node_modules"
+              ]
+            }
           }
         },
         "lint": {

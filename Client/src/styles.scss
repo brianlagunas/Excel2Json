@@ -1,3 +1,5 @@
+/* Line added via automated migrations. */
+@use "igniteui-angular/theming" as *;
 /* You can add global styles to this file, and also import other style files */
 // Standard CSS normalize, comment out if not required or using a different module
 @import "~minireset.css/minireset";
@@ -8,19 +10,19 @@ html, body {
   height: 100%;
 }
 
-@import '~igniteui-angular/lib/core/styles/themes/index';
 
-@include igx-core();
-@include igx-typography();
 
-$custom-palette: igx-palette(
+@include core();
+@include typography();
+
+$custom-palette: palette(
   $primary: #217346,
   $secondary: #217346,
   $surface: #222222,
   $error: #a80000,
   $success: #107c10,
   $warn: #797673,
-  $grays: #ffffff);
+  $gray: #ffffff);
 
 $include: (igx-avatar,
           igx-navbar,
@@ -37,16 +39,16 @@ $include: (igx-avatar,
           igx-drop-down,
           igx-tooltip);
 
-@include igx-theme($palette: $custom-palette,
+@include theme($palette: $custom-palette,
                    $schema: $dark-fluent-schema,
                    $exclude: map-keys(map-remove($components, $include...),));
 
 body {
-  background: var(--igx-surface-500);
-  color: var(--igx-surface-500-contrast);
+  background: var(--ig-surface-500);
+  color: var(--ig-surface-500-contrast);
 }
 
-.igx-typography {
+.ig-typography {
   h1, h2, h3, h4, h5, h6, p {
     margin: 0;
   }

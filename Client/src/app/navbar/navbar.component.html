@@ -18,10 +18,10 @@
     </button>
 
     <div class="help-menu">
-      <igx-avatar icon="menu" [roundShape]="true" size="small" *ngIf="user === null || user.imageUrl === null"
+      <igx-avatar icon="menu" shape="circle" size="small" *ngIf="user === null || user.imageUrl === null"
         [igxToggleAction]="helpDropDown" [overlaySettings]="overlaySettings" [igxDropDownItemNavigation]="helpDropDown">
       </igx-avatar>
-      <igx-avatar src="{{user?.imageUrl}}" [roundShape]="true" size="small" *ngIf="user?.imageUrl !== null"
+      <igx-avatar src="{{user?.imageUrl}}" shape="circle" size="small" *ngIf="user?.imageUrl !== null"
         [igxToggleAction]="helpDropDown" [overlaySettings]="overlaySettings" [igxDropDownItemNavigation]="helpDropDown">
       </igx-avatar>
       <igx-drop-down height="max-content" #helpDropDown class="drop-down">
