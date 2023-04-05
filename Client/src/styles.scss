@@ -1,28 +1,31 @@
-/* Line added via automated migrations. */
-@use "igniteui-angular/theming" as *;
 /* You can add global styles to this file, and also import other style files */
 // Standard CSS normalize, comment out if not required or using a different module
-@import "~minireset.css/minireset";
+@use "minireset.css/minireset";
+@use "igniteui-angular/theming" as *;
 
-@import '~monaco-editor/min/vs/editor/editor.main.css';
-
-html, body {
-  height: 100%;
-}
-
-
+// @import '~monaco-editor/min/vs/editor/editor.main.css';
 
 @include core();
 @include typography();
 
 $custom-palette: palette(
-  $primary: #217346,
-  $secondary: #217346,
-  $surface: #222222,
-  $error: #a80000,
-  $success: #107c10,
-  $warn: #797673,
-  $gray: #ffffff);
+  $primary: #1B5F9E,
+  $secondary: #4796DE,
+  $surface: #fff,
+  $error: #B03953,
+  $success: #477C29,
+  $warn: #E86A23,
+  $info: #633871);
+@include theme($palette: $custom-palette, $schema: $light-fluent-schema);
+
+// $custom-palette: palette(
+//   $primary: #217346,
+//   $secondary: #217346,
+//   $surface: #222222,
+//   $error: #a80000,
+//   $success: #107c10,
+//   $warn: #797673,
+//   $gray: #ffffff);
 
 $include: (igx-avatar,
           igx-navbar,
@@ -39,17 +42,23 @@ $include: (igx-avatar,
           igx-drop-down,
           igx-tooltip);
 
-@include theme($palette: $custom-palette,
-                   $schema: $dark-fluent-schema,
-                   $exclude: map-keys(map-remove($components, $include...),));
+// @include theme($palette: $custom-palette,
+//                    $schema: $dark-fluent-schema,
+//                    $exclude: map-keys(map-remove($components, $include...),));
 
+// @include theme($palette: $custom-palette, $schema: $dark-fluent-schema);
+                  
 body {
   background: var(--ig-surface-500);
   color: var(--ig-surface-500-contrast);
 }
 
+html, body {
+  height: 100%;
+}
+
 .ig-typography {
-  h1, h2, h3, h4, h5, h6, p {
+  h1, h2, h3, h4, h5, h6, p, .ig-typography__body-1 {
     margin: 0;
   }
 }
