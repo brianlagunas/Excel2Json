@@ -1,4 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
+
 // Standard CSS normalize, comment out if not required or using a different module
 @use "minireset.css/minireset";
 @use "igniteui-angular/theming" as *;
@@ -32,11 +33,9 @@ $include: (igx-avatar,
           igx-drop-down,
           igx-tooltip);
 
-// @include theme($palette: $custom-palette,
-//                    $schema: $dark-fluent-schema,
-//                    $exclude: map-keys(map-remove($components, $include...),));
-
-@include theme($palette: $custom-palette, $schema: $dark-fluent-schema);
+@include theme($palette: $custom-palette,
+                   $schema: $dark-fluent-schema,
+                   $exclude: map-keys(map-remove($components, $include...),));
                   
 body {
   background: var(--ig-surface-500);
