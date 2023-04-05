@@ -145,6 +145,5 @@
         }
       }
     }
-  },
-  "defaultProject": "excel2json"
+  }
 }
