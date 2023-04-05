@@ -18,8 +18,7 @@
     </igx-list>
   </div>
   <div class="column-layout column" style="justify-content: center; align-items: center;">
-    <ngx-monaco-editor *ngIf="code != ''" [options]="editorOptions" [(ngModel)]="code"
-      style="height: 100%; width: 100%;"></ngx-monaco-editor>
+    <app-code-editor *ngIf="code != ''" [code]="code" style="height: 100%; width: 100%;"></app-code-editor>
     <div *ngIf="code == ''" class="image_json_group column_json_preview">
       <img src="../../assets/images/json-preview.svg" class="image_json" />
       <h6 class="h6">Preview JSON</h6>

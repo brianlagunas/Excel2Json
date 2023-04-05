@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IgxDialogComponent } from 'igniteui-angular';
 import { Workbook } from 'igniteui-angular-excel';
@@ -24,7 +24,6 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
   dialogWindow!: IgxDialogComponent;
 
   fileIdForEdit: string | null = null;
-  editorOptions = { theme: 'vs-dark', language: 'javascript', readOnly: true };
   fileName: string = "New File";
   code: string = "[]";
   workbookIds: Map<string, string> = new Map<string, string>();
@@ -38,7 +37,8 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
 
   }
 
-  async ngAfterViewInit() {
+  async ngAfterViewInit() {  
+
     const id = this.route.snapshot.paramMap.get("id");
     if (id !== undefined && id !== null) {
       await this.loadFromExistingFile(id);

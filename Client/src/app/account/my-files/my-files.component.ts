@@ -15,7 +15,6 @@ export class MyFilesComponent implements OnInit, AfterViewInit {
   loadingDialog!: IgxDialogComponent;
   
   loadingDialogTitle: string = "";
-  editorOptions = { theme: 'vs-dark', language: 'javascript', readOnly: true };
   code: string = "";
   files: File[] = [];
   shareLink: string = "";

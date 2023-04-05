@@ -2,6 +2,8 @@
 // Standard CSS normalize, comment out if not required or using a different module
 @import "~minireset.css/minireset";
 
+@import '~monaco-editor/min/vs/editor/editor.main.css';
+
 html, body {
   height: 100%;
 }
