@@ -4,7 +4,7 @@
     <div class="column-layout_3 column" (dragover)="onDragOver($event)" (drop)="onDrop($event)">
       <img src="../../assets/images/dragdropfiles.svg" alt="Drag and drop files here" class="image_1" />
       <h6 class="title">Drag &amp; Drop Files</h6>
-      <p class="igx-typography__subtitle-1 title_1">Drop any CSV or Excel file or</p>
+      <p class="ig-typography__subtitle-1 title_1">Drop any CSV or Excel file or</p>
       <button (buttonClick)="fileInput.click()" igxButton="raised" igxRipple [disabled]="false" class="button">
         <span>BROWSE YOUR COMPUTER FILES</span>
       </button>
@@ -14,23 +14,24 @@
     <div class="column-layout_2 column">
       <img src="../../assets/images/newfile.svg" alt="Create new blank spreadsheet" class="image_1" />
       <h6 class="title">Fresh start?</h6>
-      <p class="igx-typography__subtitle-1 title_1">Begin with a blank spreadsheet</p>
-      <button (buttonClick)="onNewFileClicked()" igxButton="outlined" igxRipple [disabled]="false" class="button">
+      <p class="ig-typography__subtitle-1 title_1">Begin with a blank spreadsheet</p>
+      <button (buttonClick)="onNewFileClicked()" igxButton="outlined" igxRipple [disabled]="false"
+        class="button button-outlined">
         <span>CREATE NEW EXCEL FILE</span>
       </button>
     </div>
   </div>
 </div>
-<igx-dialog #delimiterDialog [closeOnOutsideSelect]="false" [closeOnEscape]="false" class="processing-file-dialog"
-            rightButtonLabel="OK"
-            (closing)="onDelimiterDialogClosing()"
-            (rightButtonSelect)="delimiterDialog.close()">
-  <div class="column-layout_2 column" style="align-items: flex-start;">
-    <h5 class="title_1">Choose Delimiter:</h5>
-    <igx-select [(ngModel)]="selectedDelimiter">
-      <igx-select-item *ngFor="let delimiter of delimiterMenuItems" [value]="delimiter">
-          {{delimiter.name}}
-      </igx-select-item>
-    </igx-select>
+<igx-dialog #delimiterDialog [closeOnOutsideSelect]="false" [closeOnEscape]="false">
+  <igx-dialog-title>
+    <h5>Choose Delimiter:</h5>
+  </igx-dialog-title>
+  <igx-select [(ngModel)]="selectedDelimiter">
+    <igx-select-item *ngFor="let delimiter of delimiterMenuItems" [value]="delimiter">
+      {{delimiter.name}}
+    </igx-select-item>
+  </igx-select>
+  <div igxDialogActions>
+    <button igxButton="raised" (click)="onDelimiterSelected()">OK</button>
   </div>
 </igx-dialog>

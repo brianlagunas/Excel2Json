@@ -10,14 +10,14 @@
                      (editModeExited)="onEditModeExited()"></igx-spreadsheet>
   </div>
   <div class="column-layout column">
-    <ngx-monaco-editor [options]="editorOptions" [(ngModel)]="code" style="height: 100%; width: 100%;"></ngx-monaco-editor>
+    <app-code-editor [code]="code" style="height: 100%; width: 100%;"></app-code-editor>
   </div>
 </div>
-<igx-dialog [closeOnOutsideSelect]="true" [closeOnEscape]="true" #dialogWindow class="dialog-window">
+<igx-dialog [closeOnOutsideSelect]="true" [closeOnEscape]="true" #dialogWindow>
   <div>
     <div class="column-layout_2 column">
       <div class="row-layout_1 row">
-        <igx-avatar [roundShape]="true" color="var(--igx-grays-800)" bgColor="var(--igx-primary-500)" size="small" icon="{{ shareLink !== '' ? 'check' : 'save' }}" class="avatar"></igx-avatar>
+        <igx-avatar shape="circle" color="hsl(var(--ig-grays-800))" bgColor="hsl(var(--ig-primary-500))" size="small" icon="{{ shareLink !== '' ? 'check' : 'save' }}" class="avatar"></igx-avatar>
         <h5 class="title_1">{{dialogWindowTitle}}</h5>
       </div>
       <div class="row-layout row" *ngIf="shareLink !== ''">
@@ -31,9 +31,9 @@
     </div>
   </div>
 </igx-dialog>
-<igx-dialog #loadingDialog [closeOnOutsideSelect]="false" [closeOnEscape]="false" class="dialog-window">
+<igx-dialog #loadingDialog [closeOnOutsideSelect]="false" [closeOnEscape]="false">
   <div class="column-layout_2 column" style="align-items: center;">
     <h5 class="title_1">Loading File...</h5>
-    <igx-icon font="material" [active]="true" color="var(--igx-primary-500)" class="loading-icon">donut_large</igx-icon>
+    <igx-icon font="material" [active]="true" class="loading-icon">donut_large</igx-icon>
   </div>
 </igx-dialog>

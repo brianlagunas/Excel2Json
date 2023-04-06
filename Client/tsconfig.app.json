@@ -7,7 +7,7 @@
       "dom"
     ],
     "outDir": "./out-tsc/app",
-    "types": ["gapi", "gapi.auth2"]
+    "types": []
   },
   "files": [
     "src/main.ts",

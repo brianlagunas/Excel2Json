@@ -2,9 +2,7 @@
     <div class="group_2 column">
         <h5 class="h5">Sign in</h5>
         <div class="group_1 row">
-            <button type="button" igxButton="flat" igxRipple class="button" (click)="loginWithGoogle()">
-                <img src="../../../assets/images/signin_google.png" width="225px"/>
-            </button>
+            <div id="google-button"></div>
         </div>
         <form class="column" [formGroup]="form" (ngSubmit)="signIn()">
             <igx-input-group type="border" class="user-input">
@@ -28,7 +26,7 @@
             </igx-input-group>
             <span class="error" *ngIf="serverErrorMessage">{{serverErrorMessage}}</span>
             <button igxButton="raised" igxRipple class="user-input">Sign in</button>
-            <a routerLink="/account/forgot-password" class="igx-typography__body-2 hyperlink">Forgot password?</a>
+            <a routerLink="/account/forgot-password" >Forgot password?</a>
             <button type="button" igxButton="outlined" igxRipple class="user-input" routerLink="/account/register">Create New Account</button>
         </form>
     </div>

@@ -36,7 +36,7 @@
 .column-layout_1 {
   margin: 0 9px 0 0;
   width: 10px;
-  border-color: var(--igx-grays-200);
+  border-color: hsl(var(--ig-gray-200));
   border-width: 0px 1px 0px 0px;
   border-style: solid;
   min-height: 50px;
@@ -73,7 +73,7 @@
 
 .title_1 {
   margin: 8px 0 20px;
-  color: var(--igx-grays-800);
+  color: hsl(var(--ig-gray-800));
   height: max-content;
   min-width: min-content;
   text-align: center;
@@ -83,11 +83,5 @@
 .button {
   height: max-content;
   min-width: 260px;
-  flex: 0 0 auto;
-}
-
-.processing-file-dialog {
-  min-width: 0;
-  min-height: 0;
   flex: 0 0 auto;
 }

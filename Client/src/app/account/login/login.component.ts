@@ -3,6 +3,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../_services/auth.service';
 
+declare let google: any;
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -22,6 +24,21 @@ export class LoginComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit(): void {
+    this.initializeGoogleLogin();
+  }
+
+  initializeGoogleLogin() {    
+    google.accounts.id.initialize({
+      client_id: "400613385752-qt314c2r0dbnlkdrg6bmm1vave3nmsos.apps.googleusercontent.com",
+      callback: (resp) => this.loginWithGoogle(resp),
+      auto_select: false,
+      cancel_on_tap_outside: true,
+    });
+
+    google.accounts.id.renderButton(
+      document.getElementById("google-button"),
+      { text: "continue_with", theme: "outline", size: "large", width: "250px", }
+    );
   }
 
   async signIn() {
@@ -32,7 +49,7 @@ export class LoginComponent implements OnInit {
       }
       catch (error: any) {
         this.serverErrorMessage = error;
-      }      
+      }
     }
     else {
       Object.keys(this.form.controls).forEach(field => {
@@ -43,14 +60,14 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  async loginWithGoogle() {
+  async loginWithGoogle(credentialResponse: any) {
     try {
-      await this.authService.signInGoogle();
+      await this.authService.signInGoogle(credentialResponse.credential);
       this.router.navigateByUrl('/account/my-files');
     }
-    catch (error : any){
+    catch (error: any) {
       this.serverErrorMessage = error;
-    }    
+    }
   }
 
   showHidePassword() {

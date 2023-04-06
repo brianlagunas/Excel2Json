@@ -29,17 +29,21 @@
               "src/favicon.ico",
               "src/assets",
               "src/robots.txt",
-              { "glob": "**/*", "input": "node_modules/monaco-editor", "output": "assets/monaco-editor" }
+              { "glob": "**/*", "input": "node_modules/monaco-editor", "output": "assets/monaco-editor/" }
             ],
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": ["./node_modules/hammerjs/hammer.min.js"]
+            "scripts": [
+              "./node_modules/hammerjs/hammer.min.js"
+            ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "node_modules"
+              ]
+            }
           },
           "configurations": {
-            "es5": {
-                "tsConfig": "tsconfig-es5.app.json"
-            },
             "staging": {
               "fileReplacements": [
                 {
@@ -117,20 +121,12 @@
             "assets": [
               "src/favicon.ico",
               "src/assets"
-            ]
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "tsconfig.app.json",
-              "tsconfig.spec.json",
-              "e2e/tsconfig.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "node_modules"
+              ]
+            }
           }
         },
         "e2e": {
@@ -144,9 +140,20 @@
               "devServerTarget": "excel2json:serve:production"
             }
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
+          }
         }
       }
     }
   },
-  "defaultProject": "excel2json"
+  "cli": {
+    "schematicCollections": ["@angular-eslint/schematics"]
+  }
 }

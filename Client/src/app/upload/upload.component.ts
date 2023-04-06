@@ -59,7 +59,8 @@ export class UploadComponent {
     }
   }
 
-  onDelimiterDialogClosing() {
+  onDelimiterSelected() {
+    this.delimiterDialog.close();
     this.fileStorage.delimiterSymbol = this.selectedDelimiter.symbol;
     this.navigateToEditor();
   }

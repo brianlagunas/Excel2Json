@@ -1,24 +1,22 @@
 /* You can add global styles to this file, and also import other style files */
+
 // Standard CSS normalize, comment out if not required or using a different module
-@import "~minireset.css/minireset";
+@use "minireset.css/minireset";
+@use "igniteui-angular/theming" as *;
 
-html, body {
-  height: 100%;
-}
+// @import '~monaco-editor/min/vs/editor/editor.main.css';
 
-@import '~igniteui-angular/lib/core/styles/themes/index';
+@include core();
+@include typography($font-family: "Titillium Web,sans-serif");
 
-@include igx-core();
-@include igx-typography();
-
-$custom-palette: igx-palette(
+$custom-palette: palette(
   $primary: #217346,
   $secondary: #217346,
   $surface: #222222,
   $error: #a80000,
   $success: #107c10,
   $warn: #797673,
-  $grays: #ffffff);
+  $gray: #ffffff);
 
 $include: (igx-avatar,
           igx-navbar,
@@ -33,23 +31,45 @@ $include: (igx-avatar,
           igx-input,
           igx-checkbox,
           igx-drop-down,
-          igx-tooltip);
+          igx-tooltip,
+          igx-select,
+          igx-toggle);
 
-@include igx-theme($palette: $custom-palette,
-                   $schema: $dark-fluent-schema,
-                   $exclude: map-keys(map-remove($components, $include...),));
-
+@include theme($palette: $custom-palette,
+               $schema: $dark-fluent-schema,
+               $exclude: map-keys(map-remove($components, $include...),));
+                  
 body {
-  background: var(--igx-surface-500);
-  color: var(--igx-surface-500-contrast);
+  background: hsl(var(--ig-surface-500));
+  color: var(--ig-surface-500-contrast);
 }
 
-.igx-typography {
-  h1, h2, h3, h4, h5, h6, p {
+html, body {
+  height: 100%;
+}
+
+.ig-typography {
+  h1, h2, h3, h4, h5, h6, p, .ig-typography__body-1 {
     margin: 0;
   }
 }
 
 .outer-wrapper > *:not(router-outlet) {
   width: 100%;
+}
+
+.button-outlined {
+  --igx-button-foreground: hsl(var(--ig-gray-900));
+	--igx-button-background: transparent;
+  --igx-button-border-color: var(--igx-button-foreground);
+  --igx-button-hover-background: hsla(var(--ig-gray-100), .2);
+}
+
+a {
+  font-size: 14px;
+  color: hsl(var(--ig-primary-100));
+	min-width: min-content;
+	margin: 0 0 24px;
+	height: max-content;
+	cursor: pointer;
 }
