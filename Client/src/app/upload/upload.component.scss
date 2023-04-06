@@ -36,7 +36,7 @@
 .column-layout_1 {
   margin: 0 9px 0 0;
   width: 10px;
-  border-color: var(--ig-gray-200);
+  border-color: hsla(var(--ig-gray-200));
   border-width: 0px 1px 0px 0px;
   border-style: solid;
   min-height: 50px;
@@ -73,7 +73,7 @@
 
 .title_1 {
   margin: 8px 0 20px;
-  color: var(--ig-gray-800);
+  color: hsla(var(--ig-gray-800));
   height: max-content;
   min-width: min-content;
   text-align: center;

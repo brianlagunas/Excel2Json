@@ -7,7 +7,7 @@
 // @import '~monaco-editor/min/vs/editor/editor.main.css';
 
 @include core();
-@include typography($font-family: "Open Sans", $type-scale: $fluent-type-scale);
+@include typography($font-family: "Titillium Web,sans-serif");
 
 $custom-palette: palette(
   $primary: #217346,
@@ -34,11 +34,11 @@ $include: (igx-avatar,
           igx-tooltip);
 
 @include theme($palette: $custom-palette,
-                   $schema: $dark-fluent-schema,
-                   $exclude: map-keys(map-remove($components, $include...),));
+               $schema: $dark-fluent-schema,
+               $exclude: map-keys(map-remove($components, $include...),));
                   
 body {
-  background: var(--ig-surface-500);
+  background: hsla(var(--ig-surface-500));
   color: var(--ig-surface-500-contrast);
 }
 
@@ -54,4 +54,20 @@ html, body {
 
 .outer-wrapper > *:not(router-outlet) {
   width: 100%;
+}
+
+.button-outlined {
+  --igx-button-foreground: hsla(var(--ig-gray-900));
+	--igx-button-background: transparent;
+  --igx-button-border-color: var(--igx-button-foreground);
+  --igx-button-hover-background: hsla(var(--ig-gray-100), .2);
+}
+
+a {
+  font-size: 14px;
+  color: hsla(var(--ig-primary-100));
+	min-width: min-content;
+	margin: 0 0 24px;
+	height: max-content;
+	cursor: pointer;
 }

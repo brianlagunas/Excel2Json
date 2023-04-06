@@ -5,15 +5,13 @@
     <h6 class="title" *ngIf="title !== null">{{title}}</h6>
   </div>
   <div class="row row-layout">
-    <button *ngIf="showUploadButton" igxButton="flat" igxRipple igxButtonColor="var(--ig-grays-900)"
-      igxButtonBackground="transparent" [disabled]="false" routerLink="/" class="button">
+    <button *ngIf="showUploadButton" igxButton="flat" routerLink="/" class="button button-tranparent">
       <span>UPLOAD ANOTHER FILE</span>
     </button>
-    <button *ngIf="showDownloadButton" igxButton="outlined" igxRipple [disabled]="false" class="button" (buttonClick)="onDownloadJsonClicked()">
+    <button *ngIf="showDownloadButton" igxButton="outlined" igxRipple class="button button-outlined" (buttonClick)="onDownloadJsonClicked()">
       <span>DOWNLOAD JSON</span>
     </button>
-    <button *ngIf="user === null ? false : showGetLinkButton" igxButton="raised" igxRipple igxButtonColor="var(--ig-primary-700)"
-      igxButtonBackground="var(--ig-grays-900)" [disabled]="false" class="button" (buttonClick)="onSaveFileClicked()">
+    <button *ngIf="user === null ? false : showGetLinkButton" igxButton="raised" class="button button-solid" (buttonClick)="onSaveFileClicked()">
       <span>Save File</span>
     </button>
 
