@@ -6,7 +6,6 @@ import { catchError, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { User } from '../business/user';
 import { AuthResult } from '../_contracts/auth-result';
-import { GoogleSigninService } from './google.service';
 import { TokenService } from './token.service';
 
 @Injectable({
@@ -14,9 +13,8 @@ import { TokenService } from './token.service';
 })
 export class AuthService {
     private subject = new ReplaySubject<User | null>(1);
-    private isGoogleSignIn: boolean = false;
 
-    constructor(private httpClient: HttpClient, private googleSignInService: GoogleSigninService, private tokenService: TokenService, private router: Router) {
+    constructor(private httpClient: HttpClient, private tokenService: TokenService, private router: Router) {
         this.subject.next(this.getUser());
     }
 
@@ -42,11 +40,15 @@ export class AuthService {
         }
     }
 
-    public async signInGoogle() {
-        try {
-            const result = await this.googleSignInService.signin();
+    public async signInGoogle(googleCredential: string) {
+        try {  
+            const url = `${environment.authUri}/google/`;
+            const headers = new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8' });
+            const body = JSON.stringify({
+                token: googleCredential
+            });        
+            const result = await this.httpClient.post<AuthResult>(url, body, { headers }).toPromise();            
             this.saveAuthenticatedUser(result);
-            this.isGoogleSignIn = true;
         }
         catch (error: any) {
             this.clearAuthenticatedUser();
@@ -64,11 +66,6 @@ export class AuthService {
         let url = `${environment.authUri}/logout`;
         try {
             await this.httpClient.post(url, {}).toPromise();
-
-            if (this.isGoogleSignIn) {
-                await this.googleSignInService.signout();
-                this.isGoogleSignIn = false;
-            }
         }
         catch (error: any) {
             this.handleError(error);
