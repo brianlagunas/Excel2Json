@@ -20,7 +20,6 @@ import { VerifyComponent } from './account/verify/verify.component';
 import { ResendConfirmationComponent } from './account/resend-confirmation/resend-confirmation.component';
 import { ForgotPasswordComponent } from './account/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './account/reset-password/reset-password.component';
-import { CodeEditorModule } from './code-editor/code-editor.module';
 
 @NgModule({
   declarations: [
