@@ -9,7 +9,7 @@
     justify-content: space-between;
     padding: 0 24px;
     min-height: 60px;
-    background-color: hsla(var(--ig-secondary-500));
+    background-color: hsl(var(--ig-secondary-500));
     position: relative;
     min-width: 50px;
     align-items: center;
@@ -37,7 +37,7 @@
 
   .separator {
     margin: 0 16px;
-    color: hsla(var(--ig-gray-800), 0.26);
+    color: hsl(var(--ig-gray-800), 0.26);
     height: max-content;
     min-width: min-content;
     flex: 0 0 auto;
@@ -73,13 +73,15 @@
   }
 
   .button-tranparent {
-    --igx-button-foreground: hsla(var(--ig-gray-900));
+    --igx-button-foreground: hsl(var(--ig-gray-900));
 	  --igx-button-background: transparent;
     --igx-button-hover-background: transparent;
     --igx-button-hover-foreground: var(--igx-button-foreground);
   }
 
   .button-solid {
-    --igx-button-foreground: hsla(var(--ig-primary-700));
-    --igx-button-background: hsla(var(--ig-grays-900));
+    --igx-button-foreground: hsl(var(--ig-primary-700));
+    --igx-button-background: hsla(var(--ig-gray-900), .9);
+    --igx-button-hover-background: var(--igx-button-background);
+    --igx-button-hover-foreground: var(--igx-button-foreground);
   }

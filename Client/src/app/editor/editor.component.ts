@@ -82,7 +82,6 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
 
   loadFile(file: File) {
     const fileExtension = file.name.split(".").pop();
-
     this.loadingDialog.open();
     if (fileExtension === "csv") {
       CSV.loadCsvFile(file, this.fileStorage.delimiterSymbol).then(json => {

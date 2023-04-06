@@ -43,11 +43,11 @@
   Enable/Disable Sharing
 </div>
 
-<igx-dialog #shareLinkDialog class="dialog-window" [closeOnOutsideSelect]="true" [closeOnEscape]="true">
+<igx-dialog #shareLinkDialog [closeOnOutsideSelect]="true" [closeOnEscape]="true">
   <div>
     <div class="column-layout_2 column">
       <div class="row-layout_1 row">
-        <igx-avatar shape="circle" color="var(--ig-grays-800)" bgColor="var(--ig-primary-500)" size="small"
+        <igx-avatar shape="circle" color="hsl(var(--ig-grays-800))" bgColor="hsl(var(--ig-primary-500))" size="small"
           icon="check" class="avatar"></igx-avatar>
         <h5 class="title_1">Link to file</h5>
       </div>
@@ -65,7 +65,7 @@
   </div>
 </igx-dialog>
 
-<igx-dialog #loadingDialog [closeOnOutsideSelect]="false" [closeOnEscape]="false" class="dialog-window">
+<igx-dialog #loadingDialog [closeOnOutsideSelect]="false" [closeOnEscape]="false">
   <div class="column-layout_2 column" style="align-items: center;">
     <h5 class="title_1">{{loadingDialogTitle}}</h5>
     <igx-icon font="material" [active]="true" class="loading-icon">donut_large</igx-icon>

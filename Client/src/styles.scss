@@ -31,14 +31,16 @@ $include: (igx-avatar,
           igx-input,
           igx-checkbox,
           igx-drop-down,
-          igx-tooltip);
+          igx-tooltip,
+          igx-select,
+          igx-toggle);
 
 @include theme($palette: $custom-palette,
                $schema: $dark-fluent-schema,
                $exclude: map-keys(map-remove($components, $include...),));
                   
 body {
-  background: hsla(var(--ig-surface-500));
+  background: hsl(var(--ig-surface-500));
   color: var(--ig-surface-500-contrast);
 }
 
@@ -57,7 +59,7 @@ html, body {
 }
 
 .button-outlined {
-  --igx-button-foreground: hsla(var(--ig-gray-900));
+  --igx-button-foreground: hsl(var(--ig-gray-900));
 	--igx-button-background: transparent;
   --igx-button-border-color: var(--igx-button-foreground);
   --igx-button-hover-background: hsla(var(--ig-gray-100), .2);
@@ -65,7 +67,7 @@ html, body {
 
 a {
   font-size: 14px;
-  color: hsla(var(--ig-primary-100));
+  color: hsl(var(--ig-primary-100));
 	min-width: min-content;
 	margin: 0 0 24px;
 	height: max-content;
