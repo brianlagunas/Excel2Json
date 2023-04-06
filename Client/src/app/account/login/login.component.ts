@@ -3,6 +3,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../_services/auth.service';
 
+declare let google: any;
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -25,8 +27,7 @@ export class LoginComponent implements OnInit {
     this.initializeGoogleLogin();
   }
 
-  initializeGoogleLogin() {
-    // @ts-ignore
+  initializeGoogleLogin() {    
     google.accounts.id.initialize({
       client_id: "400613385752-qt314c2r0dbnlkdrg6bmm1vave3nmsos.apps.googleusercontent.com",
       callback: (resp) => this.loginWithGoogle(resp),
@@ -34,7 +35,6 @@ export class LoginComponent implements OnInit {
       cancel_on_tap_outside: true,
     });
 
-    // @ts-ignore
     google.accounts.id.renderButton(
       document.getElementById("google-button"),
       { text: "continue_with", theme: "outline", size: "large", width: "250px", }
