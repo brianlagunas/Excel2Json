@@ -1,3 +1,8 @@
+/**
+ * CSV utility class.
+ * Provides functionality to convert CSV files to JSON.
+ * Properly handles quoted fields that may contain delimiter characters.
+ */
 export class CSV {
 
     public static loadCsvFile(file: File, delimiter: string) : Promise<string> {
